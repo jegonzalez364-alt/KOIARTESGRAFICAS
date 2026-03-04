@@ -84,7 +84,7 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
 
         <div class="cards-section-wrapper">
           <div class="mascot mascot-left fade-in">
-            <img src="img/dragoasomadonaranja.png" alt="Mascota Dragón Naranja" />
+            <img src="img/dragoasomadonaranja.png" alt="Mascota Dragón Naranja" loading="lazy" decoding="async" />
           </div>
           <div class="cards-grid">
             <div *ngFor="let card of cards; let i = index"
@@ -93,7 +93,7 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
                  (mousemove)="onCardMouseMove($event, i)"
                  (mouseleave)="onCardMouseLeave(i)">
               <div class="card-header">
-                <img *ngIf="card.image" [src]="api.getMediaUrl(card.image)" [alt]="card.title" />
+                <img *ngIf="card.image" [src]="api.getMediaUrl(card.image)" [alt]="card.title" loading="lazy" decoding="async" />
                 <span *ngIf="card.isHalftone" class="halftone-title" [innerHTML]="card.halftoneTitle"></span>
                 <span *ngIf="card.tag" class="card-tag">{{card.tag}}</span>
                 <span class="card-number">{{card.number}}</span>
@@ -106,7 +106,7 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
             </div>
           </div>
           <div class="mascot mascot-right fade-in">
-            <img src="img/dragoasomadorojo.png" alt="Mascota Dragón Rojo" />
+            <img src="img/dragoasomadorojo.png" alt="Mascota Dragón Rojo" loading="lazy" decoding="async" />
           </div>
         </div>
       </div>
