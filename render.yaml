@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: koi-design
+    name: koi-artesgraficas
     env: node
     plan: free
     buildCommand: npm run build
