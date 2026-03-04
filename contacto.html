@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Contáctanos — KOI Design. Estamos listos para hacer realidad tus ideas con corte láser y diseño creativo." />
+    <title>Contáctanos | KOI Design</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+
+<body>
+
+    <!-- ════════════ HEADER ════════════ -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="img/logoicon.png" alt="KOI Design" class="logo-img" />
+            </a>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html">Inicio</a>
+                <a href="index.html#coleccion">Productos</a>
+                <a href="index.html#nosotros">Nosotros</a>
+                <a href="contacto.html" class="active">Contacto</a>
+            </nav>
+
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Buscar" id="searchInput" />
+                    <button type="button" aria-label="Buscar"><i class="fas fa-search"></i></button>
+                </div>
+                <button class="cart-btn" aria-label="Carrito"><i class="fas fa-shopping-cart"></i></button>
+                <button class="btn-entrar">Entrar</button>
+                <button class="hamburger" id="hamburgerBtn" aria-label="Menú">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile overlay nav -->
+    <div class="mobile-nav-overlay" id="mobileNav">
+        <button class="close-nav" id="closeNav">&times;</button>
+        <a href="index.html">Inicio</a>
+        <a href="index.html#coleccion">Productos</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+    </div>
+
+    <!-- ════════════ CONTACT HERO ════════════ -->
+    <section class="contact-hero">
+        <div class="hero-bg"></div>
+
+        <!-- Neon lines -->
+        <div class="neon-lines">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+        </div>
+
+        <div class="container">
+            <div class="contact-hero-content fade-in">
+                <span class="action-word">¡ZAP!</span>
+                <h1 class="contact-title">Contáctanos</h1>
+                <p class="contact-subtitle">¿Tienes una idea? ¡Hagámosla realidad! Escríbenos y nuestro equipo te
+                    responderá más rápido que un rayo láser.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════ CONTACT CONTENT ════════════ -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+
+                <!-- LEFT: Contact Form -->
+                <div class="contact-form-wrapper fade-in">
+                    <div class="comic-panel-header">
+                        <span class="panel-number">#01</span>
+                        <h2>Envíanos un Mensaje</h2>
+                    </div>
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="tu@email.com" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="tel" id="telefono" name="telefono" placeholder="+57 300 123 4567" />
+                        </div>
+                        <div class="form-group">
+                            <label for="asunto">Asunto</label>
+                            <select id="asunto" name="asunto" required>
+                                <option value="" disabled selected>Selecciona una opción</option>
+                                <option value="cotizacion">Cotización</option>
+                                <option value="pedido">Pedido Personalizado</option>
+                                <option value="soporte">Soporte Técnico</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="mensaje">Mensaje</label>
+                            <textarea id="mensaje" name="mensaje" rows="5" placeholder="Cuéntanos tu idea..."
+                                required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary contact-submit">
+                            <i class="fas fa-paper-plane"></i> ¡Enviar Mensaje!
+                        </button>
+                    </form>
+                </div>
+
+                <!-- RIGHT: Contact Info Cards -->
+                <div class="contact-info-side fade-in">
+                    <div class="comic-panel-header">
+                        <span class="panel-number">#02</span>
+                        <h2>Info de Contacto</h2>
+                    </div>
+
+                    <div class="info-cards">
+                        <!-- WhatsApp -->
+                        <div class="info-card">
+                            <div class="info-card-icon"><i class="fab fa-whatsapp"></i></div>
+                            <div class="info-card-content">
+                                <h3>WhatsApp</h3>
+                                <p>+57 318 690 9433</p>
+                                <a href="https://wa.me/573186909433" class="info-link">Chatea con nosotros <i
+                                        class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="info-card">
+                            <div class="info-card-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="info-card-content">
+                                <h3>Email</h3>
+                                <p>contacto@koidesign.com</p>
+                                <a href="mailto:contacto@koidesign.com" class="info-link">Escríbenos <i
+                                        class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Ubicación -->
+                        <div class="info-card">
+                            <div class="info-card-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="info-card-content">
+                                <h3>Ubicación</h3>
+                                <p>Bogotá, Colombia</p>
+                            </div>
+                        </div>
+
+                        <!-- Horario -->
+                        <div class="info-card">
+                            <div class="info-card-icon"><i class="fas fa-clock"></i></div>
+                            <div class="info-card-content">
+                                <h3>Horario</h3>
+                                <p>Lunes a Viernes: 8am — 6pm</p>
+                                <p>Sábados: 9am — 2pm</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social links -->
+                    <div class="contact-social">
+                        <h3>Síguenos</h3>
+                        <div class="social-links">
+                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ════════════ FOOTER ════════════ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-logo">
+                <img src="img/logoicon.png" alt="KOI Design" class="footer-logo-img" />
+            </div>
+            <p class="footer-text">© 2024 KOI Design. Todos los derechos reservados. Hecho con <span
+                    class="heart">💚</span> y Láseres.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

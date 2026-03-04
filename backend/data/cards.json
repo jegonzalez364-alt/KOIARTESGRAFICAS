@@ -1,0 +1,114 @@
+[
+  {
+    "id": "card-1",
+    "number": "#01",
+    "title": "Mugs",
+    "description": "Bebe con estilo con nuestros diseños personalizados.",
+    "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400&q=80",
+    "btnText": "Ver Panel",
+    "btnLink": "#",
+    "tag": "",
+    "order": 0
+  },
+  {
+    "id": "card-2",
+    "number": "#02",
+    "title": "Cuadros en Madera",
+    "description": "Impresiones de alta calidad sobre madera con tus fotos personalizadas.",
+    "image": "https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=400&q=80",
+    "btnText": "Captura Esto",
+    "btnLink": "#",
+    "tag": "Bestseller",
+    "order": 1
+  },
+  {
+    "id": "card-3",
+    "number": "#03",
+    "title": "Relojes Creativos",
+    "description": "El tiempo pasa cuando tienes arte en tu pared. ¡Tic tac!",
+    "image": "https://images.unsplash.com/photo-1508057198894-247b23fe5ade?w=400&q=80",
+    "btnText": "Ver Hora",
+    "btnLink": "#",
+    "tag": "",
+    "order": 2
+  },
+  {
+    "id": "card-4",
+    "number": "#04",
+    "title": "Repisas",
+    "description": "Organiza tu colección con estilo. Resistentes para todas las ediciones.",
+    "image": "https://images.unsplash.com/photo-1594620302200-9a762244a156?w=400&q=80",
+    "btnText": "Apilar",
+    "btnLink": "#",
+    "tag": "",
+    "order": 3
+  },
+  {
+    "id": "card-5",
+    "number": "#05",
+    "title": "Corte Láser MDF",
+    "description": "Cajas crispeteras, rótulos personalizados, útiles para eventos, arte geométrico complejo.",
+    "image": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&q=80",
+    "btnText": "Ver La Magia",
+    "btnLink": "#",
+    "tag": "Especial",
+    "order": 4
+  },
+  {
+    "id": "card-6",
+    "number": "#06",
+    "title": "Mantenimiento de Equipos",
+    "description": "Mantén tu equipo funcionando como un superhéroe. Diagnósticos, reparaciones y actualizaciones.",
+    "image": "",
+    "btnText": "¡Reparar Ahora!",
+    "btnLink": "#reparar",
+    "tag": "",
+    "isHalftone": true,
+    "halftoneTitle": "Soporte<br>Técnico",
+    "order": 5
+  },
+  {
+    "id": "card-dc7a7984",
+    "number": "#07",
+    "title": "asdasda",
+    "description": "asdasd",
+    "image": "/uploads/34fbcfc0-adda-4d65-a3e0-d999e393c9cc.jpeg",
+    "btnText": "Ver Más",
+    "btnLink": "#asdasd",
+    "tag": "asdasd",
+    "order": 6
+  },
+  {
+    "id": "card-87b7b82a",
+    "number": "#08",
+    "title": "dfgdf",
+    "description": "gdfgd",
+    "image": "/uploads/4eaf9083-89d0-44c4-b869-f5bcf3a32fe8.jpeg",
+    "btnText": "Ver Más",
+    "btnLink": "#fgdfgdfgdfgdf",
+    "tag": "fgdfgdfgd",
+    "order": 7
+  },
+  {
+    "id": "card-63c9eda1",
+    "number": "#09",
+    "title": "dffgdffg",
+    "description": "gdfgdfgdfg",
+    "image": "/uploads/7a5da96f-9430-43c0-bbb6-58c00393bad1.jpeg",
+    "btnText": "Ver Másdfgdfgdfgdfg",
+    "btnLink": "#dfgdfgdfg",
+    "tag": "dfgdf",
+    "order": 8
+  },
+  {
+    "id": "card-10b7c31c",
+    "number": "#10",
+    "title": "dfgdffgdf",
+    "description": "dffgdffg",
+    "image": "/uploads/476bc3b4-ea08-4a02-af45-a219f849914f.jpeg",
+    "btnText": "Ver Másdfgdg",
+    "btnLink": "#dfgdfgdfg",
+    "tag": "gdfgdfgdfg",
+    "order": 9
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "req-d1daab19",
+    "userId": "user-0c61ab25",
+    "username": "usuario1",
+    "nombre": "Jsieeon gonzalez",
+    "email": "jafonzalez@hotmail.com",
+    "telefono": "3138760465",
+    "asunto": "Cotización",
+    "mensaje": "asdfasdfasdfasdf",
+    "status": "pendiente",
+    "adminNotes": "hola",
+    "respondedVia": "whatsapp",
+    "createdAt": "2026-02-24T19:38:24.086Z",
+    "updatedAt": "2026-02-24T19:39:47.272Z"
+  },
+  {
+    "id": "req-e3835b80",
+    "userId": null,
+    "username": null,
+    "nombre": "asd",
+    "email": "asd",
+    "telefono": "",
+    "asunto": "Pedido Personalizado",
+    "mensaje": "sadasd",
+    "status": "pendiente",
+    "adminNotes": "",
+    "respondedVia": "",
+    "createdAt": "2026-02-26T21:47:57.577Z",
+    "updatedAt": "2026-02-26T21:47:57.578Z"
+  },
+  {
+    "id": "req-5bfc1c80",
+    "userId": "user-67633bef",
+    "username": "jagonzale",
+    "nombre": "asdasdasd",
+    "email": "asdasd@hotmail.com",
+    "telefono": "3138760465",
+    "asunto": "General",
+    "mensaje": "fsdfsdfgsdffgsdffgdfgsdf",
+    "status": "pendiente",
+    "adminNotes": "",
+    "respondedVia": "",
+    "createdAt": "2026-03-04T01:40:10.095Z",
+    "updatedAt": "2026-03-04T01:40:10.095Z"
+  },
+  {
+    "id": "req-eb3af548",
+    "userId": "admin-1",
+    "username": "admin",
+    "nombre": "gdffgdffgdfgdffg",
+    "email": "ffgdfgdffg",
+    "telefono": "xcfvxgdffgdfgdf",
+    "asunto": "Pedido Personalizado",
+    "mensaje": "dfgdffgdf",
+    "status": "pendiente",
+    "adminNotes": "",
+    "respondedVia": "",
+    "createdAt": "2026-03-04T08:18:38.242Z",
+    "updatedAt": "2026-03-04T08:18:38.242Z"
+  }
+]

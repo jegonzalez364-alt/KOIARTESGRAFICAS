@@ -1,0 +1,37 @@
+[
+  {
+    "id": "slide-7c728072",
+    "type": "youtube",
+    "src": "https://www.youtube.com/watch?v=cOdB6UAbxow",
+    "alt": "s",
+    "order": 0
+  },
+  {
+    "id": "slide-2913b49a",
+    "type": "image",
+    "src": "/uploads/976d95dd-73a4-4f3e-845e-0fc28de373e0.png",
+    "alt": "sadasd",
+    "order": 1
+  },
+  {
+    "id": "slide-f664849b",
+    "type": "image",
+    "src": "/uploads/e55f67d0-9e04-486b-82ab-76bcd06ce969.jpeg",
+    "alt": "dfsdfs",
+    "order": 2
+  },
+  {
+    "id": "slide-34cbf5ef",
+    "type": "image",
+    "src": "/uploads/99d055d2-7089-450b-b454-c4f3df669fda.jpeg",
+    "alt": "adasdasd",
+    "order": 3
+  },
+  {
+    "id": "slide-488a1927",
+    "type": "youtube",
+    "src": "https://www.youtube.com/watch?v=sGd-nzPlhi0",
+    "alt": "sdfsdf",
+    "order": 4
+  }
+]

@@ -1,0 +1,31 @@
+[
+  {
+    "id": "admin-1",
+    "username": "admin",
+    "password": "$2a$10$mM4fx7B1Iz/Ez0B4FsR3juU7lKudmTLJ8sbSS6V0/aRd5Jw/RyRAG",
+    "role": "admin",
+    "email": "admin@koidesign.com",
+    "nombre": "Administrador",
+    "telefono": ""
+  },
+  {
+    "id": "user-0c61ab25",
+    "username": "usuario1",
+    "password": "$2a$10$eiAWHWuAQjRmqzTPz3S8K.sAEbn77/oroihMVR/EGQnIJJqlEdAxa",
+    "role": "user",
+    "nombre": "Jsieeon gonzalez",
+    "email": "jafonzalez@hotmail.com",
+    "telefono": "3138760465",
+    "createdAt": "2026-02-24T19:38:04.359Z"
+  },
+  {
+    "id": "user-67633bef",
+    "username": "jagonzale",
+    "password": "$2a$10$i7AkKPL7eIvcYEdgdIAFvex77.AxzMCD6jsEJOiGslDQ2cKId8Fhm",
+    "role": "user",
+    "nombre": "asdasdasd",
+    "email": "asdasd@hotmail.com",
+    "telefono": "3138760465",
+    "createdAt": "2026-03-04T01:39:19.945Z"
+  }
+]
