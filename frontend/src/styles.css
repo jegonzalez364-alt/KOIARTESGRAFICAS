@@ -1500,6 +1500,15 @@ img {
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
+@media (max-width: 900px) {
+
+  /* On mobile/tablets, disable the initial hide to prevent JS race conditions from keeping cards hidden */
+  .fade-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+}
+
 .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
@@ -2522,12 +2531,3 @@ img {
     width: 100%;
   }
 }
-
-
-
-
-
-
-
-
-

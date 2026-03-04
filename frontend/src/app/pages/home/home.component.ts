@@ -237,8 +237,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setupFadeObserver() {
-    setTimeout(() => {
+    // Retry finding faders a few times to account for slow Angular rendering of ngFor
+    const observe = () => {
       const faders = document.querySelectorAll('.fade-in');
+      if (faders.length === 0) {
+        setTimeout(observe, 200);
+        return;
+      }
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -246,9 +251,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
             observer.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-      faders.forEach(el => observer.observe(el));
-    }, 300);
+      }, { threshold: 0.1, rootMargin: '0px 0px 50px 0px' });
+
+      faders.forEach(el => {
+        // If it's already in the viewport due to fast scrolling or being at the top
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          el.classList.add('visible');
+        } else {
+          observer.observe(el);
+        }
+      });
+    };
+    // Start observing after a short delay to let ngFor populate the DOM
+    setTimeout(observe, 100);
   }
 
   goToSlide(index: number) {
