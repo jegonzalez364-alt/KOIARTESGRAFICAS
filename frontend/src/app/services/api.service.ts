@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -36,7 +36,9 @@ export interface LoginResponse {
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-    private baseUrl = 'http://localhost:3000/api';
+    // If in development mode (ng serve), point to localhost:3000
+    // If built for production (Render), use relative path to route to the same domain
+    private baseUrl = isDevMode() ? 'http://localhost:3000/api' : '/api';
 
     constructor(private http: HttpClient) { }
 
@@ -138,7 +140,7 @@ export class ApiService {
     // Helper: get full URL for uploaded files
     getMediaUrl(src: string): string {
         if (src.startsWith('/uploads/')) {
-            return `http://localhost:3000${src}`;
+            return isDevMode() ? `http://localhost:3000${src}` : src;
         }
         return src;
     }

@@ -12,7 +12,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const JWT_SECRET = 'koi-design-secret-key-2024';
 
 // ---------- Middleware ----------
@@ -524,7 +524,32 @@ app.delete('/api/requests/:id', authMiddleware, adminMiddleware, (req, res) => {
     res.json({ message: 'Solicitud eliminada' });
 });
 
+// ============================================
+//   SERVE FRONTEND (PRODUCTION / RENDER)
+// ============================================
+
+// The Angular app will be built into frontend/dist/frontend/browser
+const FRONTEND_DIR = path.join(__dirname, '..', 'frontend', 'dist', 'frontend', 'browser');
+
+// Serve static files from the Angular build
+app.use(express.static(FRONTEND_DIR));
+
+// Catch-all route to serve Angular's index.html for any non-API route
+app.get('*', (req, res) => {
+    // DO NOT catch routes starting with /api or /uploads
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+        return res.status(404).json({ error: 'Endpoint no encontrado' });
+    }
+
+    const indexPath = path.join(FRONTEND_DIR, 'index.html');
+    if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        res.status(404).send('Frontend not built yet. Run `npm run build` from the frontend directory.');
+    }
+});
+
 // ---------- Start ----------
 app.listen(PORT, () => {
-    console.log(`🐟 KOI Design API corriendo en http://localhost:${PORT}`);
+    console.log(`🐟 KOI Design API corriendo en puerto ${PORT}`);
 });
