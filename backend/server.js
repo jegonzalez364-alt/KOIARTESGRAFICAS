@@ -122,8 +122,9 @@ app.post('/api/auth/login', (req, res) => {
         return res.status(400).json({ error: 'Usuario y contraseña requeridos' });
     }
 
+    const cleanUsername = username.trim();
     const users = readJSON(USERS_FILE);
-    const user = users.find(u => u.username === username);
+    const user = users.find(u => u.username === cleanUsername);
     if (!user) {
         return res.status(401).json({ error: 'Credenciales inválidas' });
     }

@@ -97,7 +97,9 @@ export class LoginComponent {
   async onLogin() {
     this.error = '';
     this.loading = true;
-    const success = await this.auth.login(this.username, this.password);
+    const cleanUser = this.username.trim();
+    const cleanPass = this.password.trim();
+    const success = await this.auth.login(cleanUser, cleanPass);
     this.loading = false;
     if (success) {
       const user = this.auth.getUser();
