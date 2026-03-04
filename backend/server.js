@@ -531,6 +531,16 @@ app.delete('/api/requests/:id', authMiddleware, adminMiddleware, (req, res) => {
 // The Angular app will be built into frontend/dist/frontend/browser
 const FRONTEND_DIR = path.join(__dirname, '..', 'frontend', 'dist', 'frontend', 'browser');
 
+console.log('--- DIAGNOSTICO DE RUTAS ---');
+console.log('__dirname:', __dirname);
+console.log('FRONTEND_DIR:', FRONTEND_DIR);
+if (fs.existsSync(FRONTEND_DIR)) {
+    console.log('Contenido de FRONTEND_DIR:', fs.readdirSync(FRONTEND_DIR));
+} else {
+    console.error('ALERTA: FRONTEND_DIR no existe en la ruta especificada.');
+}
+console.log('----------------------------');
+
 // Serve static files from the Angular build
 app.use(express.static(FRONTEND_DIR));
 
