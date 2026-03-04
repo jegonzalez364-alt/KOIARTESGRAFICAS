@@ -223,12 +223,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   currentSlide = 0;
   autoPlayInterval: any;
   cardElements: HTMLElement[] = [];
+  private observer: IntersectionObserver | null = null;
 
   constructor(public api: ApiService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.api.getGallery().subscribe(data => this.gallery = data);
-    this.api.getCards().subscribe(data => this.cards = data);
+    this.api.getGallery().subscribe(data => {
+      this.gallery = data;
+      setTimeout(() => this.setupFadeObserver(), 100);
+    });
+    this.api.getCards().subscribe(data => {
+      this.cards = data;
+      setTimeout(() => this.setupFadeObserver(), 100);
+    });
   }
 
   ngAfterViewInit() {
@@ -237,34 +244,28 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setupFadeObserver() {
-    // Retry finding faders a few times to account for slow Angular rendering of ngFor
-    const observe = () => {
-      const faders = document.querySelectorAll('.fade-in');
-      if (faders.length === 0) {
-        setTimeout(observe, 200);
-        return;
-      }
-      const observer = new IntersectionObserver((entries) => {
+    if (!this.observer) {
+      this.observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
+            this.observer?.unobserve(entry.target);
           }
         });
       }, { threshold: 0.1, rootMargin: '0px 0px 50px 0px' });
+    }
 
+    setTimeout(() => {
+      const faders = document.querySelectorAll('.fade-in:not(.visible)');
       faders.forEach(el => {
-        // If it's already in the viewport due to fast scrolling or being at the top
         const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight) {
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
           el.classList.add('visible');
         } else {
-          observer.observe(el);
+          this.observer?.observe(el);
         }
       });
-    };
-    // Start observing after a short delay to let ngFor populate the DOM
-    setTimeout(observe, 100);
+    }, 100);
   }
 
   goToSlide(index: number) {
@@ -304,6 +305,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.autoPlayInterval) clearInterval(this.autoPlayInterval);
+    if (this.observer) this.observer.disconnect();
   }
 
   onCardMouseMove(event: MouseEvent, index: number) {
