@@ -31,7 +31,9 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ---------- MongoDB Connection ----------
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/koi')
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/koi', {
+    serverSelectionTimeoutMS: 5000
+})
     .then(() => {
         console.log('✅ Connected to MongoDB Atlas');
         initAdmin();
@@ -250,7 +252,7 @@ app.get('/api/cards', async (req, res) => {
         const cards = await Card.find().sort({ order: 1 });
         res.json(cards.map(c => c.toJSON()));
     } catch (err) {
-        res.status(500).json({ error: 'Error al obtener cartas' });
+        res.status(500).json({ error: 'Error al obtener cartas', details: err.message, stack: err.stack });
     }
 });
 
