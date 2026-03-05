@@ -4,96 +4,73 @@
 
 const express = require('express');
 const cors = require('cors');
-const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+// Load Cloudinary Config
+const { cloudinary, upload } = require('./config/cloudinary');
+
+// Load Mongoose Models
+const Card = require('./models/Card');
+const User = require('./models/User');
+const Gallery = require('./models/Gallery');
+const Request = require('./models/Request');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = 'koi-design-secret-key-2024';
+const JWT_SECRET = process.env.JWT_SECRET || 'koi-design-secret-key-2024';
 
 // ---------- Middleware ----------
 app.use(cors());
 app.use(express.json());
+// Even though images are in Cloudinary, we keep /uploads for any legacy files during transition
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ---------- File paths ----------
-const DATA_DIR = path.join(__dirname, 'data');
-const GALLERY_FILE = path.join(DATA_DIR, 'gallery.json');
-const CARDS_FILE = path.join(DATA_DIR, 'cards.json');
-const USERS_FILE = path.join(DATA_DIR, 'users.json');
-const REQUESTS_FILE = path.join(DATA_DIR, 'requests.json');
-
-// ---------- Helpers ----------
-function readJSON(file) {
-    try {
-        return JSON.parse(fs.readFileSync(file, 'utf-8'));
-    } catch {
-        return [];
-    }
-}
-
-function writeJSON(file, data) {
-    fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf-8');
-}
+// ---------- MongoDB Connection ----------
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/koi', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('✅ Connected to MongoDB Atlas');
+    initAdmin();
+}).catch(err => {
+    console.error('❌ MongoDB Connection Error:', err.message);
+});
 
 // ---------- Initialize admin user ----------
-function initAdmin() {
-    const users = readJSON(USERS_FILE);
-    const adminExists = users.find(u => u.id === 'admin-1');
-    if (!adminExists) {
-        const hashed = bcrypt.hashSync('admin123', 10);
-        const adminUser = {
-            id: 'admin-1',
-            username: 'admin',
-            password: hashed,
-            role: 'admin',
-            nombre: 'Administrador',
-            email: 'admin@koidesign.com',
-            telefono: ''
-        };
-        users.push(adminUser);
-        writeJSON(USERS_FILE, users);
-        console.log('✅ Admin user initialized (user: admin / pass: admin123)');
-    } else if (!adminExists.email) {
-        // Patch existing admin to have email field
-        adminExists.email = 'admin@koidesign.com';
-        adminExists.nombre = adminExists.nombre || 'Administrador';
-        adminExists.telefono = adminExists.telefono || '';
-        writeJSON(USERS_FILE, users);
-        console.log('✅ Admin user patched with email field');
+async function initAdmin() {
+    try {
+        let adminExists = await User.findOne({ username: 'admin' });
+        if (!adminExists) {
+            const hashed = bcrypt.hashSync('admin123', 10);
+            await User.create({
+                username: 'admin',
+                password: hashed,
+                role: 'admin',
+                nombre: 'Administrador',
+                email: 'admin@koidesign.com',
+                telefono: ''
+            });
+            console.log('✅ Admin user initialized in MongoDB');
+        } else if (!adminExists.email) {
+            // Patch existing admin to have email field
+            adminExists.email = 'admin@koidesign.com';
+            adminExists.nombre = adminExists.nombre || 'Administrador';
+            adminExists.telefono = adminExists.telefono || '';
+            await adminExists.save();
+            console.log('✅ Admin user patched with email field in MongoDB');
+        }
+    } catch (err) {
+        console.error('Failed to init admin:', err);
     }
 }
-initAdmin();
+// Removed sync initAdmin() call here since MongoDB connection handles it now.
 
-// ---------- Multer config for file uploads ----------
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, 'uploads'));
-    },
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname);
-        cb(null, `${uuidv4()}${ext}`);
-    }
-});
-
-const upload = multer({
-    storage,
-    limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
-    fileFilter: (req, file, cb) => {
-        const allowed = /jpeg|jpg|png|gif|webp|mp4|webm|mov/;
-        const ext = allowed.test(path.extname(file.originalname).toLowerCase());
-        const mime = allowed.test(file.mimetype);
-        if (ext || mime) {
-            cb(null, true);
-        } else {
-            cb(new Error('Solo se permiten imágenes y videos'));
-        }
-    }
-});
+// Removed local diskStorage definitions as they are now handled by config/cloudinary.js
 
 // ---------- Auth Middleware ----------
 function authMiddleware(req, res, next) {
@@ -116,76 +93,88 @@ function authMiddleware(req, res, next) {
 // ============================================
 
 // POST /api/auth/login
-app.post('/api/auth/login', (req, res) => {
+app.post('/api/auth/login', async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
         return res.status(400).json({ error: 'Usuario y contraseña requeridos' });
     }
 
-    const cleanUsername = username.trim();
-    const users = readJSON(USERS_FILE);
-    const user = users.find(u => u.username === cleanUsername);
-    if (!user) {
-        return res.status(401).json({ error: 'Credenciales inválidas' });
+    try {
+        const cleanUsername = username.trim();
+        const user = await User.findOne({ username: cleanUsername });
+        if (!user) {
+            return res.status(401).json({ error: 'Credenciales inválidas' });
+        }
+
+        const valid = bcrypt.compareSync(password, user.password);
+        if (!valid) {
+            return res.status(401).json({ error: 'Credenciales inválidas' });
+        }
+
+        const token = jwt.sign(
+            { id: user._id, username: user.username, role: user.role },
+            JWT_SECRET,
+            { expiresIn: '8h' }
+        );
+
+        res.json({ token, user: user.toJSON() });
+    } catch (err) {
+        console.error('Login error:', err);
+        res.status(500).json({ error: 'Error del servidor' });
     }
-
-    const valid = bcrypt.compareSync(password, user.password);
-    if (!valid) {
-        return res.status(401).json({ error: 'Credenciales inválidas' });
-    }
-
-    const token = jwt.sign(
-        { id: user.id, username: user.username, role: user.role },
-        JWT_SECRET,
-        { expiresIn: '8h' }
-    );
-
-    res.json({ token, user: { id: user.id, username: user.username, role: user.role } });
 });
 
 // GET /api/auth/me — verify token
-app.get('/api/auth/me', authMiddleware, (req, res) => {
-    res.json({ user: req.user });
+app.get('/api/auth/me', authMiddleware, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        res.json({ user: user.toJSON() });
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
 });
 
 // PUT /api/auth/update — change username/password (auth required)
-app.put('/api/auth/update', authMiddleware, (req, res) => {
+app.put('/api/auth/update', authMiddleware, async (req, res) => {
     const { currentPassword, newUsername, newPassword } = req.body;
     if (!currentPassword) {
         return res.status(400).json({ error: 'Contraseña actual requerida' });
     }
 
-    const users = readJSON(USERS_FILE);
-    const user = users.find(u => u.id === req.user.id);
-    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
 
-    const valid = bcrypt.compareSync(currentPassword, user.password);
-    if (!valid) {
-        return res.status(401).json({ error: 'Contraseña actual incorrecta' });
+        const valid = bcrypt.compareSync(currentPassword, user.password);
+        if (!valid) {
+            return res.status(401).json({ error: 'Contraseña actual incorrecta' });
+        }
+
+        // Update username if provided
+        if (newUsername && newUsername.trim()) {
+            user.username = newUsername.trim();
+        }
+
+        // Update password if provided
+        if (newPassword && newPassword.trim().length >= 4) {
+            user.password = bcrypt.hashSync(newPassword.trim(), 10);
+        } else if (newPassword) {
+            return res.status(400).json({ error: 'La nueva contraseña debe tener al menos 4 caracteres' });
+        }
+
+        // Generate new token with updated info
+        const token = jwt.sign(
+            { id: user._id, username: user.username, role: user.role },
+            JWT_SECRET,
+            { expiresIn: '8h' }
+        );
+
+        res.json({ token, user: user.toJSON(), message: 'Credenciales actualizadas' });
+    } catch (err) {
+        console.error('Update auth error:', err);
+        res.status(500).json({ error: 'Error del servidor' });
     }
-
-    // Update username if provided
-    if (newUsername && newUsername.trim()) {
-        user.username = newUsername.trim();
-    }
-
-    // Update password if provided
-    if (newPassword && newPassword.trim().length >= 4) {
-        user.password = bcrypt.hashSync(newPassword.trim(), 10);
-    } else if (newPassword) {
-        return res.status(400).json({ error: 'La nueva contraseña debe tener al menos 4 caracteres' });
-    }
-
-    writeJSON(USERS_FILE, users);
-
-    // Generate new token with updated info
-    const token = jwt.sign(
-        { id: user.id, username: user.username, role: user.role },
-        JWT_SECRET,
-        { expiresIn: '8h' }
-    );
-
-    res.json({ token, user: { id: user.id, username: user.username, role: user.role }, message: 'Credenciales actualizadas' });
 });
 
 // ============================================
@@ -193,47 +182,64 @@ app.put('/api/auth/update', authMiddleware, (req, res) => {
 // ============================================
 
 // GET /api/gallery
-app.get('/api/gallery', (req, res) => {
-    const gallery = readJSON(GALLERY_FILE);
-    gallery.sort((a, b) => a.order - b.order);
-    res.json(gallery);
+app.get('/api/gallery', async (req, res) => {
+    try {
+        const gallery = await Gallery.find().sort({ order: 1 });
+        res.json(gallery.map(g => g.toJSON()));
+    } catch (err) {
+        res.status(500).json({ error: 'Error al obtener la galería' });
+    }
 });
 
 // POST /api/gallery — add slide (auth required)
-app.post('/api/gallery', authMiddleware, upload.single('media'), (req, res) => {
-    const gallery = readJSON(GALLERY_FILE);
-    const { type, alt, src } = req.body;
+app.post('/api/gallery', authMiddleware, upload.single('media'), async (req, res) => {
+    try {
+        const { type, alt, src } = req.body;
+        const count = await Gallery.countDocuments();
 
-    const newSlide = {
-        id: `slide-${uuidv4().slice(0, 8)}`,
-        type: type || 'image',
-        src: req.file ? `/uploads/${req.file.filename}` : (src || ''),
-        alt: alt || 'Nuevo slide',
-        order: gallery.length
-    };
+        const newSlide = await Gallery.create({
+            type: type || 'image',
+            src: req.file ? req.file.path : (src || ''), // req.file.path is the Cloudinary URL
+            alt: alt || 'Nuevo slide',
+            order: count
+        });
 
-    gallery.push(newSlide);
-    writeJSON(GALLERY_FILE, gallery);
-    res.status(201).json(newSlide);
+        res.status(201).json(newSlide.toJSON());
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al agregar elemento' });
+    }
 });
 
 // DELETE /api/gallery/:id (auth required)
-app.delete('/api/gallery/:id', authMiddleware, (req, res) => {
-    let gallery = readJSON(GALLERY_FILE);
-    const item = gallery.find(g => g.id === req.params.id);
-    if (!item) return res.status(404).json({ error: 'Slide no encontrado' });
+app.delete('/api/gallery/:id', authMiddleware, async (req, res) => {
+    try {
+        const slide = await Gallery.findById(req.params.id);
+        if (!slide) return res.status(404).json({ error: 'Slide no encontrado' });
 
-    // Delete file if it's an upload
-    if (item.src && item.src.startsWith('/uploads/')) {
-        const filePath = path.join(__dirname, item.src);
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+        // If it was uploaded to Cloudinary, you would typically use the Cloudinary SDK to delete the file here.
+        // For simplicity, we just delete the database record for now.
+        if (slide.src) {
+            const publicIdMatch = slide.src.match(/\/v\d+\/(.+?)\./);
+            if (publicIdMatch && publicIdMatch[1]) {
+                await cloudinary.uploader.destroy(publicIdMatch[1]);
+            }
+        }
+
+        await Gallery.findByIdAndDelete(req.params.id);
+
+        // Recalculate order (optional, but keeps numbers clean)
+        const remaining = await Gallery.find().sort({ order: 1 });
+        for (let i = 0; i < remaining.length; i++) {
+            remaining[i].order = i;
+            await remaining[i].save();
+        }
+
+        res.json({ message: 'Slide eliminado' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al eliminar' });
     }
-
-    gallery = gallery.filter(g => g.id !== req.params.id);
-    // Recalculate order
-    gallery.forEach((g, i) => g.order = i);
-    writeJSON(GALLERY_FILE, gallery);
-    res.json({ message: 'Slide eliminado' });
 });
 
 // ============================================
@@ -241,77 +247,97 @@ app.delete('/api/gallery/:id', authMiddleware, (req, res) => {
 // ============================================
 
 // GET /api/cards
-app.get('/api/cards', (req, res) => {
-    const cards = readJSON(CARDS_FILE);
-    cards.sort((a, b) => a.order - b.order);
-    res.json(cards);
+app.get('/api/cards', async (req, res) => {
+    try {
+        const cards = await Card.find().sort({ order: 1 });
+        res.json(cards.map(c => c.toJSON()));
+    } catch (err) {
+        res.status(500).json({ error: 'Error al obtener cartas' });
+    }
 });
 
 // POST /api/cards — add card (auth required)
-app.post('/api/cards', authMiddleware, upload.single('image'), (req, res) => {
-    const cards = readJSON(CARDS_FILE);
-    const { title, description, btnText, btnLink, tag, imageSrc } = req.body;
+app.post('/api/cards', authMiddleware, upload.single('image'), async (req, res) => {
+    try {
+        const { title, description, btnText, btnLink, tag, imageSrc } = req.body;
+        const count = await Card.countDocuments();
 
-    const newCard = {
-        id: `card-${uuidv4().slice(0, 8)}`,
-        number: `#${String(cards.length + 1).padStart(2, '0')}`,
-        title: title || 'Nueva Card',
-        description: description || '',
-        image: req.file ? `/uploads/${req.file.filename}` : (imageSrc || ''),
-        btnText: btnText || 'Ver Más',
-        btnLink: btnLink || '#',
-        tag: tag || '',
-        order: cards.length
-    };
+        const newCard = await Card.create({
+            title: title || 'Nueva Card',
+            description: description || '',
+            image: req.file ? req.file.path : (imageSrc || ''), // req.file.path is Cloudinary URL
+            btnText: btnText || 'Ver Más',
+            btnLink: btnLink || '#',
+            tag: tag || '',
+            order: count
+        });
 
-    cards.push(newCard);
-    writeJSON(CARDS_FILE, cards);
-    res.status(201).json(newCard);
+        res.status(201).json(newCard.toJSON());
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al crear carta' });
+    }
 });
 
+
 // PUT /api/cards/:id — edit card (auth required)
-app.put('/api/cards/:id', authMiddleware, upload.single('image'), (req, res) => {
-    const cards = readJSON(CARDS_FILE);
-    const index = cards.findIndex(c => c.id === req.params.id);
-    if (index === -1) return res.status(404).json({ error: 'Card no encontrada' });
+app.put('/api/cards/:id', authMiddleware, upload.single('image'), async (req, res) => {
+    try {
+        const card = await Card.findById(req.params.id);
+        if (!card) return res.status(404).json({ error: 'Card no encontrada' });
 
-    const { title, description, btnText, btnLink, tag } = req.body;
-    if (title) cards[index].title = title;
-    if (description) cards[index].description = description;
-    if (btnText) cards[index].btnText = btnText;
-    if (btnLink) cards[index].btnLink = btnLink;
-    if (tag !== undefined) cards[index].tag = tag;
-    if (req.file) {
-        // Delete old file if it was an upload
-        if (cards[index].image && cards[index].image.startsWith('/uploads/')) {
-            const old = path.join(__dirname, cards[index].image);
-            if (fs.existsSync(old)) fs.unlinkSync(old);
+        const { title, description, btnText, btnLink, tag } = req.body;
+        if (title) card.title = title;
+        if (description) card.description = description;
+        if (btnText) card.btnText = btnText;
+        if (btnLink) card.btnLink = btnLink;
+        if (tag !== undefined) card.tag = tag;
+
+        if (req.file) {
+            // Remove old image from Cloudinary if it's there
+            if (card.image) {
+                const publicIdMatch = card.image.match(/\/v\d+\/(.+?)\./);
+                if (publicIdMatch && publicIdMatch[1]) {
+                    await cloudinary.uploader.destroy(publicIdMatch[1]);
+                }
+            }
+            card.image = req.file.path; // Cloudinary URL
         }
-        cards[index].image = `/uploads/${req.file.filename}`;
-    }
 
-    writeJSON(CARDS_FILE, cards);
-    res.json(cards[index]);
+        await card.save();
+        res.json(card.toJSON());
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al editar carta' });
+    }
 });
 
 // DELETE /api/cards/:id (auth required)
-app.delete('/api/cards/:id', authMiddleware, (req, res) => {
-    let cards = readJSON(CARDS_FILE);
-    const item = cards.find(c => c.id === req.params.id);
-    if (!item) return res.status(404).json({ error: 'Card no encontrada' });
+app.delete('/api/cards/:id', authMiddleware, async (req, res) => {
+    try {
+        const card = await Card.findById(req.params.id);
+        if (!card) return res.status(404).json({ error: 'Card no encontrada' });
 
-    if (item.image && item.image.startsWith('/uploads/')) {
-        const filePath = path.join(__dirname, item.image);
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+        if (card.image) {
+            const publicIdMatch = card.image.match(/\/v\d+\/(.+?)\./);
+            if (publicIdMatch && publicIdMatch[1]) {
+                await cloudinary.uploader.destroy(publicIdMatch[1]);
+            }
+        }
+
+        await Card.findByIdAndDelete(req.params.id);
+
+        const remaining = await Card.find().sort({ order: 1 });
+        for (let i = 0; i < remaining.length; i++) {
+            remaining[i].order = i;
+            await remaining[i].save();
+        }
+
+        res.json({ message: 'Card eliminada' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al eliminar carta' });
     }
-
-    cards = cards.filter(c => c.id !== req.params.id);
-    cards.forEach((c, i) => {
-        c.order = i;
-        c.number = `#${String(i + 1).padStart(2, '0')}`;
-    });
-    writeJSON(CARDS_FILE, cards);
-    res.json({ message: 'Card eliminada' });
 });
 
 // ============================================
@@ -319,25 +345,35 @@ app.delete('/api/cards/:id', authMiddleware, (req, res) => {
 // ============================================
 
 // GET /api/search?q=term
-app.get('/api/search', (req, res) => {
-    const query = (req.query.q || '').toLowerCase().trim();
-    if (!query) return res.json({ cards: [], gallery: [] });
+app.get('/api/search', async (req, res) => {
+    const queryTerm = (req.query.q || '').trim();
+    if (!queryTerm) return res.json({ cards: [], gallery: [] });
 
-    const cards = readJSON(CARDS_FILE);
-    const gallery = readJSON(GALLERY_FILE);
+    try {
+        const regex = new RegExp(queryTerm, 'i');
+        const matchedCards = await Card.find({
+            $or: [
+                { title: regex },
+                { description: regex },
+                { tag: regex }
+            ]
+        });
 
-    const matchedCards = cards.filter(c =>
-        c.title.toLowerCase().includes(query) ||
-        c.description.toLowerCase().includes(query) ||
-        (c.tag && c.tag.toLowerCase().includes(query))
-    );
+        const matchedGallery = await Gallery.find({
+            $or: [
+                { alt: regex },
+                { type: regex }
+            ]
+        });
 
-    const matchedGallery = gallery.filter(g =>
-        g.alt.toLowerCase().includes(query) ||
-        (g.type && g.type.toLowerCase().includes(query))
-    );
-
-    res.json({ cards: matchedCards, gallery: matchedGallery });
+        res.json({
+            cards: matchedCards.map(c => c.toJSON()),
+            gallery: matchedGallery.map(g => g.toJSON())
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error en búsqueda' });
+    }
 });
 
 // ============================================
@@ -345,7 +381,7 @@ app.get('/api/search', (req, res) => {
 // ============================================
 
 // POST /api/auth/register — register new user (non-admin)
-app.post('/api/auth/register', (req, res) => {
+app.post('/api/auth/register', async (req, res) => {
     try {
         const { username, password, nombre, email, telefono } = req.body;
         if (!username || !password || !email) {
@@ -355,38 +391,28 @@ app.post('/api/auth/register', (req, res) => {
             return res.status(400).json({ error: 'La contraseña debe tener al menos 4 caracteres' });
         }
 
-        const users = readJSON(USERS_FILE);
-        if (users.find(u => u.username === username)) {
-            return res.status(409).json({ error: 'Ese nombre de usuario ya existe' });
-        }
-        if (users.find(u => u.email && u.email === email)) {
-            return res.status(409).json({ error: 'Ese email ya está registrado' });
-        }
+        const exactUser = await User.findOne({ username });
+        if (exactUser) return res.status(409).json({ error: 'Ese nombre de usuario ya existe' });
 
-        const newUser = {
-            id: `user-${uuidv4().slice(0, 8)}`,
+        const emailUser = await User.findOne({ email });
+        if (emailUser) return res.status(409).json({ error: 'Ese email ya está registrado' });
+
+        const newUser = await User.create({
             username: username.trim(),
             password: bcrypt.hashSync(password, 10),
             role: 'user',
             nombre: nombre || '',
             email: email.trim(),
-            telefono: telefono || '',
-            createdAt: new Date().toISOString()
-        };
-
-        users.push(newUser);
-        writeJSON(USERS_FILE, users);
+            telefono: telefono || ''
+        });
 
         const token = jwt.sign(
-            { id: newUser.id, username: newUser.username, role: newUser.role },
+            { id: newUser._id, username: newUser.username, role: newUser.role },
             JWT_SECRET,
             { expiresIn: '8h' }
         );
 
-        res.status(201).json({
-            token,
-            user: { id: newUser.id, username: newUser.username, role: newUser.role, nombre: newUser.nombre, email: newUser.email, telefono: newUser.telefono }
-        });
+        res.status(201).json({ token, user: newUser.toJSON() });
     } catch (err) {
         console.error('Error en registro:', err);
         res.status(500).json({ error: 'Error interno del servidor al registrar' });
@@ -394,42 +420,46 @@ app.post('/api/auth/register', (req, res) => {
 });
 
 // GET /api/auth/profile — get full profile for logged-in user
-app.get('/api/auth/profile', authMiddleware, (req, res) => {
-    const users = readJSON(USERS_FILE);
-    const user = users.find(u => u.id === req.user.id);
-    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
-    res.json({
-        id: user.id, username: user.username, role: user.role,
-        nombre: user.nombre || '', email: user.email || '', telefono: user.telefono || ''
-    });
+app.get('/api/auth/profile', authMiddleware, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
+        res.json(user.toJSON());
+    } catch (err) {
+        res.status(500).json({ error: 'Error de servidor' });
+    }
 });
+
 // ============================================
 //   USERS MANAGEMENT (admin)
 // ============================================
 
 // GET /api/users — admin gets all registered users
-app.get('/api/users', authMiddleware, (req, res) => {
+app.get('/api/users', authMiddleware, async (req, res) => {
     if (req.user.role !== 'admin') return res.status(403).json({ error: 'Solo administradores' });
-    const users = readJSON(USERS_FILE);
-    const safeUsers = users.map(u => ({
-        id: u.id, username: u.username, role: u.role,
-        nombre: u.nombre || '', email: u.email || '', telefono: u.telefono || '',
-        createdAt: u.createdAt || ''
-    }));
-    res.json(safeUsers);
+    try {
+        const users = await User.find().sort({ createdAt: -1 });
+        res.json(users.map(u => u.toJSON()));
+    } catch (err) {
+        res.status(500).json({ error: 'Error al obtener usuarios' });
+    }
 });
 
 // DELETE /api/users/:id — admin deletes a user
-app.delete('/api/users/:id', authMiddleware, (req, res) => {
+app.delete('/api/users/:id', authMiddleware, async (req, res) => {
     if (req.user.role !== 'admin') return res.status(403).json({ error: 'Solo administradores' });
     if (req.params.id === req.user.id) return res.status(400).json({ error: 'No puedes eliminarte a ti mismo' });
-    let users = readJSON(USERS_FILE);
-    const target = users.find(u => u.id === req.params.id);
-    if (!target) return res.status(404).json({ error: 'Usuario no encontrado' });
-    if (target.role === 'admin') return res.status(400).json({ error: 'No puedes eliminar a un administrador' });
-    users = users.filter(u => u.id !== req.params.id);
-    writeJSON(USERS_FILE, users);
-    res.json({ message: 'Usuario eliminado' });
+
+    try {
+        const target = await User.findById(req.params.id);
+        if (!target) return res.status(404).json({ error: 'Usuario no encontrado' });
+        if (target.role === 'admin') return res.status(400).json({ error: 'No puedes eliminar a un administrador' });
+
+        await User.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Usuario eliminado' });
+    } catch (err) {
+        res.status(500).json({ error: 'Error al eliminar usuario' });
+    }
 });
 
 // ============================================
@@ -457,72 +487,81 @@ function optionalAuth(req, res, next) {
 }
 
 // GET /api/requests — admin gets all requests
-app.get('/api/requests', authMiddleware, adminMiddleware, (req, res) => {
-    const requests = readJSON(REQUESTS_FILE);
-    requests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    res.json(requests);
+app.get('/api/requests', authMiddleware, adminMiddleware, async (req, res) => {
+    try {
+        const requests = await Request.find().sort({ createdAt: -1 });
+        res.json(requests.map(r => r.toJSON()));
+    } catch (err) {
+        res.status(500).json({ error: 'Error al obtener solicitudes' });
+    }
 });
 
 // GET /api/requests/mine — user gets their own requests
-app.get('/api/requests/mine', authMiddleware, (req, res) => {
-    const requests = readJSON(REQUESTS_FILE);
-    const mine = requests.filter(r => r.userId === req.user.id);
-    mine.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    res.json(mine);
+app.get('/api/requests/mine', authMiddleware, async (req, res) => {
+    try {
+        const mine = await Request.find({ userId: req.user.id }).sort({ createdAt: -1 });
+        res.json(mine.map(r => r.toJSON()));
+    } catch (err) {
+        res.status(500).json({ error: 'Error al obtener tus solicitudes' });
+    }
 });
 
 // POST /api/requests — any user (or guest) creates a request
-app.post('/api/requests', optionalAuth, (req, res) => {
+app.post('/api/requests', optionalAuth, async (req, res) => {
     const { nombre, email, telefono, asunto, mensaje } = req.body;
     if (!nombre || !email || !mensaje) {
         return res.status(400).json({ error: 'Nombre, email y mensaje son requeridos' });
     }
 
-    const requests = readJSON(REQUESTS_FILE);
-    const newReq = {
-        id: `req-${uuidv4().slice(0, 8)}`,
-        userId: req.user ? req.user.id : null,
-        username: req.user ? req.user.username : null,
-        nombre, email, telefono: telefono || '',
-        asunto: asunto || 'General',
-        mensaje,
-        status: 'pendiente',
-        adminNotes: '',
-        respondedVia: '',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-    };
-
-    requests.push(newReq);
-    writeJSON(REQUESTS_FILE, requests);
-    res.status(201).json(newReq);
+    try {
+        const newReq = await Request.create({
+            userId: req.user ? req.user.id : null,
+            username: req.user ? req.user.username : null,
+            nombre,
+            email,
+            telefono: telefono || '',
+            asunto: asunto || 'General',
+            mensaje,
+            status: 'pendiente',
+            adminNotes: '',
+            respondedVia: ''
+        });
+        res.status(201).json(newReq.toJSON());
+    } catch (err) {
+        console.error('Error creando solicitud:', err);
+        res.status(500).json({ error: 'Error al enviar solicitud' });
+    }
 });
 
 // PUT /api/requests/:id — admin updates status/notes
-app.put('/api/requests/:id', authMiddleware, adminMiddleware, (req, res) => {
-    const requests = readJSON(REQUESTS_FILE);
-    const index = requests.findIndex(r => r.id === req.params.id);
-    if (index === -1) return res.status(404).json({ error: 'Solicitud no encontrada' });
+app.put('/api/requests/:id', authMiddleware, adminMiddleware, async (req, res) => {
+    try {
+        const reqDoc = await Request.findById(req.params.id);
+        if (!reqDoc) return res.status(404).json({ error: 'Solicitud no encontrada' });
 
-    const { status, adminNotes, respondedVia } = req.body;
-    if (status) requests[index].status = status;
-    if (adminNotes !== undefined) requests[index].adminNotes = adminNotes;
-    if (respondedVia) requests[index].respondedVia = respondedVia;
-    requests[index].updatedAt = new Date().toISOString();
+        const { status, adminNotes, respondedVia } = req.body;
+        if (status) reqDoc.status = status;
+        if (adminNotes !== undefined) reqDoc.adminNotes = adminNotes;
+        if (respondedVia) reqDoc.respondedVia = respondedVia;
 
-    writeJSON(REQUESTS_FILE, requests);
-    res.json(requests[index]);
+        await reqDoc.save();
+        res.json(reqDoc.toJSON());
+    } catch (err) {
+        res.status(500).json({ error: 'Error al actualizar solicitud' });
+    }
 });
 
 // DELETE /api/requests/:id — admin deletes request
-app.delete('/api/requests/:id', authMiddleware, adminMiddleware, (req, res) => {
-    let requests = readJSON(REQUESTS_FILE);
-    if (!requests.find(r => r.id === req.params.id)) {
-        return res.status(404).json({ error: 'Solicitud no encontrada' });
+app.delete('/api/requests/:id', authMiddleware, adminMiddleware, async (req, res) => {
+    try {
+        const reqDoc = await Request.findById(req.params.id);
+        if (!reqDoc) return res.status(404).json({ error: 'Solicitud no encontrada' });
+
+        await Request.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Solicitud eliminada' });
+    } catch (err) {
+        res.status(500).json({ error: 'Error al eliminar solicitud' });
     }
-    requests = requests.filter(r => r.id !== req.params.id);
-    writeJSON(REQUESTS_FILE, requests);
-    res.json({ message: 'Solicitud eliminada' });
 });
 
 // ============================================
