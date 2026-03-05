@@ -31,15 +31,13 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ---------- MongoDB Connection ----------
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/koi', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
-    console.log('✅ Connected to MongoDB Atlas');
-    initAdmin();
-}).catch(err => {
-    console.error('❌ MongoDB Connection Error:', err.message);
-});
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/koi')
+    .then(() => {
+        console.log('✅ Connected to MongoDB Atlas');
+        initAdmin();
+    }).catch(err => {
+        console.error('❌ MongoDB Connection Error:', err.message);
+    });
 
 // ---------- Initialize admin user ----------
 async function initAdmin() {
