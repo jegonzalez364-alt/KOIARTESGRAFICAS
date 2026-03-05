@@ -94,12 +94,12 @@ function authMiddleware(req, res, next) {
 
 // POST /api/auth/login
 app.post('/api/auth/login', async (req, res) => {
-    const { username, password } = req.body;
-    if (!username || !password) {
-        return res.status(400).json({ error: 'Usuario y contraseña requeridos' });
-    }
-
     try {
+        const { username, password } = req.body;
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Usuario y contraseña requeridos' });
+        }
+
         const cleanUsername = username.trim();
         const user = await User.findOne({ username: cleanUsername });
         if (!user) {
