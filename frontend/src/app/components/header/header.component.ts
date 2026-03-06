@@ -13,7 +13,7 @@ import { ApiService, SearchResult } from '../../services/api.service';
     <header class="header" id="header" [class.scrolled]="isScrolled">
       <div class="container">
         <a routerLink="/" class="logo">
-          <img src="img/logoicon.png" alt="KOI Design" class="logo-img" />
+          <img src="img/logoicon.png" alt="KOI Design" class="logo-img" width="50" height="50" fetchpriority="high" />
         </a>
 
         <nav class="nav-links" [class.active]="mobileNavOpen">

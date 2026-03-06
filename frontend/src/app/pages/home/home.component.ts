@@ -39,7 +39,7 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
               <div *ngFor="let slide of gallery; let i = index"
                    class="gallery-slide" [class.active]="i === currentSlide">
                 <div class="comic-frame" *ngIf="slide.type === 'image'">
-                  <img [src]="api.getMediaUrl(slide.src)" [alt]="slide.alt" />
+                  <img [src]="api.getMediaUrl(slide.src)" [alt]="slide.alt" width="800" height="500" [attr.fetchpriority]="i === 0 ? 'high' : 'auto'" [attr.loading]="i === 0 ? 'eager' : 'lazy'" decoding="async" />
                 </div>
                 <div class="comic-frame" *ngIf="slide.type === 'video'">
                   <video #galleryVideo muted loop playsinline [src]="api.getMediaUrl(slide.src)"></video>
@@ -84,7 +84,7 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
 
         <div class="cards-section-wrapper">
           <div class="mascot mascot-left fade-in">
-            <img src="img/dragoasomadonaranja.png" alt="Mascota Dragón Naranja" loading="lazy" decoding="async" />
+            <img src="img/dragoasomadonaranja.png" alt="Mascota Dragón Naranja" width="150" height="200" loading="lazy" decoding="async" />
           </div>
           <div class="cards-grid">
             <div *ngFor="let card of cards; let i = index"
@@ -93,7 +93,7 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
                  (mousemove)="onCardMouseMove($event, i)"
                  (mouseleave)="onCardMouseLeave(i)">
               <div class="card-header">
-                <img *ngIf="card.image" [src]="api.getMediaUrl(card.image)" [alt]="card.title" loading="lazy" decoding="async" />
+                <img *ngIf="card.image" [src]="api.getMediaUrl(card.image)" [alt]="card.title" width="400" height="250" loading="lazy" decoding="async" />
                 <span *ngIf="card.isHalftone" class="halftone-title" [innerHTML]="card.halftoneTitle"></span>
                 <span *ngIf="card.tag" class="card-tag">{{card.tag}}</span>
                 <span class="card-number">{{card.number}}</span>
@@ -106,7 +106,7 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
             </div>
           </div>
           <div class="mascot mascot-right fade-in">
-            <img src="img/dragoasomadorojo.png" alt="Mascota Dragón Rojo" loading="lazy" decoding="async" />
+            <img src="img/dragoasomadorojo.png" alt="Mascota Dragón Rojo" width="150" height="200" loading="lazy" decoding="async" />
           </div>
         </div>
       </div>
@@ -139,7 +139,7 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
         <!-- Mascota + Frase -->
         <div class="mission-banner fade-in">
           <div class="mission-mascot">
-            <img src="img/drarojo.png" alt="Mascota KOI" />
+            <img src="img/drarojo.png" alt="Mascota KOI" width="100" height="150" loading="lazy" decoding="async" />
           </div>
           <div class="mission-text">
             <span class="action-word">¡BOOM!</span>
