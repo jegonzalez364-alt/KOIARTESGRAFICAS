@@ -7,9 +7,19 @@
   <meta name="description"
     content="KOI Design — Creatividad con corte láser. Cajas crispeteras, relojes de madera, cuadros MDF y más. Productos artesanales únicos." />
   <title>KOI Design | Creatividad con Corte Láser</title>
+
+  <!-- Preload Critical Assets -->
+  <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.cdnfonts.com/css/komika-axis" />
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
   <link rel="stylesheet" href="css/styles.css" />
   <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print"
+    onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  </noscript>
 </head>
 
 <body>
@@ -18,8 +28,7 @@
   <header class="header" id="header">
     <div class="container">
       <a href="#" class="logo">
-        <img src="img/logoicon.png" alt="KOI Design" class="logo-img" />
-
+        <img src="img/logoicon.png" alt="KOI Design" class="logo-img" width="50" height="50" fetchpriority="high" />
       </a>
 
       <nav class="nav-links" id="navLinks">
@@ -88,21 +97,24 @@
             <div class="gallery-slide active">
               <div class="comic-frame">
                 <img src="https://images.unsplash.com/photo-1611784728730-7a506e48ee2c?w=600&q=80"
-                  alt="Productos de corte láser en madera MDF" onerror="this.style.display='none'" />
+                  alt="Productos de corte láser en madera MDF" width="600" height="400" fetchpriority="high"
+                  onerror="this.style.display='none'" />
               </div>
             </div>
             <!-- Slide 2 — Imagen (agrega tu imagen aquí) -->
             <div class="gallery-slide">
               <div class="comic-frame">
                 <img src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600&q=80"
-                  alt="Cuadros personalizados en madera" onerror="this.style.display='none'" />
+                  alt="Cuadros personalizados en madera" width="600" height="400" loading="lazy"
+                  onerror="this.style.display='none'" />
               </div>
             </div>
             <!-- Slide 3 — Imagen (agrega tu imagen aquí) -->
             <div class="gallery-slide">
               <div class="comic-frame">
                 <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80"
-                  alt="Corte láser MDF personalizado" onerror="this.style.display='none'" />
+                  alt="Corte láser MDF personalizado" width="600" height="400" loading="lazy"
+                  onerror="this.style.display='none'" />
               </div>
             </div>
             <!-- Slide 4 — Video (agrega tu video aquí) -->
@@ -147,7 +159,7 @@
       <div class="cards-section-wrapper">
         <!-- Mascota izquierda -->
         <div class="mascot mascot-left fade-in">
-          <img src="img/dragoasomadonaranja.png" alt="Mascota Dragón Naranja" />
+          <img src="img/dragoasomadonaranja.png" alt="Mascota Dragón Naranja" width="150" height="200" loading="lazy" />
         </div>
 
         <div class="cards-grid">
@@ -155,7 +167,8 @@
           <div class="card fade-in" style="--card-index:0">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400&q=80"
-                alt="Mugs personalizados" onerror="this.style.background='#ddd'" />
+                alt="Mugs personalizados" width="400" height="250" loading="lazy"
+                onerror="this.style.background='#ddd'" />
               <span class="card-number">#01</span>
             </div>
             <div class="card-body">
@@ -169,7 +182,8 @@
           <div class="card fade-in" style="--card-index:1">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=400&q=80"
-                alt="Cuadros en madera personalizados" onerror="this.style.background='#ddd'" />
+                alt="Cuadros en madera personalizados" width="400" height="250" loading="lazy"
+                onerror="this.style.background='#ddd'" />
               <span class="card-tag">Bestseller</span>
               <span class="card-number">#02</span>
             </div>
@@ -184,7 +198,8 @@
           <div class="card fade-in" style="--card-index:2">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1508057198894-247b23fe5ade?w=400&q=80"
-                alt="Relojes creativos en madera" onerror="this.style.background='#ddd'" />
+                alt="Relojes creativos en madera" width="400" height="250" loading="lazy"
+                onerror="this.style.background='#ddd'" />
               <span class="card-number">#03</span>
             </div>
             <div class="card-body">
@@ -198,7 +213,7 @@
           <div class="card fade-in" style="--card-index:3">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1594620302200-9a762244a156?w=400&q=80" alt="Repisas de madera"
-                onerror="this.style.background='#ddd'" />
+                width="400" height="250" loading="lazy" onerror="this.style.background='#ddd'" />
               <span class="card-number">#04</span>
             </div>
             <div class="card-body">
@@ -212,7 +227,8 @@
           <div class="card fade-in" style="--card-index:4">
             <div class="card-header">
               <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&q=80"
-                alt="Corte láser MDF personalizado" onerror="this.style.background='#ddd'" />
+                alt="Corte láser MDF personalizado" width="400" height="250" loading="lazy"
+                onerror="this.style.background='#ddd'" />
               <span class="card-tag">Especial</span>
               <span class="card-number">#05</span>
             </div>
@@ -243,7 +259,7 @@
 
         <!-- Mascota derecha -->
         <div class="mascot mascot-right fade-in">
-          <img src="img/dragoasomadorojo.png" alt="Mascota Dragón Rojo" />
+          <img src="img/dragoasomadorojo.png" alt="Mascota Dragón Rojo" width="150" height="200" loading="lazy" />
         </div>
       </div>
     </div>
@@ -290,7 +306,7 @@
       <!-- Mascota + Frase motivacional -->
       <div class="mission-banner fade-in">
         <div class="mission-mascot">
-          <img src="img/drarojo.png" alt="Mascota KOI" />
+          <img src="img/drarojo.png" alt="Mascota KOI" width="100" height="150" loading="lazy" />
         </div>
         <div class="mission-text">
           <span class="action-word">¡BOOM!</span>
@@ -352,23 +368,26 @@
           <h2>Encuéntranos</h2>
         </div>
         <div class="contact-channels">
-          <a href="https://wa.me/573186909433" class="channel-card" target="_blank">
+          <a href="https://wa.me/573186909433" class="channel-card" target="_blank" rel="noopener noreferrer">
             <i class="fab fa-whatsapp"></i>
             <span>318 690 9433</span>
           </a>
-          <a href="https://facebook.com/KoiDesignsSoacha" class="channel-card" target="_blank">
+          <a href="https://facebook.com/KoiDesignsSoacha" class="channel-card" target="_blank"
+            rel="noopener noreferrer">
             <i class="fab fa-facebook-f"></i>
             <span>KoiDesignsSoacha</span>
           </a>
-          <a href="https://instagram.com/KoiDesignsSoacha" class="channel-card" target="_blank">
+          <a href="https://instagram.com/KoiDesignsSoacha" class="channel-card" target="_blank"
+            rel="noopener noreferrer">
             <i class="fab fa-instagram"></i>
             <span>@KoiDesignsSoacha</span>
           </a>
-          <a href="https://tiktok.com/@koiartesgraficas" class="channel-card" target="_blank">
+          <a href="https://tiktok.com/@koiartesgraficas" class="channel-card" target="_blank" rel="noopener noreferrer">
             <i class="fab fa-tiktok"></i>
             <span>@koiartesgraficas</span>
           </a>
-          <a href="https://wa.me/c/573186909433" class="channel-card channel-catalog" target="_blank">
+          <a href="https://wa.me/c/573186909433" class="channel-card channel-catalog" target="_blank"
+            rel="noopener noreferrer">
             <i class="fas fa-book-open"></i>
             <span>Ver Catálogo</span>
           </a>
@@ -403,7 +422,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer-logo">
-        <img src="img/logoicon.png" alt="KOI Design" class="footer-logo-img" />
+        <img src="img/logoicon.png" alt="KOI Design" class="footer-logo-img" width="40" height="40" loading="lazy" />
       </div>
       <p class="footer-text">© 2024 KOI Design. Todos los derechos reservados. Hecho con <span class="heart">💚</span> y
         Láseres.</p>
