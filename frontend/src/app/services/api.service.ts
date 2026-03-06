@@ -139,8 +139,12 @@ export class ApiService {
 
     // Helper: get full URL for uploaded files
     getMediaUrl(src: string): string {
+        if (!src) return '';
         if (src.startsWith('/uploads/')) {
             return isDevMode() ? `http://localhost:3000${src}` : src;
+        }
+        if (src.includes('res.cloudinary.com') && !src.includes('f_auto')) {
+            return src.replace('/upload/', '/upload/f_auto,q_auto/');
         }
         return src;
     }
