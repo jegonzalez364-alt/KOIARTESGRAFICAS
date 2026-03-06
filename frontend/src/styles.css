@@ -24,7 +24,7 @@
   --body-font: 'Komika Axis', 'Roboto', sans-serif;
   --neon-glow-magenta: 0 0 10px #E91E9E, 0 0 20px #E91E9E66;
   --neon-glow-cyan: 0 0 10px #00BFFF, 0 0 20px #00BFFF66;
-  --transition: all 0.3s ease;
+  --transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
 }
 
 /* ---------- Reset ---------- */
@@ -65,6 +65,7 @@ ul {
 
 img {
   max-width: 100%;
+  height: auto;
   display: block;
 }
 
