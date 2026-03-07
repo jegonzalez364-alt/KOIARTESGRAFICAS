@@ -46,7 +46,8 @@ import { ApiService, Card } from '../../../services/api.service';
           </div>
           <div class="form-group">
             <label>Imagen (subir archivo)</label>
-            <input type="file" (change)="onFileSelected($event)" accept="image/*" class="file-input" />
+            <input type="file" id="mainImageInput" (change)="onFileSelected($event)" accept="image/*" class="file-input-hidden" />
+            <label for="mainImageInput" class="comic-file-btn"><i class="fas fa-upload"></i> Seleccionar Archivo</label>
           </div>
           <div class="form-group">
             <label>O URL de imagen</label>
@@ -54,7 +55,8 @@ import { ApiService, Card } from '../../../services/api.service';
           </div>
           <div class="form-group gallery-upload-group">
             <label>Imágenes de Galería (Modal)</label>
-            <input type="file" (change)="onGalleryFilesSelected($event)" accept="image/*" multiple class="file-input" />
+            <input type="file" id="galleryImagesInput" (change)="onGalleryFilesSelected($event)" accept="image/*" multiple class="file-input-hidden" />
+            <label for="galleryImagesInput" class="comic-file-btn"><i class="fas fa-images"></i> Elegir Archivos</label>
             
             <div class="gallery-preview-container" *ngIf="keptGalleryImages.length > 0 || selectedGalleryFiles.length > 0">
               <div class="preview-item" *ngFor="let img of keptGalleryImages; let i = index">
@@ -148,7 +150,20 @@ import { ApiService, Card } from '../../../services/api.service';
     }
     .admin-form input:focus, .admin-form select:focus, .admin-form textarea:focus { border-color: #00BFFF; }
     .admin-form textarea { resize: vertical; }
-    .file-input { padding: 8px !important; }
+    .file-input-hidden { display: none; }
+    .comic-file-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; background: var(--yellow); color: var(--black);
+      font-family: var(--comic-font); font-size: 0.9rem; font-weight: 900;
+      letter-spacing: 1px; border: 3px solid var(--black);
+      border-radius: 5px; cursor: pointer;
+      box-shadow: 4px 4px 0 var(--black); transition: all 0.2s ease;
+      text-transform: uppercase;
+    }
+    .comic-file-btn:hover {
+      background: #fff; transform: translateY(-2px);
+      box-shadow: 5px 5px 0 var(--black);
+    }
     .form-actions { display: flex; gap: 10px; }
     .btn-cancel { background: transparent !important; border-color: #aaa !important; color: #aaa !important; }
     .admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }

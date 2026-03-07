@@ -224,6 +224,9 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
       <div class="card-modal-container" (click)="$event.stopPropagation()">
         <button class="card-modal-close" (click)="closeCardGallery()"><i class="fas fa-times"></i></button>
         
+        <img src="img/DragonTecnologico2.png" alt="Dragón Izquierdo" class="modal-dragon modal-dragon-left" />
+        <img src="img/DragonTecnologico.png" alt="Dragón Derecho" class="modal-dragon modal-dragon-right" />
+        
         <span class="comic-panel-counter" *ngIf="activeCardGallery.length > 1">
           {{currentCardGallerySlide + 1}} / {{activeCardGallery.length}}
         </span>
