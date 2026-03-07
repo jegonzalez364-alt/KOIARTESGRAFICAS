@@ -101,7 +101,8 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
               <div class="card-body">
                 <h3>{{card.title}}</h3>
                 <p>{{card.description}}</p>
-                <a [href]="card.btnLink" class="card-btn">{{card.btnText}}</a>
+                <a *ngIf="!card.galleryImages || card.galleryImages.length === 0" [href]="card.btnLink" class="card-btn">{{card.btnText}}</a>
+                <button *ngIf="card.galleryImages && card.galleryImages.length > 0" class="card-btn" (click)="openCardGallery(card)">{{card.btnText}}</button>
               </div>
             </div>
           </div>
@@ -214,6 +215,31 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
         </div>
       </div>
     </section>
+
+    <!-- ════════════ MODAL GALERÍA DE CARDS ════════════ -->
+    <div class="card-modal-overlay" *ngIf="isCardGalleryOpen" (click)="closeCardGallery()">
+      <div class="card-modal-container" (click)="$event.stopPropagation()">
+        <button class="card-modal-close" (click)="closeCardGallery()"><i class="fas fa-times"></i></button>
+        
+        <div class="card-modal-slider">
+          <img [src]="api.getMediaUrl(activeCardGallery[currentCardGallerySlide])" alt="Imagen de galería" />
+        </div>
+        
+        <button class="card-modal-arrow prev" *ngIf="activeCardGallery.length > 1" (click)="prevCardGallerySlide()">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="card-modal-arrow next" *ngIf="activeCardGallery.length > 1" (click)="nextCardGallerySlide()">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        
+        <div class="card-modal-dots" *ngIf="activeCardGallery.length > 1">
+          <span *ngFor="let img of activeCardGallery; let i = index" 
+                class="card-modal-dot" 
+                [class.active]="i === currentCardGallerySlide"
+                (click)="currentCardGallerySlide = i"></span>
+        </div>
+      </div>
+    </div>
   `
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -224,6 +250,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   autoPlayInterval: any;
   cardElements: HTMLElement[] = [];
   private observer: IntersectionObserver | null = null;
+
+  isCardGalleryOpen = false;
+  activeCardGallery: string[] = [];
+  currentCardGallerySlide = 0;
 
   constructor(public api: ApiService, private sanitizer: DomSanitizer) { }
 
@@ -236,6 +266,33 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.cards = data;
       setTimeout(() => this.setupFadeObserver(), 100);
     });
+  }
+
+  openCardGallery(card: Card) {
+    if (card.galleryImages && card.galleryImages.length > 0) {
+      this.activeCardGallery = card.galleryImages;
+      this.currentCardGallerySlide = 0;
+      this.isCardGalleryOpen = true;
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  closeCardGallery() {
+    this.isCardGalleryOpen = false;
+    this.activeCardGallery = [];
+    document.body.style.overflow = '';
+  }
+
+  prevCardGallerySlide() {
+    if (this.activeCardGallery.length > 0) {
+      this.currentCardGallerySlide = (this.currentCardGallerySlide - 1 + this.activeCardGallery.length) % this.activeCardGallery.length;
+    }
+  }
+
+  nextCardGallerySlide() {
+    if (this.activeCardGallery.length > 0) {
+      this.currentCardGallerySlide = (this.currentCardGallerySlide + 1) % this.activeCardGallery.length;
+    }
   }
 
   ngAfterViewInit() {

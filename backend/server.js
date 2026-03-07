@@ -258,15 +258,21 @@ app.get('/api/cards', async (req, res) => {
 });
 
 // POST /api/cards — add card (auth required)
-app.post('/api/cards', authMiddleware, upload.single('image'), async (req, res) => {
+app.post('/api/cards', authMiddleware, upload.fields([{ name: 'image', maxCount: 1 }, { name: 'galleryFiles', maxCount: 10 }]), async (req, res) => {
     try {
         const { title, description, btnText, btnLink, tag, imageSrc } = req.body;
         const count = await Card.countDocuments();
 
+        let galleryImages = [];
+        if (req.files && req.files['galleryFiles']) {
+            galleryImages = req.files['galleryFiles'].map(f => f.path);
+        }
+
         const newCard = await Card.create({
             title: title || 'Nueva Card',
             description: description || '',
-            image: req.file ? req.file.path : (imageSrc || ''), // req.file.path is Cloudinary URL
+            image: req.files && req.files['image'] ? req.files['image'][0].path : (imageSrc || ''),
+            galleryImages: galleryImages,
             btnText: btnText || 'Ver Más',
             btnLink: btnLink || '#',
             tag: tag || '',
@@ -282,27 +288,56 @@ app.post('/api/cards', authMiddleware, upload.single('image'), async (req, res) 
 
 
 // PUT /api/cards/:id — edit card (auth required)
-app.put('/api/cards/:id', authMiddleware, upload.single('image'), async (req, res) => {
+app.put('/api/cards/:id', authMiddleware, upload.fields([{ name: 'image', maxCount: 1 }, { name: 'galleryFiles', maxCount: 10 }]), async (req, res) => {
     try {
         const card = await Card.findById(req.params.id);
         if (!card) return res.status(404).json({ error: 'Card no encontrada' });
 
-        const { title, description, btnText, btnLink, tag } = req.body;
+        const { title, description, btnText, btnLink, tag, keptGalleryImages } = req.body;
         if (title) card.title = title;
-        if (description) card.description = description;
+        if (description !== undefined) card.description = description;
         if (btnText) card.btnText = btnText;
         if (btnLink) card.btnLink = btnLink;
         if (tag !== undefined) card.tag = tag;
 
-        if (req.file) {
-            // Remove old image from Cloudinary if it's there
+        // handle kept gallery images
+        let keptImagesArray = [];
+        if (keptGalleryImages) {
+            try {
+                keptImagesArray = JSON.parse(keptGalleryImages);
+            } catch (e) {
+                if (typeof keptGalleryImages === 'string') {
+                    keptImagesArray = [keptGalleryImages];
+                }
+            }
+        }
+
+        // Find which images were removed to delete them from Cloudinary
+        const currentGallery = card.galleryImages || [];
+        const removedImages = currentGallery.filter(img => !keptImagesArray.includes(img));
+        for (let imgUrl of removedImages) {
+            const publicIdMatch = imgUrl.match(/\/v\d+\/(.+?)\./);
+            if (publicIdMatch && publicIdMatch[1]) {
+                await cloudinary.uploader.destroy(publicIdMatch[1]).catch(() => { });
+            }
+        }
+
+        let newGalleryImages = [...keptImagesArray];
+        if (req.files && req.files['galleryFiles']) {
+            const uploadedUrls = req.files['galleryFiles'].map(f => f.path);
+            newGalleryImages = newGalleryImages.concat(uploadedUrls);
+        }
+        card.galleryImages = newGalleryImages;
+
+        if (req.files && req.files['image']) {
+            // Remove old main image from Cloudinary if it's there
             if (card.image) {
                 const publicIdMatch = card.image.match(/\/v\d+\/(.+?)\./);
                 if (publicIdMatch && publicIdMatch[1]) {
-                    await cloudinary.uploader.destroy(publicIdMatch[1]);
+                    await cloudinary.uploader.destroy(publicIdMatch[1]).catch(() => { });
                 }
             }
-            card.image = req.file.path; // Cloudinary URL
+            card.image = req.files['image'][0].path; // Cloudinary URL
         }
 
         await card.save();
@@ -322,7 +357,16 @@ app.delete('/api/cards/:id', authMiddleware, async (req, res) => {
         if (card.image) {
             const publicIdMatch = card.image.match(/\/v\d+\/(.+?)\./);
             if (publicIdMatch && publicIdMatch[1]) {
-                await cloudinary.uploader.destroy(publicIdMatch[1]);
+                await cloudinary.uploader.destroy(publicIdMatch[1]).catch(() => { });
+            }
+        }
+
+        if (card.galleryImages && card.galleryImages.length > 0) {
+            for (let imgUrl of card.galleryImages) {
+                const publicIdMatch = imgUrl.match(/\/v\d+\/(.+?)\./);
+                if (publicIdMatch && publicIdMatch[1]) {
+                    await cloudinary.uploader.destroy(publicIdMatch[1]).catch(() => { });
+                }
             }
         }
 

@@ -16,6 +16,7 @@ export interface Card {
     title: string;
     description: string;
     image: string;
+    galleryImages?: string[];
     btnText: string;
     btnLink: string;
     tag: string;

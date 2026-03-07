@@ -4,6 +4,7 @@ const cardSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, default: '' },
     image: { type: String, default: '' },
+    galleryImages: [{ type: String }],
     btnText: { type: String, default: 'Ver Más' },
     btnLink: { type: String, default: '#' },
     tag: { type: String, default: '' },

@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { ApiService, Card } from '../../../services/api.service';
 
 @Component({
-    selector: 'app-cards-manager',
-    standalone: true,
-    imports: [CommonModule, FormsModule],
-    template: `
+  selector: 'app-cards-manager',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  template: `
     <div class="admin-page">
       <div class="admin-page-header">
         <h1><i class="fas fa-th-large"></i> Gestor de Cards</h1>
@@ -51,6 +51,30 @@ import { ApiService, Card } from '../../../services/api.service';
           <div class="form-group">
             <label>O URL de imagen</label>
             <input type="text" [(ngModel)]="form.imageSrc" name="imageSrc" placeholder="https://..." />
+          </div>
+          <div class="form-group gallery-upload-group">
+            <label>Imágenes de Galería (Modal)</label>
+            <input type="file" (change)="onGalleryFilesSelected($event)" accept="image/*" multiple class="file-input" />
+            
+            <div class="gallery-preview-container" *ngIf="keptGalleryImages.length > 0 || selectedGalleryFiles.length > 0">
+              <div class="preview-item" *ngFor="let img of keptGalleryImages; let i = index">
+                <img [src]="api.getMediaUrl(img)" />
+                <button type="button" class="btn-remove" (click)="removeKeptGalleryImage(i)"><i class="fas fa-times"></i></button>
+                <div class="move-actions">
+                  <button type="button" (click)="moveKeptImage(i, -1)"><i class="fas fa-chevron-left"></i></button>
+                  <button type="button" (click)="moveKeptImage(i, 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+              </div>
+              
+              <div class="preview-item new-file" *ngFor="let file of selectedGalleryFiles; let i = index">
+                <div class="file-placeholder"><i class="fas fa-file-image"></i><br>Nuevo</div>
+                <button type="button" class="btn-remove" (click)="removeSelectedGalleryFile(i)"><i class="fas fa-times"></i></button>
+                <div class="move-actions">
+                  <button type="button" (click)="moveSelectedFile(i, -1)"><i class="fas fa-chevron-left"></i></button>
+                  <button type="button" (click)="moveSelectedFile(i, 1)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="form-actions">
             <button type="submit" class="btn-primary" [disabled]="saving">
@@ -96,7 +120,7 @@ import { ApiService, Card } from '../../../services/api.service';
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .admin-page { max-width: 900px; }
     .admin-page-header { margin-bottom: 30px; }
     .admin-page-header h1 { font-family: var(--comic-font); font-size: 1.8rem; color: #fff; letter-spacing: 2px; }
@@ -146,92 +170,152 @@ import { ApiService, Card } from '../../../services/api.service';
     .btn-delete:hover { background: #ff3333; transform: scale(1.1); }
     .empty-state { text-align: center; padding: 40px; color: #666; }
     .empty-state i { font-size: 3rem; margin-bottom: 10px; }
+    
+    .gallery-preview-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+    .preview-item { position: relative; width: 80px; height: 80px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); }
+    .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+    .file-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #aaa; font-size: 0.7rem; }
+    .btn-remove { position: absolute; top: 2px; right: 2px; background: rgba(255,0,0,0.8); color: white; border: none; width: 20px; height: 20px; border-radius: 50%; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .move-actions { position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: space-between; background: rgba(0,0,0,0.6); padding: 2px 5px; }
+    .move-actions button { background: none; border: none; color: white; cursor: pointer; font-size: 10px; }
+
     @media (max-width: 768px) { .admin-form .form-row { grid-template-columns: 1fr; } }
   `]
 })
 export class CardsManagerComponent implements OnInit {
-    cards: Card[] = [];
-    form = { title: '', description: '', btnText: 'Ver Más', btnLink: '#', tag: '', imageSrc: '' };
-    selectedFile: File | null = null;
-    editing = false;
-    editingId = '';
-    saving = false;
+  cards: Card[] = [];
+  form = { title: '', description: '', btnText: 'Ver Más', btnLink: '#', tag: '', imageSrc: '' };
+  selectedFile: File | null = null;
+  selectedGalleryFiles: File[] = [];
+  keptGalleryImages: string[] = [];
+  editing = false;
+  editingId = '';
+  saving = false;
 
-    constructor(public api: ApiService) { }
+  constructor(public api: ApiService) { }
 
-    ngOnInit() { this.loadCards(); }
+  ngOnInit() { this.loadCards(); }
 
-    loadCards() {
-        this.api.getCards().subscribe(data => this.cards = data);
+  loadCards() {
+    this.api.getCards().subscribe(data => this.cards = data);
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0] || null;
+  }
+
+  onGalleryFilesSelected(event: any) {
+    if (event.target.files) {
+      const files = Array.from(event.target.files) as File[];
+      this.selectedGalleryFiles.push(...files);
     }
+  }
 
-    onFileSelected(event: any) {
-        this.selectedFile = event.target.files[0] || null;
-    }
+  removeSelectedGalleryFile(index: number) {
+    this.selectedGalleryFiles.splice(index, 1);
+  }
 
-    addCard() {
-        this.saving = true;
-        const formData = new FormData();
-        formData.append('title', this.form.title);
-        formData.append('description', this.form.description);
-        formData.append('btnText', this.form.btnText);
-        formData.append('btnLink', this.form.btnLink);
-        formData.append('tag', this.form.tag);
-        if (this.selectedFile) {
-            formData.append('image', this.selectedFile);
-        } else {
-            formData.append('imageSrc', this.form.imageSrc);
-        }
-        this.api.addCard(formData).subscribe({
-            next: () => { this.loadCards(); this.resetForm(); this.saving = false; },
-            error: () => this.saving = false
-        });
-    }
+  removeKeptGalleryImage(index: number) {
+    this.keptGalleryImages.splice(index, 1);
+  }
 
-    editCard(card: Card) {
-        this.editing = true;
-        this.editingId = card.id;
-        this.form = {
-            title: card.title,
-            description: card.description,
-            btnText: card.btnText,
-            btnLink: card.btnLink,
-            tag: card.tag,
-            imageSrc: card.image
-        };
-    }
+  moveKeptImage(index: number, direction: number) {
+    if (index + direction < 0 || index + direction >= this.keptGalleryImages.length) return;
+    const temp = this.keptGalleryImages[index];
+    this.keptGalleryImages[index] = this.keptGalleryImages[index + direction];
+    this.keptGalleryImages[index + direction] = temp;
+  }
 
-    updateCard() {
-        this.saving = true;
-        const formData = new FormData();
-        formData.append('title', this.form.title);
-        formData.append('description', this.form.description);
-        formData.append('btnText', this.form.btnText);
-        formData.append('btnLink', this.form.btnLink);
-        formData.append('tag', this.form.tag);
-        if (this.selectedFile) {
-            formData.append('image', this.selectedFile);
-        }
-        this.api.updateCard(this.editingId, formData).subscribe({
-            next: () => { this.loadCards(); this.cancelEdit(); this.saving = false; },
-            error: () => this.saving = false
-        });
-    }
+  moveSelectedFile(index: number, direction: number) {
+    if (index + direction < 0 || index + direction >= this.selectedGalleryFiles.length) return;
+    const temp = this.selectedGalleryFiles[index];
+    this.selectedGalleryFiles[index] = this.selectedGalleryFiles[index + direction];
+    this.selectedGalleryFiles[index + direction] = temp;
+  }
 
-    deleteCard(id: string) {
-        if (confirm('¿Eliminar esta card?')) {
-            this.api.deleteCard(id).subscribe(() => this.loadCards());
-        }
+  addCard() {
+    this.saving = true;
+    const formData = new FormData();
+    formData.append('title', this.form.title);
+    formData.append('description', this.form.description);
+    formData.append('btnText', this.form.btnText);
+    formData.append('btnLink', this.form.btnLink);
+    formData.append('tag', this.form.tag);
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    } else {
+      formData.append('imageSrc', this.form.imageSrc);
     }
+    if (this.keptGalleryImages.length > 0) {
+      formData.append('keptGalleryImages', JSON.stringify(this.keptGalleryImages));
+    }
+    if (this.selectedGalleryFiles.length > 0) {
+      for (let i = 0; i < this.selectedGalleryFiles.length; i++) {
+        formData.append('galleryFiles', this.selectedGalleryFiles[i]);
+      }
+    }
+    this.api.addCard(formData).subscribe({
+      next: () => { this.loadCards(); this.resetForm(); this.saving = false; },
+      error: () => this.saving = false
+    });
+  }
 
-    cancelEdit() {
-        this.editing = false;
-        this.editingId = '';
-        this.resetForm();
-    }
+  editCard(card: Card) {
+    this.editing = true;
+    this.editingId = card.id;
+    this.form = {
+      title: card.title,
+      description: card.description,
+      btnText: card.btnText,
+      btnLink: card.btnLink,
+      tag: card.tag,
+      imageSrc: card.image
+    };
+    this.keptGalleryImages = card.galleryImages ? [...card.galleryImages] : [];
+    this.selectedGalleryFiles = [];
+  }
 
-    resetForm() {
-        this.form = { title: '', description: '', btnText: 'Ver Más', btnLink: '#', tag: '', imageSrc: '' };
-        this.selectedFile = null;
+  updateCard() {
+    this.saving = true;
+    const formData = new FormData();
+    formData.append('title', this.form.title);
+    formData.append('description', this.form.description);
+    formData.append('btnText', this.form.btnText);
+    formData.append('btnLink', this.form.btnLink);
+    formData.append('tag', this.form.tag);
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
     }
+    if (this.keptGalleryImages.length > 0) {
+      formData.append('keptGalleryImages', JSON.stringify(this.keptGalleryImages));
+    }
+    if (this.selectedGalleryFiles.length > 0) {
+      for (let i = 0; i < this.selectedGalleryFiles.length; i++) {
+        formData.append('galleryFiles', this.selectedGalleryFiles[i]);
+      }
+    }
+    this.api.updateCard(this.editingId, formData).subscribe({
+      next: () => { this.loadCards(); this.cancelEdit(); this.saving = false; },
+      error: () => this.saving = false
+    });
+  }
+
+  deleteCard(id: string) {
+    if (confirm('¿Eliminar esta card?')) {
+      this.api.deleteCard(id).subscribe(() => this.loadCards());
+    }
+  }
+
+  cancelEdit() {
+    this.editing = false;
+    this.editingId = '';
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.form = { title: '', description: '', btnText: 'Ver Más', btnLink: '#', tag: '', imageSrc: '' };
+    this.selectedFile = null;
+    this.selectedGalleryFiles = [];
+    this.keptGalleryImages = [];
+  }
 }
