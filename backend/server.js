@@ -257,8 +257,20 @@ app.get('/api/cards', async (req, res) => {
     }
 });
 
+// Safe wrapper for upload.fields — if no files are sent, multer-storage-cloudinary can error out
+const cardUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'galleryFiles', maxCount: 10 }]);
+function safeCardUpload(req, res, next) {
+    cardUpload(req, res, (err) => {
+        if (err) {
+            console.error('Multer upload error (non-fatal):', err.message);
+        }
+        // Always continue — req.files may be undefined if no files sent, that's fine
+        next();
+    });
+}
+
 // POST /api/cards — add card (auth required)
-app.post('/api/cards', authMiddleware, upload.fields([{ name: 'image', maxCount: 1 }, { name: 'galleryFiles', maxCount: 10 }]), async (req, res) => {
+app.post('/api/cards', authMiddleware, safeCardUpload, async (req, res) => {
     try {
         const { title, description, btnText, btnLink, tag, imageSrc } = req.body;
         const count = await Card.countDocuments();
@@ -288,7 +300,7 @@ app.post('/api/cards', authMiddleware, upload.fields([{ name: 'image', maxCount:
 
 
 // PUT /api/cards/:id — edit card (auth required)
-app.put('/api/cards/:id', authMiddleware, upload.fields([{ name: 'image', maxCount: 1 }, { name: 'galleryFiles', maxCount: 10 }]), async (req, res) => {
+app.put('/api/cards/:id', authMiddleware, safeCardUpload, async (req, res) => {
     try {
         const card = await Card.findById(req.params.id);
         if (!card) return res.status(404).json({ error: 'Card no encontrada' });
