@@ -298,6 +298,31 @@ app.post('/api/cards', authMiddleware, safeCardUpload, async (req, res) => {
     }
 });
 
+// PUT /api/cards/reorder — swap two cards' order (auth required)
+app.put('/api/cards/reorder', authMiddleware, async (req, res) => {
+    try {
+        const { cardId, direction } = req.body; // direction: -1 (up) or 1 (down)
+        const card = await Card.findById(cardId);
+        if (!card) return res.status(404).json({ error: 'Card no encontrada' });
+
+        const targetOrder = card.order + direction;
+        const swapCard = await Card.findOne({ order: targetOrder });
+
+        if (swapCard) {
+            swapCard.order = card.order;
+            card.order = targetOrder;
+            await swapCard.save();
+            await card.save();
+        }
+
+        const cards = await Card.find().sort({ order: 1 });
+        res.json(cards.map(c => c.toJSON()));
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al reordenar' });
+    }
+});
+
 
 // PUT /api/cards/:id — edit card (auth required)
 app.put('/api/cards/:id', authMiddleware, safeCardUpload, async (req, res) => {

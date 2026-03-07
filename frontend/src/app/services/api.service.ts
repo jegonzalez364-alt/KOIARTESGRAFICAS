@@ -87,6 +87,10 @@ export class ApiService {
         return this.http.delete(`${this.baseUrl}/cards/${id}`, { headers: this.getAuthHeaders() });
     }
 
+    reorderCards(cardId: string, direction: number): Observable<Card[]> {
+        return this.http.put<Card[]>(`${this.baseUrl}/cards/reorder`, { cardId, direction }, { headers: this.getAuthHeaders() });
+    }
+
     // Account settings
     updateCredentials(currentPassword: string, newUsername: string, newPassword: string): Observable<any> {
         return this.http.put(`${this.baseUrl}/auth/update`, { currentPassword, newUsername, newPassword }, { headers: this.getAuthHeaders() });

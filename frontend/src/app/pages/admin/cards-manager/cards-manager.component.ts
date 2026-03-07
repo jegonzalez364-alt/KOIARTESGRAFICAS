@@ -108,6 +108,12 @@ import { ApiService, Card } from '../../../services/api.service';
               <p class="item-desc">{{card.description}}</p>
             </div>
             <div class="item-actions">
+              <button class="btn-order" (click)="moveCard(card.id, -1)" title="Subir">
+                <i class="fas fa-arrow-up"></i>
+              </button>
+              <button class="btn-order" (click)="moveCard(card.id, 1)" title="Bajar">
+                <i class="fas fa-arrow-down"></i>
+              </button>
               <button class="btn-edit" (click)="editCard(card)" title="Editar">
                 <i class="fas fa-pen"></i>
               </button>
@@ -168,6 +174,8 @@ import { ApiService, Card } from '../../../services/api.service';
     .btn-edit:hover { background: #00BFFF; transform: scale(1.1); }
     .btn-delete { background: rgba(255,50,50,0.7); }
     .btn-delete:hover { background: #ff3333; transform: scale(1.1); }
+    .btn-order { background: rgba(255,255,255,0.15); }
+    .btn-order:hover { background: rgba(255,255,255,0.3); transform: scale(1.1); }
     .empty-state { text-align: center; padding: 40px; color: #666; }
     .empty-state i { font-size: 3rem; margin-bottom: 10px; }
     
@@ -317,5 +325,9 @@ export class CardsManagerComponent implements OnInit {
     this.selectedFile = null;
     this.selectedGalleryFiles = [];
     this.keptGalleryImages = [];
+  }
+
+  moveCard(cardId: string, direction: number) {
+    this.api.reorderCards(cardId, direction).subscribe(data => this.cards = data);
   }
 }
