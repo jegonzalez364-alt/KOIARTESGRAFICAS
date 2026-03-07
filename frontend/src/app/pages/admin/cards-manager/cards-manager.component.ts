@@ -46,8 +46,11 @@ import { ApiService, Card } from '../../../services/api.service';
           </div>
           <div class="form-group">
             <label>Imagen (subir archivo)</label>
-            <input type="file" id="mainImageInput" (change)="onFileSelected($event)" accept="image/*" class="file-input-hidden" />
-            <label for="mainImageInput" class="comic-file-btn"><i class="fas fa-upload"></i> Seleccionar Archivo</label>
+            <div class="file-row">
+              <input type="file" id="mainImageInput" (change)="onFileSelected($event)" accept="image/*" class="file-input-hidden" />
+              <label for="mainImageInput" class="comic-file-btn"><i class="fas fa-upload"></i> Seleccionar</label>
+              <span class="file-name-box" *ngIf="selectedFile"><i class="fas fa-file-image"></i> {{selectedFile.name}}</span>
+            </div>
           </div>
           <div class="form-group">
             <label>O URL de imagen</label>
@@ -165,6 +168,15 @@ import { ApiService, Card } from '../../../services/api.service';
       background: #fff; transform: translateY(-2px);
       box-shadow: 4px 4px 0 var(--black);
     }
+    .file-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .file-name-box {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 12px; background: rgba(0,191,255,0.1);
+      border: 1px solid rgba(0,191,255,0.3); border-radius: 4px;
+      color: #aae; font-size: 0.8rem; max-width: 250px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .file-name-box i { color: #00BFFF; }
     .form-actions { display: flex; gap: 10px; }
     .btn-cancel { background: transparent !important; border-color: #aaa !important; color: #aaa !important; }
     .admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
