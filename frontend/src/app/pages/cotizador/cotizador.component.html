@@ -1,0 +1,71 @@
+<section class="cotizador-section">
+    <div class="container">
+        <div class="cotizador-header text-center">
+            <h2 class="section-title text-center">Cotiza tu <span>Arte</span></h2>
+            <p class="section-subtitle">Descubre el valor de tu pieza ideal al instante. Ingresa las medidas y el tipo
+                de producto.</p>
+        </div>
+
+        <div *ngIf="loading" class="text-center" style="padding: 2rem; color: #fff;">
+            Cargando datos del cotizador...
+        </div>
+
+        <div *ngIf="!loading && settings" class="cotizador-card">
+            <div class="cotizador-form-container">
+
+                <div class="form-group row-inputs">
+                    <div class="input-half">
+                        <label for="anchoCm"><i class="fas fa-arrows-alt-h"></i> Ancho (cm)</label>
+                        <input type="number" id="anchoCm" [(ngModel)]="anchoCm" (ngModelChange)="calcular()"
+                            class="form-input" placeholder="Ej: 50">
+                    </div>
+                    <div class="input-half">
+                        <label for="altoCm"><i class="fas fa-arrows-alt-v"></i> Alto (cm)</label>
+                        <input type="number" id="altoCm" [(ngModel)]="altoCm" (ngModelChange)="calcular()"
+                            class="form-input" placeholder="Ej: 70">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipoProducto"><i class="fas fa-image"></i> Tipo de Producto</label>
+                    <select id="tipoProducto" [(ngModel)]="tipoProducto" (ngModelChange)="calcular()"
+                        class="form-select">
+                        <option value="">-- Selecciona --</option>
+                        <option value="3d">Cuadros 3D</option>
+                        <option value="normal">Cuadros Normales</option>
+                        <option value="fraccionado">Cuadros Fraccionados</option>
+                        <option value="pendon">Pendones</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="cotizador-preview-container">
+                <!-- Visor Dinámico de Proporción -->
+                <div class="preview-box">
+                    <div class="proporcion-frame" [ngStyle]="getProporcionMuestra()">
+                        <div class="frame-inner"></div>
+                        <span class="dim-w" *ngIf="anchoCm">{{anchoCm}} cm</span>
+                        <span class="dim-h" *ngIf="altoCm">{{altoCm}} cm</span>
+                    </div>
+                </div>
+
+                <!-- Resultado -->
+                <div class="resultado-box" *ngIf="precioCalculado !== null">
+                    <h3>Valor Estimado</h3>
+                    <div class="precio-destacado">${{ precioCalculado | number }}</div>
+                    <button class="btn starburst-btn btn-wa" (click)="enviarWhatsApp()">
+                        <div class="starburst-bg"></div>
+                        <span class="btn-text" style="color: #fff;"><i class="fab fa-whatsapp"></i> Solicitar por
+                            WhatsApp</span>
+                    </button>
+                </div>
+
+                <div class="help-text" *ngIf="precioCalculado === null">
+                    Ingresa las medidas y selecciona un producto para ver el valor.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

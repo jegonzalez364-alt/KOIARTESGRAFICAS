@@ -16,6 +16,7 @@ export const routes: Routes = [
             { path: 'cards', loadComponent: () => import('./pages/admin/cards-manager/cards-manager.component').then(m => m.CardsManagerComponent) },
             { path: 'solicitudes', loadComponent: () => import('./pages/admin/requests-manager/requests-manager.component').then(m => m.RequestsManagerComponent) },
             { path: 'usuarios', loadComponent: () => import('./pages/admin/users-manager/users-manager.component').then(m => m.UsersManagerComponent) },
+            { path: 'cotizador-settings', loadComponent: () => import('./pages/admin/cotizador-settings/cotizador-settings.component').then(m => m.CotizadorSettingsComponent) },
             { path: 'cuenta', loadComponent: () => import('./pages/admin/account-settings/account-settings.component').then(m => m.AccountSettingsComponent) },
         ]
     },

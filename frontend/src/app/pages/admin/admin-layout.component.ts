@@ -28,6 +28,9 @@ import { AuthService } from '../../services/auth.service';
           <a routerLink="/admin/usuarios" routerLinkActive="active">
             <i class="fas fa-users"></i> Usuarios
           </a>
+          <a routerLink="/admin/cotizador-settings" routerLinkActive="active">
+            <i class="fas fa-calculator"></i> Ajustes Cotizador
+          </a>
           <a routerLink="/admin/cuenta" routerLinkActive="active">
             <i class="fas fa-user-cog"></i> Cuenta
           </a>

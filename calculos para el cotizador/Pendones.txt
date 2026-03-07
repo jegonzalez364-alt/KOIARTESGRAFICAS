@@ -1,0 +1,21 @@
+function precioPendon(ancho_cm, alto_cm) {
+
+    const precio_m2 = 80000; // precio de venta acordado
+    const minimo = 40000;    // medio metro o menos
+
+    const area = (ancho_cm / 100) * (alto_cm / 100);
+
+    let precio;
+
+    // regla KOI: medio metro o menos cuesta igual
+    if (area <= 0.5) {
+        precio = minimo;
+    } else {
+        precio = area * precio_m2;
+    }
+
+    // redondeo hacia ARRIBA a 5.000
+    precio = Math.ceil(precio / 5000) * 5000;
+
+    return precio;
+}

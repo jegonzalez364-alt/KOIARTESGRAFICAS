@@ -19,6 +19,7 @@ import { ApiService, SearchResult } from '../../services/api.service';
         <nav class="nav-links" [class.active]="mobileNavOpen">
           <a (click)="scrollToSection('inicio')" class="nav-link" style="cursor:pointer">Inicio</a>
           <a (click)="scrollToSection('coleccion')" class="nav-link" style="cursor:pointer">Productos</a>
+          <a routerLink="/cotizador" routerLinkActive="active" class="nav-link highlight-link">Cotizador</a>
           <a (click)="scrollToSection('nosotros')" class="nav-link" style="cursor:pointer">Nosotros</a>
           <a routerLink="/contacto" routerLinkActive="active">Contacto</a>
         </nav>
@@ -81,6 +82,7 @@ import { ApiService, SearchResult } from '../../services/api.service';
       <button class="close-nav" (click)="mobileNavOpen = false">&times;</button>
       <a (click)="scrollToSection('inicio'); mobileNavOpen = false" style="cursor:pointer">Inicio</a>
       <a (click)="scrollToSection('coleccion'); mobileNavOpen = false" style="cursor:pointer">Productos</a>
+      <a routerLink="/cotizador" (click)="mobileNavOpen = false">Cotizador</a>
       <a (click)="scrollToSection('nosotros'); mobileNavOpen = false" style="cursor:pointer">Nosotros</a>
       <a routerLink="/contacto" (click)="mobileNavOpen = false">Contacto</a>
       <a *ngIf="!auth.isLoggedIn()" routerLink="/login" (click)="mobileNavOpen = false">Entrar</a>

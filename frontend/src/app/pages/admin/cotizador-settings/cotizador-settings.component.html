@@ -1,0 +1,91 @@
+<div class="admin-header">
+    <h2>Ajustes del Cotizador</h2>
+    <p>Modifica los valores base para el cálculo de los precios de los productos.</p>
+</div>
+
+<div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Cargando configuraciones...</p>
+</div>
+
+<div *ngIf="!loading" class="settings-container">
+
+    <div *ngIf="successMessage" class="alert alert-success">
+        {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+    </div>
+
+    <!-- settings list -->
+    <div class="settings-grid">
+
+        <!-- Cuadros 3D -->
+        <div class="setting-card">
+            <div class="setting-info">
+                <h3>Cuadros 3D</h3>
+                <p>Costo base por m²</p>
+            </div>
+            <div class="setting-input">
+                <span class="currency-prefix">$</span>
+                <input type="number" [(ngModel)]="settings.costo3D_m2" class="form-input">
+            </div>
+        </div>
+
+        <!-- Cuadros Normales -->
+        <div class="setting-card">
+            <div class="setting-info">
+                <h3>Cuadros Normales</h3>
+                <p>Costo base por m²</p>
+            </div>
+            <div class="setting-input">
+                <span class="currency-prefix">$</span>
+                <input type="number" [(ngModel)]="settings.costoNormal_m2" class="form-input">
+            </div>
+        </div>
+
+        <!-- Cuadros Fraccionados -->
+        <div class="setting-card">
+            <div class="setting-info">
+                <h3>Cuadros Fraccionados</h3>
+                <p>Costo base por m²</p>
+            </div>
+            <div class="setting-input">
+                <span class="currency-prefix">$</span>
+                <input type="number" [(ngModel)]="settings.costoFraccionado_m2" class="form-input">
+            </div>
+        </div>
+
+        <!-- Pendones Precio Base -->
+        <div class="setting-card">
+            <div class="setting-info">
+                <h3>Pendones (Valor m²)</h3>
+                <p>Precio de venta por m²</p>
+            </div>
+            <div class="setting-input">
+                <span class="currency-prefix">$</span>
+                <input type="number" [(ngModel)]="settings.precioPendon_m2" class="form-input">
+            </div>
+        </div>
+
+        <!-- Pendones Mínimo -->
+        <div class="setting-card">
+            <div class="setting-info">
+                <h3>Pendones (Cobro Mínimo)</h3>
+                <p>Valor por metro o inferior</p>
+            </div>
+            <div class="setting-input">
+                <span class="currency-prefix">$</span>
+                <input type="number" [(ngModel)]="settings.minimoPendon" class="form-input">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="actions-container">
+        <button class="btn btn-primary" (click)="saveSettings()" [disabled]="saving">
+            {{ saving ? 'Guardando...' : 'Guardar Cambios' }}
+        </button>
+    </div>
+
+</div>

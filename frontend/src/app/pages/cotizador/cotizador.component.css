@@ -1,0 +1,215 @@
+.cotizador-section {
+    padding: 100px 0;
+    min-height: 80vh;
+    background: linear-gradient(to bottom, #06101e 0%, #0a1a2f 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.cotizador-header {
+    margin-bottom: 3rem;
+}
+
+.section-subtitle {
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.cotizador-card {
+    background: rgba(13, 27, 42, 0.7);
+    border: 1px solid var(--color-border);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 191, 255, 0.05);
+}
+
+.cotizador-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.row-inputs {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.input-half {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group label i {
+    color: var(--color-neon-primary);
+    margin-right: 5px;
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1rem;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+.form-input:focus,
+.form-select:focus {
+    border-color: var(--color-neon-primary);
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+}
+
+.form-select option {
+    background: #0d1b2a;
+    color: white;
+}
+
+/* Esconder flechas de number */
+.form-input[type=number]::-webkit-inner-spin-button,
+.form-input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.form-input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Área de previsualización */
+.cotizador-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px dashed var(--color-border);
+}
+
+.preview-box {
+    width: 250px;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.proporcion-frame {
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background: linear-gradient(135deg, rgba(233, 30, 158, 0.2) 0%, rgba(0, 191, 255, 0.2) 100%);
+    border: 2px solid var(--color-neon-primary);
+    box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+    border-radius: 4px;
+}
+
+.frame-inner {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+.dim-w {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+}
+
+.dim-h {
+    position: absolute;
+    right: -45px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+}
+
+.resultado-box {
+    text-align: center;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.resultado-box h3 {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.precio-destacado {
+    font-family: var(--comic-font);
+    font-size: 2.5rem;
+    color: var(--color-neon-secondary);
+    text-shadow: 0 0 10px rgba(233, 30, 158, 0.4);
+    margin-bottom: 1.5rem;
+}
+
+.help-text {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    text-align: center;
+    font-style: italic;
+}
+
+.btn-wa {
+    background: transparent;
+    border: none;
+    position: relative;
+    width: 100%;
+}
+
+.btn-wa .starburst-bg {
+    background-color: #25D366;
+    /* WhatsApp color */
+}
+
+@media (max-width: 768px) {
+    .cotizador-card {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+    }
+}

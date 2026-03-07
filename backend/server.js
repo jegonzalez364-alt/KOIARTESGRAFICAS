@@ -19,6 +19,7 @@ const Card = require('./models/Card');
 const User = require('./models/User');
 const Gallery = require('./models/Gallery');
 const Request = require('./models/Request');
+const CotizadorSettings = require('./models/CotizadorSettings');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -561,6 +562,49 @@ app.delete('/api/requests/:id', authMiddleware, adminMiddleware, async (req, res
         res.json({ message: 'Solicitud eliminada' });
     } catch (err) {
         res.status(500).json({ error: 'Error al eliminar solicitud' });
+    }
+});
+
+// ============================================
+//   COTIZADOR SETTINGS ROUTES (GET public, PUT admin)
+// ============================================
+
+// GET /api/settings/cotizador
+app.get('/api/settings/cotizador', async (req, res) => {
+    try {
+        let settings = await CotizadorSettings.findOne();
+        if (!settings) {
+            // Create default settings if not exists
+            settings = await CotizadorSettings.create({});
+        }
+        res.json(settings.toJSON());
+    } catch (err) {
+        console.error('Error fetching cotizador settings:', err);
+        res.status(500).json({ error: 'Error al obtener configuracion del cotizador' });
+    }
+});
+
+// PUT /api/settings/cotizador (admin only)
+app.put('/api/settings/cotizador', authMiddleware, adminMiddleware, async (req, res) => {
+    try {
+        let settings = await CotizadorSettings.findOne();
+        if (!settings) {
+            settings = new CotizadorSettings({});
+        }
+
+        const { costo3D_m2, costoNormal_m2, costoFraccionado_m2, precioPendon_m2, minimoPendon } = req.body;
+
+        if (costo3D_m2 !== undefined) settings.costo3D_m2 = Number(costo3D_m2);
+        if (costoNormal_m2 !== undefined) settings.costoNormal_m2 = Number(costoNormal_m2);
+        if (costoFraccionado_m2 !== undefined) settings.costoFraccionado_m2 = Number(costoFraccionado_m2);
+        if (precioPendon_m2 !== undefined) settings.precioPendon_m2 = Number(precioPendon_m2);
+        if (minimoPendon !== undefined) settings.minimoPendon = Number(minimoPendon);
+
+        await settings.save();
+        res.json(settings.toJSON());
+    } catch (err) {
+        console.error('Error updating cotizador settings:', err);
+        res.status(500).json({ error: 'Error al actualizar configuracion del cotizador' });
     }
 });
 

@@ -137,6 +137,15 @@ export class ApiService {
         return this.http.get<SearchResult>(`${this.baseUrl}/search`, { params: { q: query } });
     }
 
+    // Cotizador Settings
+    getCotizadorSettings(): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/settings/cotizador`);
+    }
+
+    updateCotizadorSettings(data: any): Observable<any> {
+        return this.http.put<any>(`${this.baseUrl}/settings/cotizador`, data, { headers: this.getAuthHeaders() });
+    }
+
     // Helper: get full URL for uploaded files
     getMediaUrl(src: string): string {
         if (!src) return '';
