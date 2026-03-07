@@ -74,9 +74,12 @@ export class CotizadorComponent implements OnInit {
 
   private precioKoi3D(ancho_cm: number, alto_cm: number, costo3D_m2: number): number {
     const area = (ancho_cm / 100) * (alto_cm / 100);
-    let multiplicador = 12.2 - (area * 9.8);
-    if (multiplicador > 12.0) multiplicador = 12.0;
-    if (multiplicador < 2.4) multiplicador = 2.4;
+    let multiplicador = 2.45; // Default largest (e.g 100x100 -> 260k)
+
+    if (area <= 0.25) multiplicador = 4.15; // e.g 40x60 -> 110k
+    else if (area <= 0.48) multiplicador = 3.14; // e.g 60x80 -> 160k
+    else if (area <= 0.50) multiplicador = 3.39; // e.g 50x100 -> 180k
+
     let precio = area * costo3D_m2 * multiplicador;
     return Math.ceil(precio / 5000) * 5000;
   }
