@@ -152,17 +152,17 @@ import { ApiService, Card } from '../../../services/api.service';
     .admin-form textarea { resize: vertical; }
     .file-input-hidden { display: none; }
     .comic-file-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 20px; background: var(--yellow); color: var(--black);
-      font-family: var(--comic-font); font-size: 0.9rem; font-weight: 900;
-      letter-spacing: 1px; border: 3px solid var(--black);
-      border-radius: 5px; cursor: pointer;
-      box-shadow: 4px 4px 0 var(--black); transition: all 0.2s ease;
-      text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; background: var(--yellow); color: var(--black);
+      font-family: var(--comic-font); font-size: 0.75rem; font-weight: 900;
+      letter-spacing: 1px; border: 2px solid var(--black);
+      border-radius: 4px; cursor: pointer;
+      box-shadow: 3px 3px 0 var(--black); transition: all 0.2s ease;
+      text-transform: uppercase; margin-top: 6px;
     }
     .comic-file-btn:hover {
       background: #fff; transform: translateY(-2px);
-      box-shadow: 5px 5px 0 var(--black);
+      box-shadow: 4px 4px 0 var(--black);
     }
     .form-actions { display: flex; gap: 10px; }
     .btn-cancel { background: transparent !important; border-color: #aaa !important; color: #aaa !important; }
