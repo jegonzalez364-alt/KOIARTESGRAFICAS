@@ -153,6 +153,7 @@ import { ApiService, Card } from '../../../services/api.service';
     .file-input-hidden { display: none; }
     .comic-file-btn {
       display: inline-flex; align-items: center; gap: 6px;
+      width: fit-content;
       padding: 7px 14px; background: var(--yellow); color: var(--black);
       font-family: var(--comic-font); font-size: 0.75rem; font-weight: 900;
       letter-spacing: 1px; border: 2px solid var(--black);
