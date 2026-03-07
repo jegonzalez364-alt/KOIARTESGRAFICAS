@@ -1,5 +1,5 @@
 <section class="cotizador-section"
-    style="background-image: url('assets/img/Koi-Fondo.png'); background-size: cover; background-position: center;">
+    style="background-image: url('img/KoiFondo.png'); background-size: cover; background-position: center;">
     <div class="container">
         <div class="cotizador-header text-center">
             <h2 class="section-title text-center">Cotiza tu <span>Arte</span></h2>
@@ -46,7 +46,7 @@
                 <div class="preview-box">
                     <div class="proporcion-frame" [ngStyle]="getProporcionMuestra()">
                         <div class="frame-inner">
-                            <img src="assets/img/koicondragones.png" alt="Koi Logo" class="preview-logo">
+                            <img src="img/koicondragones.png" alt="Koi Logo" class="preview-logo">
                         </div>
                         <span class="dim-w" *ngIf="anchoCm">{{anchoCm}} cm</span>
                         <span class="dim-h" *ngIf="altoCm">{{altoCm}} cm</span>
@@ -57,10 +57,8 @@
                 <div class="resultado-box" *ngIf="precioCalculado !== null">
                     <h3>Valor Estimado</h3>
                     <div class="precio-destacado">${{ precioCalculado | number }}</div>
-                    <button class="btn starburst-btn btn-wa" (click)="enviarWhatsApp()">
-                        <div class="starburst-bg wa-bg"></div>
-                        <span class="btn-text" style="color: #fff;"><i class="fab fa-whatsapp"></i> Solicitar por
-                            WhatsApp</span>
+                    <button class="starburst-btn btn-wa-comic" (click)="enviarWhatsApp()">
+                        <i class="fab fa-whatsapp"></i> Solicitar por WhatsApp
                     </button>
                 </div>
 
