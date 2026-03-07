@@ -10,17 +10,17 @@ import { ApiService, SearchResult } from '../../services/api.service';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, FormsModule],
   template: `
-    <header class="header" id="header" [class.scrolled]="isScrolled">
+    <header class="header" id="header" [class.scrolled]="isScrolled" role="banner">
       <div class="container">
         <a routerLink="/" class="logo">
           <img src="img/logoicon.png" alt="KOI Design" class="logo-img" width="50" height="50" fetchpriority="high" />
         </a>
 
-        <nav class="nav-links" [class.active]="mobileNavOpen">
-          <a (click)="scrollToSection('inicio')" class="nav-link" style="cursor:pointer">Inicio</a>
-          <a (click)="scrollToSection('coleccion')" class="nav-link" style="cursor:pointer">Productos</a>
+        <nav class="nav-links" [class.active]="mobileNavOpen" role="navigation" aria-label="Navegación principal">
+          <a (click)="scrollToSection('inicio')" class="nav-link" style="cursor:pointer" role="link">Inicio</a>
+          <a (click)="scrollToSection('coleccion')" class="nav-link" style="cursor:pointer" role="link">Productos</a>
           <a routerLink="/cotizador" routerLinkActive="active" class="nav-link highlight-link">Cotizador</a>
-          <a (click)="scrollToSection('nosotros')" class="nav-link" style="cursor:pointer">Nosotros</a>
+          <a (click)="scrollToSection('nosotros')" class="nav-link" style="cursor:pointer" role="link">Nosotros</a>
           <a routerLink="/contacto" routerLinkActive="active">Contacto</a>
         </nav>
 
@@ -34,7 +34,7 @@ import { ApiService, SearchResult } from '../../services/api.service';
           <div class="search-results" *ngIf="searchResults && showResults">
             <div class="search-results-header">
               <span>Resultados de búsqueda</span>
-              <button (click)="closeSearch()" class="close-search">&times;</button>
+              <button (click)="closeSearch()" class="close-search" aria-label="Cerrar búsqueda">&times;</button>
             </div>
             <div *ngIf="searchResults.cards.length === 0 && searchResults.gallery.length === 0" class="no-results">
               No se encontraron resultados para "{{searchQuery}}"
@@ -67,7 +67,7 @@ import { ApiService, SearchResult } from '../../services/api.service';
           <div *ngIf="auth.isLoggedIn()" class="admin-menu">
             <span class="user-greeting"><i class="fas fa-user-circle"></i> {{auth.getUser()?.username}}</span>
             <a *ngIf="auth.getUser()?.role === 'admin'" routerLink="/admin" class="btn-entrar btn-admin"><i class="fas fa-cog"></i> Admin</a>
-            <button class="btn-entrar btn-logout" (click)="auth.logout()"><i class="fas fa-sign-out-alt"></i></button>
+            <button class="btn-entrar btn-logout" (click)="auth.logout()" aria-label="Cerrar sesión"><i class="fas fa-sign-out-alt"></i></button>
           </div>
 
           <button class="hamburger" (click)="mobileNavOpen = !mobileNavOpen" aria-label="Menú">

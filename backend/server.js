@@ -4,6 +4,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const compression = require('compression');
 const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcryptjs');
@@ -26,8 +27,18 @@ const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'koi-design-secret-key-2024';
 
 // ---------- Middleware ----------
+app.use(compression());
 app.use(cors());
 app.use(express.json());
+
+// Security & best-practice headers
+app.use((req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    next();
+});
+
 // Even though images are in Cloudinary, we keep /uploads for any legacy files during transition
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -706,8 +717,17 @@ if (fs.existsSync(FRONTEND_DIR)) {
 }
 console.log('----------------------------');
 
-// Serve static files from the Angular build
-app.use(express.static(FRONTEND_DIR));
+// Serve static files from the Angular build with caching
+app.use(express.static(FRONTEND_DIR, {
+    maxAge: '1y',
+    immutable: true,
+    setHeaders: (res, filePath) => {
+        // HTML files should not be cached aggressively
+        if (filePath.endsWith('.html')) {
+            res.setHeader('Cache-Control', 'no-cache');
+        }
+    }
+}));
 
 // Catch-all route to serve Angular's index.html for any non-API route
 app.get('*', (req, res) => {

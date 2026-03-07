@@ -2,8 +2,14 @@
    KOI DESIGN — Comic Book / Cyberpunk Styles
    ============================================ */
 
-/* ---------- Komika Axis Font (CDN) ---------- */
-@import url('https://fonts.cdnfonts.com/css/komika-axis');
+/* ---------- Komika Axis Font (non-blocking) ---------- */
+@font-face {
+  font-family: 'Komika Axis';
+  src: url('https://fonts.cdnfonts.com/s/14105/KOMIKAX_.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* ---------- CSS Custom Properties ---------- */
 :root {
