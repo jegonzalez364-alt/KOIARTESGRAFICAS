@@ -8,6 +8,23 @@
 
 .cotizador-header {
     margin-bottom: 3rem;
+    text-align: center;
+    width: 100%;
+}
+
+.cotizador-header .section-title {
+    font-family: var(--comic-font);
+    font-size: 3rem;
+    color: var(--white);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0 var(--black);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.cotizador-header .section-title span {
+    color: var(--yellow);
 }
 
 .section-subtitle {
@@ -226,9 +243,14 @@
     }
 }
 
-.label-icon {
-    height: 1.2rem;
-    vertical-align: text-bottom;
-    margin-right: 5px;
-    display: inline-block;
+.form-logo-center {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.logo-above-inputs {
+    width: 65px;
+    height: auto;
+    filter: drop-shadow(0 0 8px rgba(0, 191, 255, 0.4));
 }
