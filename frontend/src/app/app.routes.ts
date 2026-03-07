@@ -6,6 +6,7 @@ export const routes: Routes = [
     { path: 'contacto', loadComponent: () => import('./pages/contact/contact.component').then(m => m.ContactComponent) },
     { path: 'login', loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent) },
     { path: 'registro', loadComponent: () => import('./pages/register/register.component').then(m => m.RegisterComponent) },
+    { path: 'cotizador', loadComponent: () => import('./pages/cotizador/cotizador.component').then(m => m.CotizadorComponent) },
     {
         path: 'admin',
         canActivate: [authGuard],
