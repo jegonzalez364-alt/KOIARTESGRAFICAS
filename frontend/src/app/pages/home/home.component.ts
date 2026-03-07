@@ -140,7 +140,7 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
         <!-- Mascota + Frase -->
         <div class="mission-banner fade-in">
           <div class="mission-mascot">
-            <img src="img/drarojo.png" alt="Mascota KOI" width="100" height="150" loading="lazy" decoding="async" />
+            <img src="img/DragonRojoDiseñador.png" alt="Dragón Rojo Diseñador" width="130" height="auto" loading="lazy" decoding="async" style="transform: scale(1.2) translateY(-10px);" />
           </div>
           <div class="mission-text">
             <span class="action-word">¡BOOM!</span>
