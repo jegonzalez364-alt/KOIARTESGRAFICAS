@@ -1,7 +1,7 @@
 .cotizador-section {
     padding: 100px 0;
     min-height: 80vh;
-    background: linear-gradient(to bottom, #06101e 0%, #0a1a2f 100%);
+    /* Background image is set in HTML to use assets/img/Koi-Fondo.png */
     position: relative;
     overflow: hidden;
 }
@@ -133,6 +133,17 @@
     right: 5px;
     bottom: 5px;
     border: 1px dashed rgba(255, 255, 255, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.preview-logo {
+    max-width: 60%;
+    max-height: 60%;
+    opacity: 0.6;
+    object-fit: contain;
 }
 
 .dim-w {
@@ -202,9 +213,12 @@
     width: 100%;
 }
 
-.btn-wa .starburst-bg {
+.btn-wa .starburst-bg.wa-bg {
     background-color: #25D366;
-    /* WhatsApp color */
+}
+
+.btn-wa:hover .starburst-bg.wa-bg {
+    background-color: #1ebc5a;
 }
 
 @media (max-width: 768px) {
