@@ -2534,7 +2534,7 @@ img {
 }
 
 /* =========================================
-   MODAL GALERÍA CARDS
+   MODAL GALERÍA CARDS — COMIC DESIGN
    ========================================= */
 .card-modal-overlay {
   position: fixed;
@@ -2542,91 +2542,211 @@ img {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.9);
+  background:
+    radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.95) 100%),
+    rgba(10, 10, 30, 0.92);
   z-index: 10000;
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(6px);
   animation: fadeIn 0.3s ease forwards;
 }
 
 .card-modal-container {
   position: relative;
-  width: 90%;
-  max-width: 900px;
-  background: var(--dark-bg);
-  border: 3px solid var(--color-neon-primary);
-  box-shadow: 0 0 20px rgba(0, 191, 255, 0.5), inset 0 0 10px rgba(0, 191, 255, 0.2);
-  border-radius: 12px;
-  padding: 10px;
+  width: 92%;
+  max-width: 950px;
+  background: linear-gradient(145deg, #0a0a2e 0%, #111133 50%, #0a0a2e 100%);
+  border: 5px solid var(--yellow);
+  box-shadow:
+    0 0 0 3px var(--black),
+    0 0 30px rgba(255, 221, 51, 0.3),
+    8px 8px 0 var(--black);
+  border-radius: 5px;
+  padding: 15px;
 }
 
+/* Comic halftone corner overlay */
+.comic-halftone-corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+  background:
+    radial-gradient(circle, var(--yellow) 1.5px, transparent 1.5px);
+  background-size: 8px 8px;
+  opacity: 0.15;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: 5px 0 0 0;
+}
+
+/* Floating action words */
+.comic-action-float {
+  position: absolute;
+  font-family: var(--comic-font);
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--yellow);
+  text-shadow:
+    3px 3px 0 var(--black),
+    -1px -1px 0 var(--black),
+    1px -1px 0 var(--black),
+    -1px 1px 0 var(--black);
+  z-index: 10001;
+  animation: comicPop 0.5s ease-out forwards;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.comic-action-float.top-left {
+  top: 5%;
+  left: 3%;
+  transform: rotate(-15deg);
+}
+
+.comic-action-float.top-right {
+  top: 5%;
+  right: 3%;
+  transform: rotate(12deg);
+}
+
+.comic-action-float.bottom-left {
+  bottom: 5%;
+  left: 3%;
+  transform: rotate(10deg);
+}
+
+.comic-action-float.bottom-right {
+  bottom: 5%;
+  right: 3%;
+  transform: rotate(-8deg);
+}
+
+@keyframes comicPop {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.3) rotate(-5deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+}
+
+/* Panel counter badge */
+.comic-panel-counter {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  background: var(--yellow);
+  color: var(--black);
+  font-family: var(--comic-font);
+  font-size: 0.9rem;
+  font-weight: 900;
+  padding: 4px 14px;
+  border: 3px solid var(--black);
+  border-radius: 4px;
+  z-index: 10;
+  letter-spacing: 1px;
+  box-shadow: 3px 3px 0 var(--black);
+}
+
+/* Close button — comic X */
 .card-modal-close {
   position: absolute;
-  top: -15px;
-  right: -15px;
-  width: 40px;
-  height: 40px;
+  top: -18px;
+  right: -18px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  background: var(--color-neon-secondary);
+  background: #ff3333;
   color: var(--white);
-  font-size: 1.5rem;
-  border: 2px solid var(--white);
+  font-size: 1.4rem;
+  font-weight: 900;
+  border: 3px solid var(--black);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   z-index: 10;
-  transition: transform 0.2s;
+  box-shadow: 3px 3px 0 var(--black);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .card-modal-close:hover {
-  transform: scale(1.1);
+  transform: scale(1.15) rotate(10deg);
+  box-shadow: 4px 4px 0 var(--black);
 }
 
+/* Image slider frame */
 .card-modal-slider {
   width: 100%;
   height: 70vh;
-  max-height: 600px;
+  max-height: 620px;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
   position: relative;
-  background: #000;
-  border-radius: 8px;
+  background: #050510;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
 }
 
 .card-modal-slider img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  animation: fadeIn 0.4s ease;
+  animation: comicSlideIn 0.35s ease-out;
 }
 
+@keyframes comicSlideIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) rotate(-1deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Navigation arrows — comic style */
 .card-modal-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.6);
-  color: var(--color-neon-primary);
-  border: 1px solid var(--color-neon-primary);
-  width: 50px;
-  height: 50px;
+  background: var(--yellow);
+  color: var(--black);
+  border: 3px solid var(--black);
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   font-size: 1.5rem;
+  font-weight: 900;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s ease;
+  box-shadow: 4px 4px 0 var(--black);
+  transition: all 0.2s ease;
+  z-index: 5;
 }
 
 .card-modal-arrow:hover {
-  background: var(--color-neon-primary);
-  color: var(--black);
-  box-shadow: 0 0 15px var(--color-neon-primary);
+  background: var(--white);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 5px 5px 0 var(--black);
 }
 
 .card-modal-arrow.prev {
@@ -2637,6 +2757,7 @@ img {
   right: 15px;
 }
 
+/* Dots — comic style */
 .card-modal-dots {
   display: flex;
   justify-content: center;
@@ -2646,16 +2767,36 @@ img {
 }
 
 .card-modal-dot {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid var(--black);
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .card-modal-dot.active {
-  background: var(--color-neon-primary);
-  box-shadow: 0 0 8px var(--color-neon-primary);
-  transform: scale(1.2);
+  background: var(--yellow);
+  border-color: var(--black);
+  box-shadow: 0 0 8px var(--yellow), 2px 2px 0 var(--black);
+  transform: scale(1.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .comic-action-float {
+    font-size: 1.5rem;
+  }
+
+  .card-modal-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .card-modal-container {
+    width: 96%;
+    padding: 8px;
+  }
 }

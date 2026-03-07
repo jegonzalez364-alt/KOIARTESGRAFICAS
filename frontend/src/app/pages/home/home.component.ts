@@ -218,10 +218,18 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
 
     <!-- ════════════ MODAL GALERÍA DE CARDS ════════════ -->
     <div class="card-modal-overlay" *ngIf="isCardGalleryOpen" (click)="closeCardGallery()">
+      <span class="comic-action-float top-left">¡ZAP!</span>
+      <span class="comic-action-float top-right">¡POW!</span>
+
       <div class="card-modal-container" (click)="$event.stopPropagation()">
         <button class="card-modal-close" (click)="closeCardGallery()"><i class="fas fa-times"></i></button>
         
+        <span class="comic-panel-counter" *ngIf="activeCardGallery.length > 1">
+          {{currentCardGallerySlide + 1}} / {{activeCardGallery.length}}
+        </span>
+
         <div class="card-modal-slider">
+          <div class="comic-halftone-corner"></div>
           <img [src]="api.getMediaUrl(activeCardGallery[currentCardGallerySlide])" alt="Imagen de galería" />
         </div>
         
@@ -239,6 +247,9 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
                 (click)="currentCardGallerySlide = i"></span>
         </div>
       </div>
+
+      <span class="comic-action-float bottom-left">¡BOOM!</span>
+      <span class="comic-action-float bottom-right">¡WOW!</span>
     </div>
   `
 })
