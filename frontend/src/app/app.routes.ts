@@ -8,6 +8,11 @@ export const routes: Routes = [
     { path: 'registro', loadComponent: () => import('./pages/register/register.component').then(m => m.RegisterComponent) },
     { path: 'cotizador', loadComponent: () => import('./pages/cotizador/cotizador.component').then(m => m.CotizadorComponent) },
     {
+        path: 'admin/editor',
+        canActivate: [authGuard],
+        loadComponent: () => import('./pages/admin/visual-editor/visual-editor.component').then(m => m.VisualEditorComponent)
+    },
+    {
         path: 'admin',
         canActivate: [authGuard],
         loadComponent: () => import('./pages/admin/admin-layout.component').then(m => m.AdminLayoutComponent),

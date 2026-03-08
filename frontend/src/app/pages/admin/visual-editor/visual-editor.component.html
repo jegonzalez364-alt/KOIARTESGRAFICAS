@@ -1,0 +1,436 @@
+<div class="editor-layout">
+    <!-- ═══════ TOOLBAR ═══════ -->
+    <header class="editor-toolbar">
+        <div class="toolbar-brand">
+            <img src="img/logoicon.png" alt="KOI">
+            <span>KOI Editor Visual</span>
+        </div>
+
+        <div class="toolbar-group">
+            <button class="tb-btn tb-btn-ghost" (click)="goBack()">
+                <i class="fas fa-arrow-left"></i> Volver
+            </button>
+        </div>
+
+        <div class="toolbar-group">
+            <button class="tb-btn tb-btn-ghost" (click)="undo()" [disabled]="undoStack.length === 0"
+                title="Deshacer (Ctrl+Z)">
+                <i class="fas fa-undo"></i>
+            </button>
+            <button class="tb-btn tb-btn-ghost" (click)="redo()" [disabled]="redoStack.length === 0"
+                title="Rehacer (Ctrl+Y)">
+                <i class="fas fa-redo"></i>
+            </button>
+        </div>
+
+        <div class="toolbar-group">
+            <button class="tb-btn tb-btn-outline" (click)="openPreview()" title="Vista previa en pestaña nueva">
+                <i class="fas fa-external-link-alt"></i> Vista Previa
+            </button>
+            <button class="tb-btn tb-btn-primary" (click)="saveSettings()" [disabled]="saving">
+                <i class="fas" [class.fa-save]="!saving" [class.fa-spinner]="saving" [class.fa-spin]="saving"></i>
+                {{ saving ? 'Guardando...' : 'Guardar' }}
+            </button>
+            <span class="save-indicator" [class.unsaved]="hasChanges" [class.saved]="!hasChanges">
+                {{ hasChanges ? '● Sin guardar' : '✓ Guardado' }}
+            </span>
+        </div>
+    </header>
+
+    <!-- ═══════ BODY ═══════ -->
+    <div class="editor-body">
+        <!-- ── LEFT PANEL ── -->
+        <aside class="left-panel">
+            <div class="panel-tabs">
+                <button class="panel-tab" [class.active]="panelTab === 'sections'" (click)="panelTab = 'sections'">
+                    <i class="fas fa-layer-group"></i> Secciones
+                </button>
+                <button class="panel-tab" [class.active]="panelTab === 'colors'" (click)="panelTab = 'colors'">
+                    <i class="fas fa-palette"></i> Colores
+                </button>
+                <button class="panel-tab" [class.active]="panelTab === 'images'" (click)="panelTab = 'images'">
+                    <i class="fas fa-image"></i> Imágenes
+                </button>
+            </div>
+
+            <div class="panel-content">
+                <!-- ══ TAB: SECTIONS ══ -->
+                <div *ngIf="panelTab === 'sections'" class="section-list">
+
+                    <!-- HERO -->
+                    <div class="section-item" [class.active]="activeSection === 'hero'">
+                        <div class="section-item-header" (click)="toggleSection('hero')">
+                            <span class="section-icon">🏠</span>
+                            <span class="section-name">Inicio / Hero</span>
+                            <i class="fas fa-chevron-down section-expand-icon"></i>
+                        </div>
+                        <div class="section-fields" *ngIf="activeSection === 'hero'">
+                            <div class="field-group">
+                                <label>Título Principal <i class="fas fa-question-circle help-icon"
+                                        title="Ej: Transformamos tus Ideas en"></i></label>
+                                <input type="text" [(ngModel)]="settings.heroTitle" (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Palabra Destacada (Color Cian) <i class="fas fa-question-circle help-icon"
+                                        title="Aparece junto al título. Ej: Arte Láser"></i></label>
+                                <input type="text" [(ngModel)]="settings.heroHighlightItem1"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Subtítulo</label>
+                                <textarea [(ngModel)]="settings.heroSubtitle" rows="2"
+                                    (ngModelChange)="onFieldChange()"></textarea>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-group">
+                                    <label>Texto Botón</label>
+                                    <input type="text" [(ngModel)]="settings.heroBtnText"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Burbuja Cómic <i class="fas fa-question-circle help-icon"
+                                            title="Palabrita tipo cómic. Ej: ¡BAM!"></i></label>
+                                    <input type="text" [(ngModel)]="settings.heroActionWord"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SERVICES -->
+                    <div class="section-item" [class.active]="activeSection === 'services'">
+                        <div class="section-item-header" (click)="toggleSection('services')">
+                            <span class="section-icon">🎨</span>
+                            <span class="section-name">Servicios</span>
+                            <i class="fas fa-chevron-down section-expand-icon"></i>
+                        </div>
+                        <div class="section-fields" *ngIf="activeSection === 'services'">
+                            <div class="field-group">
+                                <label>Título de la Sección</label>
+                                <input type="text" [(ngModel)]="settings.servicesTitle"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Servicio 1 — Título</label>
+                                <input type="text" [(ngModel)]="settings.service1Title"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Servicio 1 — Descripción</label>
+                                <textarea [(ngModel)]="settings.service1Desc" rows="2"
+                                    (ngModelChange)="onFieldChange()"></textarea>
+                            </div>
+                            <div class="field-group">
+                                <label>Servicio 2 — Título</label>
+                                <input type="text" [(ngModel)]="settings.service2Title"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Servicio 2 — Descripción</label>
+                                <textarea [(ngModel)]="settings.service2Desc" rows="2"
+                                    (ngModelChange)="onFieldChange()"></textarea>
+                            </div>
+                            <div class="field-group">
+                                <label>Servicio 3 — Título</label>
+                                <input type="text" [(ngModel)]="settings.service3Title"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Servicio 3 — Descripción</label>
+                                <textarea [(ngModel)]="settings.service3Desc" rows="2"
+                                    (ngModelChange)="onFieldChange()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MISSION -->
+                    <div class="section-item" [class.active]="activeSection === 'mission'">
+                        <div class="section-item-header" (click)="toggleSection('mission')">
+                            <span class="section-icon">🐉</span>
+                            <span class="section-name">Nuestra Misión</span>
+                            <i class="fas fa-chevron-down section-expand-icon"></i>
+                        </div>
+                        <div class="section-fields" *ngIf="activeSection === 'mission'">
+                            <div class="field-group">
+                                <label>Título</label>
+                                <input type="text" [(ngModel)]="settings.missionTitle"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Subtítulo</label>
+                                <textarea [(ngModel)]="settings.missionSubtitle" rows="2"
+                                    (ngModelChange)="onFieldChange()"></textarea>
+                            </div>
+                            <div class="field-group">
+                                <label>Burbuja Cómic <i class="fas fa-question-circle help-icon"
+                                        title="Ej: ¡BOOM!"></i></label>
+                                <input type="text" [(ngModel)]="settings.missionActionWord"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAYMENTS -->
+                    <div class="section-item" [class.active]="activeSection === 'payments'">
+                        <div class="section-item-header" (click)="toggleSection('payments')">
+                            <span class="section-icon">💸</span>
+                            <span class="section-name">Pagos</span>
+                            <i class="fas fa-chevron-down section-expand-icon"></i>
+                        </div>
+                        <div class="section-fields" *ngIf="activeSection === 'payments'">
+                            <div class="field-group">
+                                <label>Título de Sección</label>
+                                <input type="text" [(ngModel)]="settings.paymentsTitle"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SHIPPING -->
+                    <div class="section-item" [class.active]="activeSection === 'shipping'">
+                        <div class="section-item-header" (click)="toggleSection('shipping')">
+                            <span class="section-icon">🛵</span>
+                            <span class="section-name">Envíos</span>
+                            <i class="fas fa-chevron-down section-expand-icon"></i>
+                        </div>
+                        <div class="section-fields" *ngIf="activeSection === 'shipping'">
+                            <div class="field-group">
+                                <label>Título de Sección</label>
+                                <input type="text" [(ngModel)]="settings.shippingTitle"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-row">
+                                <div class="field-group">
+                                    <label>Empresa 1</label>
+                                    <input type="text" [(ngModel)]="settings.shippingItem1Title"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Empresa 2</label>
+                                    <input type="text" [(ngModel)]="settings.shippingItem2Title"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                            </div>
+                            <div class="field-group">
+                                <label>Empresa 1 — Descripción</label>
+                                <input type="text" [(ngModel)]="settings.shippingItem1Desc"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Empresa 2 — Descripción</label>
+                                <input type="text" [(ngModel)]="settings.shippingItem2Desc"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SOCIAL -->
+                    <div class="section-item" [class.active]="activeSection === 'social'">
+                        <div class="section-item-header" (click)="toggleSection('social')">
+                            <span class="section-icon">📱</span>
+                            <span class="section-name">Redes Sociales</span>
+                            <i class="fas fa-chevron-down section-expand-icon"></i>
+                        </div>
+                        <div class="section-fields" *ngIf="activeSection === 'social'">
+                            <div class="field-group">
+                                <label>Título de Sección</label>
+                                <input type="text" [(ngModel)]="settings.socialTitle" (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp</label>
+                                <input type="text" [(ngModel)]="settings.socialWhatsapp"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label><i class="fab fa-facebook" style="color:#4267B2"></i> Facebook</label>
+                                <input type="text" [(ngModel)]="settings.socialFacebook"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label><i class="fab fa-instagram" style="color:#E1306C"></i> Instagram</label>
+                                <input type="text" [(ngModel)]="settings.socialInstagram"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label><i class="fab fa-tiktok"></i> TikTok</label>
+                                <input type="text" [(ngModel)]="settings.socialTiktok"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label><i class="fas fa-book-open" style="color:#FFD700"></i> Texto Catálogo</label>
+                                <input type="text" [(ngModel)]="settings.socialCatalogText"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA / CONTACTO -->
+                    <div class="section-item" [class.active]="activeSection === 'cta'">
+                        <div class="section-item-header" (click)="toggleSection('cta')">
+                            <span class="section-icon">📩</span>
+                            <span class="section-name">Contacto (CTA)</span>
+                            <i class="fas fa-chevron-down section-expand-icon"></i>
+                        </div>
+                        <div class="section-fields" *ngIf="activeSection === 'cta'">
+                            <div class="field-group">
+                                <label>Título</label>
+                                <input type="text" [(ngModel)]="settings.ctaTitle" (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Subtítulo</label>
+                                <textarea [(ngModel)]="settings.ctaSubtitle" rows="2"
+                                    (ngModelChange)="onFieldChange()"></textarea>
+                            </div>
+                            <div class="field-group">
+                                <label>Burbuja Cómic <i class="fas fa-question-circle help-icon"
+                                        title="Ej: ¡ZAP!"></i></label>
+                                <input type="text" [(ngModel)]="settings.contactActionWord"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-row">
+                                <div class="field-group">
+                                    <label>Botón 1</label>
+                                    <input type="text" [(ngModel)]="settings.ctaBtn1Text"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Botón 2</label>
+                                    <input type="text" [(ngModel)]="settings.ctaBtn2Text"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══ TAB: COLORS ══ -->
+                <div *ngIf="panelTab === 'colors'" class="section-list">
+                    <div class="field-group">
+                        <label>Color Principal (Magenta) <i class="fas fa-question-circle help-icon"
+                                title="Botones primarios, bordes y títulos"></i></label>
+                        <div class="color-row">
+                            <input type="color" [(ngModel)]="settings.primaryColor" (ngModelChange)="onFieldChange()">
+                            <input type="text" [(ngModel)]="settings.primaryColor" (ngModelChange)="onFieldChange()">
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label>Color Secundario (Cyan) <i class="fas fa-question-circle help-icon"
+                                title="Textos destacados y hovers"></i></label>
+                        <div class="color-row">
+                            <input type="color" [(ngModel)]="settings.secondaryColor" (ngModelChange)="onFieldChange()">
+                            <input type="text" [(ngModel)]="settings.secondaryColor" (ngModelChange)="onFieldChange()">
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label>Color Acento (Amarillo) <i class="fas fa-question-circle help-icon"
+                                title="Burbujas tipo cómic y elementos de acento"></i></label>
+                        <div class="color-row">
+                            <input type="color" [(ngModel)]="settings.accentColor" (ngModelChange)="onFieldChange()">
+                            <input type="text" [(ngModel)]="settings.accentColor" (ngModelChange)="onFieldChange()">
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label>Fondo del Sitio <i class="fas fa-question-circle help-icon"
+                                title="Color de fondo principal de toda la página"></i></label>
+                        <div class="color-row">
+                            <input type="color" [(ngModel)]="settings.bgColor" (ngModelChange)="onFieldChange()">
+                            <input type="text" [(ngModel)]="settings.bgColor" (ngModelChange)="onFieldChange()">
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <label>Fondo de Tarjetas <i class="fas fa-question-circle help-icon"
+                                title="Fondo de las tarjetas de productos y servicios"></i></label>
+                        <div class="color-row">
+                            <input type="color" [(ngModel)]="settings.cardBgColor" (ngModelChange)="onFieldChange()">
+                            <input type="text" [(ngModel)]="settings.cardBgColor" (ngModelChange)="onFieldChange()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══ TAB: IMAGES ══ -->
+                <div *ngIf="panelTab === 'images'" class="section-list">
+                    <div class="field-group">
+                        <label><i class="fas fa-image"></i> Logo del Sitio</label>
+                        <input type="file" id="edLogoInput" (change)="onFileSelected($event, 'logo')" accept="image/*"
+                            style="display:none">
+                        <label for="edLogoInput" class="file-upload-btn"><i class="fas fa-upload"></i> Cambiar
+                            Logo</label>
+                        <span class="file-name-tag" *ngIf="logoFile"><i class="fas fa-check"></i>
+                            {{logoFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.logoUrl)" class="file-preview"
+                            *ngIf="settings.logoUrl && !logoFile">
+                    </div>
+
+                    <div class="field-group">
+                        <label><i class="fas fa-mountain"></i> Fondo del Hero</label>
+                        <input type="file" id="edHeroBgInput" (change)="onFileSelected($event, 'heroBg')"
+                            accept="image/*" style="display:none">
+                        <label for="edHeroBgInput" class="file-upload-btn"><i class="fas fa-upload"></i> Cambiar
+                            Fondo</label>
+                        <span class="file-name-tag" *ngIf="heroBgFile"><i class="fas fa-check"></i>
+                            {{heroBgFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.heroBgUrl)" class="file-preview"
+                            *ngIf="settings.heroBgUrl && !heroBgFile">
+                    </div>
+
+                    <div class="field-group">
+                        <label><i class="fas fa-dragon"></i> Mascota del Hero</label>
+                        <input type="file" id="edHeroMascotInput" (change)="onFileSelected($event, 'heroMascot')"
+                            accept="image/*" style="display:none">
+                        <label for="edHeroMascotInput" class="file-upload-btn"><i class="fas fa-upload"></i> Cambiar
+                            Mascota</label>
+                        <span class="file-name-tag" *ngIf="heroMascotFile"><i class="fas fa-check"></i>
+                            {{heroMascotFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.heroMascotUrl)" class="file-preview"
+                            *ngIf="settings.heroMascotUrl && !heroMascotFile">
+                    </div>
+
+                    <div class="field-group">
+                        <label><i class="fas fa-dragon"></i> Mascota de Misión</label>
+                        <input type="file" id="edMissionMascotInput" (change)="onFileSelected($event, 'missionMascot')"
+                            accept="image/*" style="display:none">
+                        <label for="edMissionMascotInput" class="file-upload-btn"><i class="fas fa-upload"></i> Cambiar
+                            Mascota</label>
+                        <span class="file-name-tag" *ngIf="missionMascotFile"><i class="fas fa-check"></i>
+                            {{missionMascotFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.missionMascotUrl)" class="file-preview"
+                            *ngIf="settings.missionMascotUrl && !missionMascotFile">
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ── CANVAS ── -->
+        <main class="canvas-area">
+            <div class="canvas-wrapper">
+                <div class="canvas-browser-bar">
+                    <div class="browser-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="browser-url">koiartesgraficas.onrender.com</div>
+                </div>
+                <iframe #previewIframe class="canvas-iframe" [src]="previewUrl"
+                    sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+        </main>
+    </div>
+
+    <!-- ═══════ STATUS BAR ═══════ -->
+    <footer class="editor-status">
+        <div class="status-left">
+            <span>KOI Editor Visual</span>
+            <span *ngIf="activeSection">• Editando: {{ sectionLabels[activeSection] }}</span>
+        </div>
+        <div class="status-right">
+            <span>Deshacer: {{undoStack.length}} | Rehacer: {{redoStack.length}}</span>
+        </div>
+    </footer>
+</div>
+
+<!-- TOAST NOTIFICATIONS -->
+<div class="toast toast-success" *ngIf="toastMsg && toastType === 'success'">
+    <i class="fas fa-check-circle"></i> {{toastMsg}}
+</div>
+<div class="toast toast-error" *ngIf="toastMsg && toastType === 'error'">
+    <i class="fas fa-exclamation-triangle"></i> {{toastMsg}}
+</div>

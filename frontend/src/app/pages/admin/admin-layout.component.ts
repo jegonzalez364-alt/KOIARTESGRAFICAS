@@ -31,8 +31,8 @@ import { AuthService } from '../../services/auth.service';
           <a routerLink="/admin/cotizador-settings" routerLinkActive="active">
             <i class="fas fa-calculator"></i> Ajustes Cotizador
           </a>
-          <a routerLink="/admin/apariencia" routerLinkActive="active">
-            <i class="fas fa-paint-roller"></i> Editor Visual (CMS)
+          <a routerLink="/admin/editor">
+            <i class="fas fa-paint-roller"></i> Editor Visual ✨
           </a>
           <a routerLink="/admin/cuenta" routerLinkActive="active">
             <i class="fas fa-user-cog"></i> Cuenta
