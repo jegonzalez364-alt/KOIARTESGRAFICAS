@@ -749,7 +749,7 @@ app.put('/api/settings', authMiddleware, upload.fields([
         ];
 
         updatableFields.forEach(field => {
-            if (req.body[field] !== undefined && req.body[field] !== null && req.body[field] !== '') {
+            if (req.body[field] !== undefined && req.body[field] !== null) {
                 settings[field] = req.body[field];
             }
         });

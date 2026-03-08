@@ -46,7 +46,8 @@
                 <p class="tab-desc">Estos colores se aplicarán a botones, fondos, y bordes en todo el sitio.</p>
 
                 <div class="form-group color-group">
-                    <label>Color Principal (Magenta)</label>
+                    <label>Color Principal (Magenta) <i class="fas fa-question-circle text-muted"
+                            title="Usado en botones primarios, bordes fuertes y títulos"></i></label>
                     <div class="color-picker-wrap">
                         <input type="color" [(ngModel)]="settings.primaryColor">
                         <input type="text" [(ngModel)]="settings.primaryColor" class="color-code">
@@ -54,7 +55,8 @@
                 </div>
 
                 <div class="form-group color-group">
-                    <label>Color Secundario (Cyan)</label>
+                    <label>Color Secundario (Cyan) <i class="fas fa-question-circle text-muted"
+                            title="Usado en textos destacados arriba y hovers"></i></label>
                     <div class="color-picker-wrap">
                         <input type="color" [(ngModel)]="settings.secondaryColor">
                         <input type="text" [(ngModel)]="settings.secondaryColor" class="color-code">
@@ -62,7 +64,8 @@
                 </div>
 
                 <div class="form-group color-group">
-                    <label>Color Acento (Amarillo)</label>
+                    <label>Color Acento (Amarillo) <i class="fas fa-question-circle text-muted"
+                            title="Usado en las burbujas de texto tipo cómic (!BAM!)"></i></label>
                     <div class="color-picker-wrap">
                         <input type="color" [(ngModel)]="settings.accentColor">
                         <input type="text" [(ngModel)]="settings.accentColor" class="color-code">
@@ -70,7 +73,8 @@
                 </div>
 
                 <div class="form-group color-group">
-                    <label>Fondo de Sitio (Dark BG)</label>
+                    <label>Fondo de Sitio (Dark BG) <i class="fas fa-question-circle text-muted"
+                            title="Color de fondo global de toda la página web"></i></label>
                     <div class="color-picker-wrap">
                         <input type="color" [(ngModel)]="settings.bgColor">
                         <input type="text" [(ngModel)]="settings.bgColor" class="color-code">
@@ -78,7 +82,8 @@
                 </div>
 
                 <div class="form-group color-group">
-                    <label>Fondo de Tarjetas (Card BG)</label>
+                    <label>Fondo de Tarjetas (Card BG) <i class="fas fa-question-circle text-muted"
+                            title="Fondo para las tarjetas de servicios y productos"></i></label>
                     <div class="color-picker-wrap">
                         <input type="color" [(ngModel)]="settings.cardBgColor">
                         <input type="text" [(ngModel)]="settings.cardBgColor" class="color-code">
@@ -119,23 +124,15 @@
                 </div>
 
                 <div class="form-group mt-4">
-                    <label>Título Principal</label>
+                    <label>Título Principal <i class="fas fa-question-circle text-muted"
+                            title="Ejemplo: Transformamos tus Ideas en"></i></label>
                     <input type="text" [(ngModel)]="settings.heroTitle" class="form-control">
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Palabra Rotativa 1</label>
-                        <input type="text" [(ngModel)]="settings.heroHighlightItem1" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Palabra Rotativa 2</label>
-                        <input type="text" [(ngModel)]="settings.heroHighlightItem2" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Palabra Rotativa 3</label>
-                        <input type="text" [(ngModel)]="settings.heroHighlightItem3" class="form-control">
-                    </div>
+                <div class="form-group">
+                    <label>Palabra Destacada (Color Cian) <i class="fas fa-question-circle text-muted"
+                            title="Aparecerá junto al título en color secundario. Ej: Arte Láser"></i></label>
+                    <input type="text" [(ngModel)]="settings.heroHighlightItem1" class="form-control">
                 </div>
 
                 <div class="form-group">

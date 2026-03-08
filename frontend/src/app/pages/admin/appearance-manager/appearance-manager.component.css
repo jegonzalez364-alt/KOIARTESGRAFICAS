@@ -27,7 +27,7 @@
 
 .cms-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 380px 1fr;
     gap: 30px;
     background: var(--black);
     border-radius: 12px;

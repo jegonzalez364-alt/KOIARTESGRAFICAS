@@ -48,8 +48,6 @@ export interface SiteSettings {
     missionMascotUrl: string;
     heroTitle: string;
     heroHighlightItem1: string;
-    heroHighlightItem2: string;
-    heroHighlightItem3: string;
     heroSubtitle: string;
     heroBtnText: string;
     heroActionWord: string;

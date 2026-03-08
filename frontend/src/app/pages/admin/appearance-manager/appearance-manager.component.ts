@@ -19,7 +19,6 @@ export class AppearanceManagerComponent implements OnInit, DoCheck {
     logoUrl: 'img/logoicon.png', heroBgUrl: '/img/KoiFondo.png',
     heroMascotUrl: 'img/Koi-Icono.png', missionMascotUrl: 'img/DragonRojoDiseñador.png',
     heroTitle: 'Transformamos tus Ideas en', heroHighlightItem1: 'Arte Láser',
-    heroHighlightItem2: 'Regalos Únicos', heroHighlightItem3: 'Diseño Creativo',
     heroSubtitle: 'Personalizamos cada detalle para sorprender.',
     heroBtnText: 'Explorar Catálogo', heroActionWord: '¡BAM!',
     missionTitle: 'Tu idea, nuestra misión', missionSubtitle: 'Siempre encontramos la forma de hacerla posible. 🤯',
