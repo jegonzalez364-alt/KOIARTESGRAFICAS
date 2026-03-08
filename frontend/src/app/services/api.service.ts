@@ -1,6 +1,6 @@
 import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, map } from 'rxjs';
 
 export interface GallerySlide {
     id: string;
@@ -53,9 +53,38 @@ export interface SiteSettings {
     heroSubtitle: string;
     heroBtnText: string;
     heroActionWord: string;
+
+    servicesTitle: string;
+    service1Title: string;
+    service1Desc: string;
+    service2Title: string;
+    service2Desc: string;
+    service3Title: string;
+    service3Desc: string;
+
     missionTitle: string;
     missionSubtitle: string;
     missionActionWord: string;
+
+    paymentsTitle: string;
+    shippingTitle: string;
+    shippingItem1Title: string;
+    shippingItem1Desc: string;
+    shippingItem2Title: string;
+    shippingItem2Desc: string;
+
+    socialTitle: string;
+    socialWhatsapp: string;
+    socialFacebook: string;
+    socialInstagram: string;
+    socialTiktok: string;
+    socialCatalogText: string;
+
+    ctaTitle: string;
+    ctaSubtitle: string;
+    ctaBtn1Text: string;
+    ctaBtn2Text: string;
+
     contactTitle: string;
     contactSubtitle: string;
     contactActionWord: string;
@@ -63,24 +92,25 @@ export interface SiteSettings {
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-    // If in development mode (ng serve), point to localhost:3000
-    // If built for production (Render), use relative path to route to the same domain
     private baseUrl = isDevMode() ? 'http://localhost:3000/api' : '/api';
+
+    // Live preview state for the visual CMS
+    public previewSettings$ = new BehaviorSubject<SiteSettings | null>(null);
 
     constructor(private http: HttpClient) { }
 
     private getAuthHeaders(): HttpHeaders {
         const token = localStorage.getItem('koi_token');
-        return new HttpHeaders({ Authorization: `Bearer ${token}` });
+        return new HttpHeaders({ Authorization: `Bearer ${token} ` });
     }
 
     // Auth
     login(username: string, password: string): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`${this.baseUrl}/auth/login`, { username, password });
+        return this.http.post<LoginResponse>(`${this.baseUrl} /auth/login`, { username, password });
     }
 
     verifyToken(): Observable<any> {
-        return this.http.get(`${this.baseUrl}/auth/me`, { headers: this.getAuthHeaders() });
+        return this.http.get(`${this.baseUrl} /auth/me`, { headers: this.getAuthHeaders() });
     }
 
     // Gallery

@@ -143,6 +143,12 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
+
+    this.api.previewSettings$.subscribe(preview => {
+      if (preview && preview.logoUrl) {
+        this.logoUrl = this.api.getMediaUrl(preview.logoUrl);
+      }
+    });
   }
 
   @HostListener('window:scroll')

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, DoCheck } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, SiteSettings } from '../../../services/api.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-appearance-manager',
@@ -10,7 +11,8 @@ import { ApiService, SiteSettings } from '../../../services/api.service';
   templateUrl: './appearance-manager.component.html',
   styleUrls: ['./appearance-manager.component.css']
 })
-export class AppearanceManagerComponent implements OnInit {
+export class AppearanceManagerComponent implements OnInit, DoCheck {
+  @ViewChild('previewIframe') previewIframe!: ElementRef<HTMLIFrameElement>;
   settings: SiteSettings = {
     primaryColor: '#E91E9E', secondaryColor: '#00BFFF', accentColor: '#FFD700',
     bgColor: '#06101e', cardBgColor: '#f5f0e8',
@@ -23,8 +25,56 @@ export class AppearanceManagerComponent implements OnInit {
     missionTitle: 'Tu idea, nuestra misión', missionSubtitle: 'Siempre encontramos la forma de hacerla posible. 🤯',
     missionActionWord: '¡BOOM!', contactTitle: 'Contáctanos',
     contactSubtitle: '¿Tienes una idea? ¡Hagámosla realidad! Escríbenos y nuestro equipo te responderá más rápido que un rayo láser.',
-    contactActionWord: '¡ZAP!'
+    contactActionWord: '¡ZAP!',
+    servicesTitle: '¡Personalizamos tus mejores ideas!',
+    service1Title: 'Personalización Total',
+    service1Desc: 'Cualquier diseño que imagines, lo hacemos realidad...',
+    service2Title: 'Corte Láser de Precisión',
+    service2Desc: 'Trabajamos en madera, acrílico y más materiales...',
+    service3Title: 'Fechas Especiales',
+    service3Desc: 'Amor y Amistad, aniversarios, cumpleaños...',
+    paymentsTitle: 'Pagos Fáciles',
+    shippingTitle: 'Envíos Seguros y Rápidos',
+    shippingItem1Title: 'Servientrega',
+    shippingItem1Desc: 'Directo a tu puerta, a nivel nacional',
+    shippingItem2Title: 'Interrapidísimo',
+    shippingItem2Desc: 'Envíos rápidos y seguros a toda Colombia',
+    socialTitle: 'Encuéntranos',
+    socialWhatsapp: '318 690 9433',
+    socialFacebook: 'KoiDesignsSoacha',
+    socialInstagram: '@KoiDesignsSoacha',
+    socialTiktok: '@koiartesgraficas',
+    socialCatalogText: 'Ver Catálogo',
+    ctaTitle: 'Contáctanos',
+    ctaSubtitle: '¿Tienes una idea? ¡Hagámosla realidad!',
+    ctaBtn1Text: 'Contáctanos',
+    ctaBtn2Text: 'WhatsApp'
   };
+
+  activeTab = 'colores';
+  previewUrl: SafeResourceUrl;
+  private lastSettingsJson = '';
+
+  constructor(public api: ApiService, private sanitizer: DomSanitizer) {
+    this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl('/');
+  }
+
+  ngDoCheck() {
+    // Update local singleton
+    this.api.previewSettings$.next(this.settings);
+
+    // Post to iframe
+    if (this.previewIframe && this.previewIframe.nativeElement.contentWindow) {
+      const currentJson = JSON.stringify(this.settings);
+      if (currentJson !== this.lastSettingsJson) {
+        this.previewIframe.nativeElement.contentWindow.postMessage({
+          type: 'CMS_PREVIEW',
+          settings: this.settings
+        }, '*');
+        this.lastSettingsJson = currentJson;
+      }
+    }
+  }
 
   originalSettings: any = null;
   saving = false;
@@ -37,9 +87,6 @@ export class AppearanceManagerComponent implements OnInit {
   heroMascotFile: File | null = null;
   missionMascotFile: File | null = null;
 
-  activeTab = 'colores';
-
-  constructor(public api: ApiService) { }
 
   ngOnInit() {
     this.api.getSettings().subscribe({

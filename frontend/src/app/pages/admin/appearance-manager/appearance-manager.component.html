@@ -27,10 +27,16 @@
                     <i class="fas fa-home"></i> Inicio Hero
                 </button>
                 <button [class.active]="activeTab === 'nosotros'" (click)="activeTab = 'nosotros'">
-                    <i class="fas fa-handshake"></i> Nosotros
+                    <i class="fas fa-users"></i> Nosotros
+                </button>
+                <button [class.active]="activeTab === 'servicios'" (click)="activeTab = 'servicios'">
+                    <i class="fas fa-hand-sparkles"></i> Servicios
+                </button>
+                <button [class.active]="activeTab === 'pagos'" (click)="activeTab = 'pagos'">
+                    <i class="fas fa-shipping-fast"></i> Pagos/Envíos
                 </button>
                 <button [class.active]="activeTab === 'contacto'" (click)="activeTab = 'contacto'">
-                    <i class="fas fa-envelope"></i> Contacto / Header
+                    <i class="fas fa-envelope"></i> Redes & Header
                 </button>
             </div>
 
@@ -183,7 +189,83 @@
                 </div>
             </div>
 
-            <!-- Tab: Contacto / Header -->
+            <!-- Tab: Servicios -->
+            <div class="cms-panel" *ngIf="activeTab === 'servicios'">
+                <h3>Sección: Servicios</h3>
+
+                <div class="form-group mt-3">
+                    <label>Título de la Sección</label>
+                    <input type="text" [(ngModel)]="settings.servicesTitle" class="form-control">
+                </div>
+
+                <h4 class="mt-4">Servicio 1</h4>
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" [(ngModel)]="settings.service1Title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea [(ngModel)]="settings.service1Desc" class="form-control" rows="2"></textarea>
+                </div>
+
+                <h4 class="mt-4">Servicio 2</h4>
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" [(ngModel)]="settings.service2Title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea [(ngModel)]="settings.service2Desc" class="form-control" rows="2"></textarea>
+                </div>
+
+                <h4 class="mt-4">Servicio 3</h4>
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" [(ngModel)]="settings.service3Title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea [(ngModel)]="settings.service3Desc" class="form-control" rows="2"></textarea>
+                </div>
+            </div>
+
+            <!-- Tab: Pagos/Envíos -->
+            <div class="cms-panel" *ngIf="activeTab === 'pagos'">
+                <h3>Pagos y Envíos</h3>
+
+                <div class="form-group mt-3">
+                    <label>Título de Pagos</label>
+                    <input type="text" [(ngModel)]="settings.paymentsTitle" class="form-control">
+                </div>
+
+                <h4 class="mt-4">Sección Envíos</h4>
+                <div class="form-group mt-2">
+                    <label>Título Principal (Envíos)</label>
+                    <input type="text" [(ngModel)]="settings.shippingTitle" class="form-control">
+                </div>
+
+                <h5 class="mt-3">Opción de Envío 1</h5>
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" [(ngModel)]="settings.shippingItem1Title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <input type="text" [(ngModel)]="settings.shippingItem1Desc" class="form-control">
+                </div>
+
+                <h5 class="mt-3">Opción de Envío 2</h5>
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" [(ngModel)]="settings.shippingItem2Title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <input type="text" [(ngModel)]="settings.shippingItem2Desc" class="form-control">
+                </div>
+            </div>
+
+            <!-- Tab: Redes & Header -->
             <div class="cms-panel" *ngIf="activeTab === 'contacto'">
                 <h3>Header & Contacto Hero</h3>
 
@@ -200,21 +282,66 @@
                     </div>
                 </div>
 
-                <h3 class="mt-4">Página de Contacto (Cabecera)</h3>
+                <h3 class="mt-4">Redes Sociales (Encuéntranos)</h3>
 
                 <div class="form-group">
-                    <label>Título (Contáctanos)</label>
-                    <input type="text" [(ngModel)]="settings.contactTitle" class="form-control">
+                    <label>Título Principal</label>
+                    <input type="text" [(ngModel)]="settings.socialTitle" class="form-control">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Texto WhatsApp</label>
+                        <input type="text" [(ngModel)]="settings.socialWhatsapp" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Texto Facebook</label>
+                        <input type="text" [(ngModel)]="settings.socialFacebook" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Texto Instagram</label>
+                        <input type="text" [(ngModel)]="settings.socialInstagram" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Texto TikTok</label>
+                        <input type="text" [(ngModel)]="settings.socialTiktok" class="form-control">
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Subtítulo</label>
-                    <textarea [(ngModel)]="settings.contactSubtitle" class="form-control" rows="3"></textarea>
+                    <label>Texto Catálogo</label>
+                    <input type="text" [(ngModel)]="settings.socialCatalogText" class="form-control">
                 </div>
 
+                <h3 class="mt-4">Llamado a la Acción (Final de página)</h3>
+
                 <div class="form-group">
-                    <label>Palabra de Acción (Burbuja)</label>
+                    <label>Palabra de Acción (Burbuja CTA)</label>
                     <input type="text" [(ngModel)]="settings.contactActionWord" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Título (Ej. Contáctanos)</label>
+                    <input type="text" [(ngModel)]="settings.ctaTitle" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Subtítulo CTA</label>
+                    <textarea [(ngModel)]="settings.ctaSubtitle" class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Texto Botón 1 (Correo)</label>
+                        <input type="text" [(ngModel)]="settings.ctaBtn1Text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Texto Botón 2 (WhatsApp CTA)</label>
+                        <input type="text" [(ngModel)]="settings.ctaBtn2Text" class="form-control">
+                    </div>
                 </div>
             </div>
 
@@ -227,43 +354,10 @@
             [style.--yellow]="settings.accentColor" [style.--dark-bg]="settings.bgColor"
             [style.--card-bg]="settings.cardBgColor">
             <div class="preview-header">
-                <i class="fas fa-eye"></i> Vista Previa en Vivo (Miniatura)
+                <i class="fas fa-eye"></i> Vista Previa en Vivo (Real)
             </div>
 
-            <div class="preview-website" [style.background-color]="settings.bgColor">
-                <!-- Mock Header -->
-                <div class="mock-header">
-                    <img [src]="logoFile ? 'img/placeholder.png' : api.getMediaUrl(settings.logoUrl)" alt="Logo"
-                        class="mock-logo">
-                    <div class="mock-nav">
-                        <span style="color:var(--magenta)">Inicio</span><span>Productos</span><span>Cotizador</span>
-                    </div>
-                </div>
-
-                <!-- Mock Hero -->
-                <div class="mock-hero"
-                    [style.background-image]="'url(' + (heroBgFile ? '' : api.getMediaUrl(settings.heroBgUrl)) + ')'">
-                    <div class="mock-hero-content">
-                        <div class="mock-burbuja" style="border-color:var(--magenta); color:var(--magenta)">
-                            {{settings.heroActionWord}}</div>
-                        <h1 style="color:var(--white); text-shadow: 2px 2px 0 var(--magenta)">
-                            {{settings.heroTitle}}<br><span
-                                style="color:var(--cyan)">{{settings.heroHighlightItem1}}</span></h1>
-                        <p style="color:rgba(255,255,255,0.8)">{{settings.heroSubtitle}}</p>
-                        <button class="mock-btn"
-                            style="background:var(--magenta); border-color:var(--cyan); color:white">{{settings.heroBtnText}}</button>
-                    </div>
-                </div>
-
-                <!-- Mock Mission -->
-                <div class="mock-mission" style="background-color: var(--black); border: 2px solid var(--magenta)">
-                    <div class="mock-burbuja" style="right:10px; border-color:var(--yellow); color:var(--yellow)">
-                        {{settings.missionActionWord}}</div>
-                    <h2 style="color:var(--cyan)">{{settings.missionTitle}}</h2>
-                    <p style="color:#aaa">{{settings.missionSubtitle}}</p>
-                </div>
-
-            </div>
+            <iframe #previewIframe [src]="previewUrl" class="real-preview-iframe" title="Vista Previa"></iframe>
         </div>
     </div>
 </div>

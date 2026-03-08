@@ -117,23 +117,23 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
     <section class="about-section" id="nosotros">
       <div class="container">
         <div class="section-title-box fade-in">
-          <h2>¡Personalizamos tus mejores ideas!</h2>
+          <h2>{{settings.servicesTitle}}</h2>
         </div>
         <div class="services-grid">
           <div class="service-card fade-in">
             <div class="service-icon"><i class="fas fa-palette"></i></div>
-            <h3>Personalización Total</h3>
-            <p>Cualquier diseño que imagines, lo hacemos realidad. Fotos, geek, anime, series, música, decoración ¡y mucho más! Ideal para sorprender a esa persona especial.</p>
+            <h3>{{settings.service1Title}}</h3>
+            <p>{{settings.service1Desc}}</p>
           </div>
           <div class="service-card fade-in">
             <div class="service-icon"><i class="fas fa-crosshairs"></i></div>
-            <h3>Corte Láser de Precisión</h3>
-            <p>Trabajamos en madera, acrílico y más materiales con acabados limpios, exactos y de alta calidad.</p>
+            <h3>{{settings.service2Title}}</h3>
+            <p>{{settings.service2Desc}}</p>
           </div>
           <div class="service-card fade-in">
             <div class="service-icon"><i class="fas fa-gift"></i></div>
-            <h3>Fechas Especiales</h3>
-            <p>Amor y Amistad, aniversarios, cumpleaños o cualquier ocasión que merezca un detalle único.</p>
+            <h3>{{settings.service3Title}}</h3>
+            <p>{{settings.service3Desc}}</p>
           </div>
         </div>
 
@@ -153,7 +153,7 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
         <div class="info-block fade-in">
           <div class="comic-panel-header">
             <span class="panel-number">💸</span>
-            <h2>Pagos Fáciles</h2>
+            <h2>{{settings.paymentsTitle}}</h2>
           </div>
           <div class="payment-grid">
             <div class="payment-item"><i class="fas fa-mobile-alt"></i><span>Nequi</span></div>
@@ -175,11 +175,11 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
         <div class="info-block fade-in">
           <div class="comic-panel-header">
             <span class="panel-number">🛵</span>
-            <h2>Envíos Seguros y Rápidos</h2>
+            <h2>{{settings.shippingTitle}}</h2>
           </div>
           <div class="shipping-info">
-            <div class="shipping-item"><i class="fas fa-truck"></i><div><h4>Servientrega</h4><p>Directo a tu puerta, a nivel nacional</p></div></div>
-            <div class="shipping-item"><i class="fas fa-shipping-fast"></i><div><h4>Interrapidísimo</h4><p>Envíos rápidos y seguros a toda Colombia</p></div></div>
+            <div class="shipping-item"><i class="fas fa-truck"></i><div><h4>{{settings.shippingItem1Title}}</h4><p>{{settings.shippingItem1Desc}}</p></div></div>
+            <div class="shipping-item"><i class="fas fa-shipping-fast"></i><div><h4>{{settings.shippingItem2Title}}</h4><p>{{settings.shippingItem2Desc}}</p></div></div>
           </div>
         </div>
 
@@ -187,14 +187,14 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
         <div class="info-block fade-in">
           <div class="comic-panel-header">
             <span class="panel-number">📱</span>
-            <h2>Encuéntranos</h2>
+            <h2>{{settings.socialTitle}}</h2>
           </div>
           <div class="contact-channels">
-            <a href="https://wa.me/573186909433" class="channel-card" target="_blank"><i class="fab fa-whatsapp"></i><span>318 690 9433</span></a>
-            <a href="https://facebook.com/KoiDesignsSoacha" class="channel-card" target="_blank"><i class="fab fa-facebook-f"></i><span>KoiDesignsSoacha</span></a>
-            <a href="https://instagram.com/KoiDesignsSoacha" class="channel-card" target="_blank"><i class="fab fa-instagram"></i><span>&#64;KoiDesignsSoacha</span></a>
-            <a href="https://tiktok.com/&#64;koiartesgraficas" class="channel-card" target="_blank"><i class="fab fa-tiktok"></i><span>&#64;koiartesgraficas</span></a>
-            <a href="https://wa.me/c/573186909433" class="channel-card channel-catalog" target="_blank"><i class="fas fa-book-open"></i><span>Ver Catálogo</span></a>
+            <a href="https://wa.me/573186909433" class="channel-card" target="_blank"><i class="fab fa-whatsapp"></i><span>{{settings.socialWhatsapp}}</span></a>
+            <a href="https://facebook.com/KoiDesignsSoacha" class="channel-card" target="_blank"><i class="fab fa-facebook-f"></i><span>{{settings.socialFacebook}}</span></a>
+            <a href="https://instagram.com/KoiDesignsSoacha" class="channel-card" target="_blank"><i class="fab fa-instagram"></i><span>{{settings.socialInstagram}}</span></a>
+            <a href="https://tiktok.com/&#64;koiartesgraficas" class="channel-card" target="_blank"><i class="fab fa-tiktok"></i><span>{{settings.socialTiktok}}</span></a>
+            <a href="https://wa.me/c/573186909433" class="channel-card channel-catalog" target="_blank"><i class="fas fa-book-open"></i><span>{{settings.socialCatalogText}}</span></a>
           </div>
         </div>
       </div>
@@ -205,12 +205,12 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
       <div class="container">
         <div class="cta-inner fade-in">
           <span class="action-word cta-pow">{{settings.contactActionWord}}</span>
-          <h2>{{settings.contactTitle}}</h2>
-          <p>{{settings.contactSubtitle}}</p>
+          <h2>{{settings.ctaTitle}}</h2>
+          <p>{{settings.ctaSubtitle}}</p>
           <div class="cta-buttons-wrapper">
             <span class="star-decoration">✦</span>
-            <button class="starburst-btn" (click)="goContacto()"><i class="fas fa-envelope"></i> Contáctanos</button>
-            <button class="starburst-btn" (click)="goWhatsApp()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+            <button class="starburst-btn" (click)="goContacto()"><i class="fas fa-envelope"></i> {{settings.ctaBtn1Text}}</button>
+            <button class="starburst-btn" (click)="goWhatsApp()"><i class="fab fa-whatsapp"></i> {{settings.ctaBtn2Text}}</button>
             <span class="star-decoration">✦</span>
           </div>
         </div>
@@ -289,7 +289,30 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     missionTitle: 'Tu idea, nuestra misión', missionSubtitle: 'Siempre encontramos la forma de hacerla posible. 🤯',
     missionActionWord: '¡BOOM!', contactTitle: 'Contáctanos',
     contactSubtitle: '¿Tienes una idea? ¡Hagámosla realidad! Escríbenos y nuestro equipo te responderá más rápido que un rayo láser.',
-    contactActionWord: '¡ZAP!'
+    contactActionWord: '¡ZAP!',
+    servicesTitle: '¡Personalizamos tus mejores ideas!',
+    service1Title: 'Personalización Total',
+    service1Desc: 'Cualquier diseño que imagines, lo hacemos realidad. Fotos, geek, anime, series, música, decoración ¡y mucho más! Ideal para sorprender a esa persona especial.',
+    service2Title: 'Corte Láser de Precisión',
+    service2Desc: 'Trabajamos en madera, acrílico y más materiales con acabados limpios, exactos y de alta calidad.',
+    service3Title: 'Fechas Especiales',
+    service3Desc: 'Amor y Amistad, aniversarios, cumpleaños o cualquier ocasión que merezca un detalle único.',
+    paymentsTitle: 'Pagos Fáciles',
+    shippingTitle: 'Envíos Seguros y Rápidos',
+    shippingItem1Title: 'Servientrega',
+    shippingItem1Desc: 'Directo a tu puerta, a nivel nacional',
+    shippingItem2Title: 'Interrapidísimo',
+    shippingItem2Desc: 'Envíos rápidos y seguros a toda Colombia',
+    socialTitle: 'Encuéntranos',
+    socialWhatsapp: '318 690 9433',
+    socialFacebook: 'KoiDesignsSoacha',
+    socialInstagram: '@KoiDesignsSoacha',
+    socialTiktok: '@koiartesgraficas',
+    socialCatalogText: 'Ver Catálogo',
+    ctaTitle: 'Contáctanos',
+    ctaSubtitle: '¿Tienes una idea? ¡Hagámosla realidad!',
+    ctaBtn1Text: 'Contáctanos',
+    ctaBtn2Text: 'WhatsApp'
   };
 
   isCardGalleryOpen = false;

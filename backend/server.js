@@ -740,7 +740,11 @@ app.put('/api/settings', authMiddleware, upload.fields([
             'logoUrl', 'heroBgUrl', 'heroMascotUrl', 'missionMascotUrl',
             'heroTitle', 'heroHighlightItem1', 'heroHighlightItem2', 'heroHighlightItem3',
             'heroSubtitle', 'heroBtnText', 'heroActionWord',
+            'servicesTitle', 'service1Title', 'service1Desc', 'service2Title', 'service2Desc', 'service3Title', 'service3Desc',
             'missionTitle', 'missionSubtitle', 'missionActionWord',
+            'paymentsTitle', 'shippingTitle', 'shippingItem1Title', 'shippingItem1Desc', 'shippingItem2Title', 'shippingItem2Desc',
+            'socialTitle', 'socialWhatsapp', 'socialFacebook', 'socialInstagram', 'socialTiktok', 'socialCatalogText',
+            'ctaTitle', 'ctaSubtitle', 'ctaBtn1Text', 'ctaBtn2Text',
             'contactTitle', 'contactSubtitle', 'contactActionWord'
         ];
 
