@@ -50,7 +50,9 @@ export class VisualEditorComponent implements OnInit, DoCheck {
         ctaTitle: 'Contáctanos',
         ctaSubtitle: '¿Tienes una idea? ¡Hagámosla realidad!',
         ctaBtn1Text: 'Contáctanos',
-        ctaBtn2Text: 'WhatsApp'
+        ctaBtn2Text: 'WhatsApp',
+        footerText: '© 2024 KOI Design. Todos los derechos reservados. Hecho con 💚 y Láseres.',
+        customBlocks: '[]'
     };
 
     // UI state
@@ -85,8 +87,13 @@ export class VisualEditorComponent implements OnInit, DoCheck {
         payments: 'Pagos',
         shipping: 'Envíos',
         social: 'Redes Sociales',
-        cta: 'Contacto (CTA)'
+        cta: 'Contacto (CTA)',
+        footer: 'Pie de Página'
     };
+
+    // Widget blocks
+    blocks: any[] = [];
+    editingBlockId = '';
 
     constructor(
         public api: ApiService,
@@ -102,10 +109,23 @@ export class VisualEditorComponent implements OnInit, DoCheck {
                 if (res && (res as any)._id) {
                     this.settings = { ...res };
                     this.savedSettingsJson = JSON.stringify(this.settings);
+                    this.parseBlocks();
                 }
             },
             error: () => this.showToast('Error al cargar la configuración', 'error')
         });
+    }
+
+    private parseBlocks() {
+        try {
+            this.blocks = JSON.parse(this.settings.customBlocks || '[]');
+        } catch {
+            this.blocks = [];
+        }
+    }
+
+    private syncBlocks() {
+        this.settings.customBlocks = JSON.stringify(this.blocks);
     }
 
     ngDoCheck() {
@@ -238,5 +258,49 @@ export class VisualEditorComponent implements OnInit, DoCheck {
         this.toastMsg = msg;
         this.toastType = type;
         setTimeout(() => this.toastMsg = '', 4000);
+    }
+
+    // ── Widget Blocks ──
+    addBlock(type: 'text' | 'button' | 'divider' | 'spacer') {
+        this.pushUndo();
+        const defaults: Record<string, any> = {
+            text: { content: 'Tu texto aquí...', styles: { color: '#ffffff', fontSize: '16px' } },
+            button: { content: 'Botón', styles: { color: '#ffffff', bgColor: '#E91E9E', fontSize: '16px' } },
+            divider: { content: '', styles: { color: '#FFD700', fontSize: '2px' } },
+            spacer: { content: '', styles: { fontSize: '30px' } }
+        };
+        const block = {
+            id: 'block_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+            type,
+            ...defaults[type]
+        };
+        this.blocks.push(block);
+        this.syncBlocks();
+        this.editingBlockId = block.id;
+        this.redoStack = [];
+    }
+
+    removeBlock(index: number) {
+        this.pushUndo();
+        this.blocks.splice(index, 1);
+        this.syncBlocks();
+        this.redoStack = [];
+    }
+
+    moveBlock(index: number, direction: number) {
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= this.blocks.length) return;
+        this.pushUndo();
+        const temp = this.blocks[index];
+        this.blocks[index] = this.blocks[newIndex];
+        this.blocks[newIndex] = temp;
+        this.syncBlocks();
+        this.redoStack = [];
+    }
+
+    onBlockChange() {
+        this.pushUndo();
+        this.syncBlocks();
+        this.redoStack = [];
     }
 }

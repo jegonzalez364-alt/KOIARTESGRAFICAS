@@ -47,7 +47,9 @@ export class AppearanceManagerComponent implements OnInit, DoCheck {
     ctaTitle: 'Contáctanos',
     ctaSubtitle: '¿Tienes una idea? ¡Hagámosla realidad!',
     ctaBtn1Text: 'Contáctanos',
-    ctaBtn2Text: 'WhatsApp'
+    ctaBtn2Text: 'WhatsApp',
+    footerText: '© 2024 KOI Design. Todos los derechos reservados. Hecho con 💚 y Láseres.',
+    customBlocks: '[]'
   };
 
   activeTab = 'colores';

@@ -200,6 +200,18 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
       </div>
     </section>
 
+    <!-- ════════════ CUSTOM BLOCKS (WIDGETS) ════════════ -->
+    <section class="custom-blocks-section" *ngIf="parsedBlocks.length > 0">
+      <div class="container">
+        <ng-container *ngFor="let block of parsedBlocks">
+          <p *ngIf="block.type === 'text'" [style.color]="block.styles?.color" [style.font-size]="block.styles?.fontSize">{{block.content}}</p>
+          <button *ngIf="block.type === 'button'" class="starburst-btn" [style.color]="block.styles?.color" [style.background-color]="block.styles?.bgColor" [style.font-size]="block.styles?.fontSize">{{block.content}}</button>
+          <hr *ngIf="block.type === 'divider'" [style.border-color]="block.styles?.color" [style.border-width]="block.styles?.fontSize" style="border-style:solid; margin:10px 0;">
+          <div *ngIf="block.type === 'spacer'" [style.height]="block.styles?.fontSize"></div>
+        </ng-container>
+      </div>
+    </section>
+
     <!-- ════════════ CTA ════════════ -->
     <section class="cta-section" id="contacto">
       <div class="container">
@@ -311,19 +323,35 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     ctaTitle: 'Contáctanos',
     ctaSubtitle: '¿Tienes una idea? ¡Hagámosla realidad!',
     ctaBtn1Text: 'Contáctanos',
-    ctaBtn2Text: 'WhatsApp'
+    ctaBtn2Text: 'WhatsApp',
+    footerText: '© 2024 KOI Design. Todos los derechos reservados. Hecho con 💚 y Láseres.',
+    customBlocks: '[]'
   };
 
   isCardGalleryOpen = false;
   activeCardGallery: string[] = [];
   currentCardGallerySlide = 0;
+  parsedBlocks: any[] = [];
 
   constructor(public api: ApiService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.api.getSettings().subscribe({
-      next: (res) => { if (res) this.settings = { ...this.settings, ...res }; },
+      next: (res) => {
+        if (res) {
+          this.settings = { ...this.settings, ...res };
+          this.parseBlocks();
+        }
+      },
       error: (err) => console.error('Error fetching settings', err)
+    });
+
+    // Live preview: update text fields in real-time from the Visual Editor
+    this.api.previewSettings$.subscribe(preview => {
+      if (preview) {
+        this.settings = { ...this.settings, ...preview };
+        this.parseBlocks();
+      }
     });
 
     this.api.getGallery().subscribe(data => {
@@ -471,5 +499,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       embedUrl += '?autoplay=1&mute=1&loop=1';
     }
     return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+  }
+
+  private parseBlocks() {
+    try {
+      this.parsedBlocks = JSON.parse(this.settings.customBlocks || '[]');
+    } catch {
+      this.parsedBlocks = [];
+    }
   }
 }

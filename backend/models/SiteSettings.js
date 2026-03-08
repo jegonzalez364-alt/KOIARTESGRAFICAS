@@ -67,6 +67,12 @@ const siteSettingsSchema = new mongoose.Schema({
     contactSubtitle: { type: String, default: '¿Tienes una idea? ¡Hagámosla realidad! Escríbenos y nuestro equipo te responderá más rápido que un rayo láser.' },
     contactActionWord: { type: String, default: '¡ZAP!' },
 
+    // --- FOOTER ---
+    footerText: { type: String, default: '© 2024 KOI Design. Todos los derechos reservados. Hecho con 💚 y Láseres.' },
+
+    // --- CUSTOM BLOCKS (WIDGETS) ---
+    customBlocks: { type: String, default: '[]' },
+
 }, { timestamps: true });
 
 // We use a singleton pattern where there is only one settings document

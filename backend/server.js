@@ -745,7 +745,8 @@ app.put('/api/settings', authMiddleware, upload.fields([
             'paymentsTitle', 'shippingTitle', 'shippingItem1Title', 'shippingItem1Desc', 'shippingItem2Title', 'shippingItem2Desc',
             'socialTitle', 'socialWhatsapp', 'socialFacebook', 'socialInstagram', 'socialTiktok', 'socialCatalogText',
             'ctaTitle', 'ctaSubtitle', 'ctaBtn1Text', 'ctaBtn2Text',
-            'contactTitle', 'contactSubtitle', 'contactActionWord'
+            'contactTitle', 'contactSubtitle', 'contactActionWord',
+            'footerText', 'customBlocks'
         ];
 
         updatableFields.forEach(field => {

@@ -86,6 +86,9 @@ export interface SiteSettings {
     contactTitle: string;
     contactSubtitle: string;
     contactActionWord: string;
+
+    footerText: string;
+    customBlocks: string;
 }
 
 @Injectable({ providedIn: 'root' })
