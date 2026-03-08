@@ -101,16 +101,16 @@ export class ApiService {
 
     private getAuthHeaders(): HttpHeaders {
         const token = localStorage.getItem('koi_token');
-        return new HttpHeaders({ Authorization: `Bearer ${token} ` });
+        return new HttpHeaders({ Authorization: `Bearer ${token}` });
     }
 
     // Auth
     login(username: string, password: string): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`${this.baseUrl} /auth/login`, { username, password });
+        return this.http.post<LoginResponse>(`${this.baseUrl}/auth/login`, { username, password });
     }
 
     verifyToken(): Observable<any> {
-        return this.http.get(`${this.baseUrl} /auth/me`, { headers: this.getAuthHeaders() });
+        return this.http.get(`${this.baseUrl}/auth/me`, { headers: this.getAuthHeaders() });
     }
 
     // Gallery
