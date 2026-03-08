@@ -1,0 +1,269 @@
+<div class="admin-view">
+    <div class="header-actions">
+        <h2 class="admin-title"><i class="fas fa-paint-roller"></i> Editor de Apariencia (CMS)</h2>
+        <div class="action-buttons">
+            <button class="btn-primary" (click)="saveSettings()" [disabled]="saving">
+                <i class="fas" [class.fa-spinner]="saving" [class.fa-spin]="saving" [class.fa-save]="!saving"></i>
+                {{ saving ? 'Guardando publicando...' : 'Guardar y Publicar' }}
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="successMsg" class="alert alert-success"><i class="fas fa-check-circle"></i> {{successMsg}}</div>
+    <div *ngIf="errorMsg" class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> {{errorMsg}}</div>
+
+    <p class="section-desc">Modifica los colores, textos e imágenes de la página principal en tiempo real. Los cambios
+        se verán reflejados en la vista previa a la derecha.</p>
+
+    <div class="cms-container">
+        <!-- Panel de controles izquierdo -->
+        <div class="cms-sidebar">
+            <!-- Tabs -->
+            <div class="cms-tabs">
+                <button [class.active]="activeTab === 'colores'" (click)="activeTab = 'colores'">
+                    <i class="fas fa-palette"></i> Colores
+                </button>
+                <button [class.active]="activeTab === 'inicio'" (click)="activeTab = 'inicio'">
+                    <i class="fas fa-home"></i> Inicio Hero
+                </button>
+                <button [class.active]="activeTab === 'nosotros'" (click)="activeTab = 'nosotros'">
+                    <i class="fas fa-handshake"></i> Nosotros
+                </button>
+                <button [class.active]="activeTab === 'contacto'" (click)="activeTab = 'contacto'">
+                    <i class="fas fa-envelope"></i> Contacto / Header
+                </button>
+            </div>
+
+            <!-- Tab: Colores -->
+            <div class="cms-panel" *ngIf="activeTab === 'colores'">
+                <h3>Variables Globales CSS</h3>
+                <p class="tab-desc">Estos colores se aplicarán a botones, fondos, y bordes en todo el sitio.</p>
+
+                <div class="form-group color-group">
+                    <label>Color Principal (Magenta)</label>
+                    <div class="color-picker-wrap">
+                        <input type="color" [(ngModel)]="settings.primaryColor">
+                        <input type="text" [(ngModel)]="settings.primaryColor" class="color-code">
+                    </div>
+                </div>
+
+                <div class="form-group color-group">
+                    <label>Color Secundario (Cyan)</label>
+                    <div class="color-picker-wrap">
+                        <input type="color" [(ngModel)]="settings.secondaryColor">
+                        <input type="text" [(ngModel)]="settings.secondaryColor" class="color-code">
+                    </div>
+                </div>
+
+                <div class="form-group color-group">
+                    <label>Color Acento (Amarillo)</label>
+                    <div class="color-picker-wrap">
+                        <input type="color" [(ngModel)]="settings.accentColor">
+                        <input type="text" [(ngModel)]="settings.accentColor" class="color-code">
+                    </div>
+                </div>
+
+                <div class="form-group color-group">
+                    <label>Fondo de Sitio (Dark BG)</label>
+                    <div class="color-picker-wrap">
+                        <input type="color" [(ngModel)]="settings.bgColor">
+                        <input type="text" [(ngModel)]="settings.bgColor" class="color-code">
+                    </div>
+                </div>
+
+                <div class="form-group color-group">
+                    <label>Fondo de Tarjetas (Card BG)</label>
+                    <div class="color-picker-wrap">
+                        <input type="color" [(ngModel)]="settings.cardBgColor">
+                        <input type="text" [(ngModel)]="settings.cardBgColor" class="color-code">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Inicio Hero -->
+            <div class="cms-panel" *ngIf="activeTab === 'inicio'">
+                <h3>Textos e Imágenes de Inicio</h3>
+
+                <div class="form-group mt-3">
+                    <label>Imagen de Fondo (Hero)</label>
+                    <div class="file-row">
+                        <input type="file" id="heroBgInput" (change)="onFileSelected($event, 'heroBg')" accept="image/*"
+                            class="file-input-hidden" />
+                        <label for="heroBgInput" class="comic-file-btn"><i class="fas fa-upload"></i> Cambiar
+                            Imagen</label>
+                        <span class="file-name-box" *ngIf="heroBgFile"><i class="fas fa-file-image"></i>
+                            {{heroBgFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.heroBgUrl)" class="preview-thumb"
+                            *ngIf="settings.heroBgUrl && !heroBgFile" />
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label>Mascota Superior (Dragón Icono)</label>
+                    <div class="file-row">
+                        <input type="file" id="heroMascotInput" (change)="onFileSelected($event, 'heroMascot')"
+                            accept="image/*" class="file-input-hidden" />
+                        <label for="heroMascotInput" class="comic-file-btn"><i class="fas fa-upload"></i> Cambiar
+                            Mascota</label>
+                        <span class="file-name-box" *ngIf="heroMascotFile"><i class="fas fa-file-image"></i>
+                            {{heroMascotFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.heroMascotUrl)" class="preview-thumb"
+                            *ngIf="settings.heroMascotUrl && !heroMascotFile" />
+                    </div>
+                </div>
+
+                <div class="form-group mt-4">
+                    <label>Título Principal</label>
+                    <input type="text" [(ngModel)]="settings.heroTitle" class="form-control">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Palabra Rotativa 1</label>
+                        <input type="text" [(ngModel)]="settings.heroHighlightItem1" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Palabra Rotativa 2</label>
+                        <input type="text" [(ngModel)]="settings.heroHighlightItem2" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Palabra Rotativa 3</label>
+                        <input type="text" [(ngModel)]="settings.heroHighlightItem3" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Subtítulo</label>
+                    <textarea [(ngModel)]="settings.heroSubtitle" class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Texto del Botón</label>
+                        <input type="text" [(ngModel)]="settings.heroBtnText" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Palabra de Acción (Burbuja)</label>
+                        <input type="text" [(ngModel)]="settings.heroActionWord" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Nosotros -->
+            <div class="cms-panel" *ngIf="activeTab === 'nosotros'">
+                <h3>Sección: Tu idea, nuestra misión</h3>
+
+                <div class="form-group mt-3">
+                    <label>Mascota Diseño (Dragón Rojo)</label>
+                    <div class="file-row">
+                        <input type="file" id="missionMascotInput" (change)="onFileSelected($event, 'missionMascot')"
+                            accept="image/*" class="file-input-hidden" />
+                        <label for="missionMascotInput" class="comic-file-btn"><i class="fas fa-upload"></i> Cambiar
+                            Dragón</label>
+                        <span class="file-name-box" *ngIf="missionMascotFile"><i class="fas fa-file-image"></i>
+                            {{missionMascotFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.missionMascotUrl)" class="preview-thumb"
+                            *ngIf="settings.missionMascotUrl && !missionMascotFile" />
+                    </div>
+                </div>
+
+                <div class="form-group mt-4">
+                    <label>Título Central</label>
+                    <input type="text" [(ngModel)]="settings.missionTitle" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Subtítulo / Frase</label>
+                    <textarea [(ngModel)]="settings.missionSubtitle" class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Palabra de Acción (Burbuja)</label>
+                    <input type="text" [(ngModel)]="settings.missionActionWord" class="form-control">
+                </div>
+            </div>
+
+            <!-- Tab: Contacto / Header -->
+            <div class="cms-panel" *ngIf="activeTab === 'contacto'">
+                <h3>Header & Contacto Hero</h3>
+
+                <div class="form-group mt-3">
+                    <label>Logo de Navegación (Header)</label>
+                    <div class="file-row">
+                        <input type="file" id="logoInput" (change)="onFileSelected($event, 'logo')" accept="image/*"
+                            class="file-input-hidden" />
+                        <label for="logoInput" class="comic-file-btn"><i class="fas fa-upload"></i> Subir Logo</label>
+                        <span class="file-name-box" *ngIf="logoFile"><i class="fas fa-file-image"></i>
+                            {{logoFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.logoUrl)" class="preview-thumb"
+                            *ngIf="settings.logoUrl && !logoFile" style="background:var(--black)" />
+                    </div>
+                </div>
+
+                <h3 class="mt-4">Página de Contacto (Cabecera)</h3>
+
+                <div class="form-group">
+                    <label>Título (Contáctanos)</label>
+                    <input type="text" [(ngModel)]="settings.contactTitle" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Subtítulo</label>
+                    <textarea [(ngModel)]="settings.contactSubtitle" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Palabra de Acción (Burbuja)</label>
+                    <input type="text" [(ngModel)]="settings.contactActionWord" class="form-control">
+                </div>
+            </div>
+
+            <button class="btn-cancel w-100 mt-4" (click)="resetCurrentTab()"><i class="fas fa-undo"></i> Restaurar Tab
+                Activo</button>
+        </div>
+
+        <!-- Live Preview derecho -->
+        <div class="cms-preview" [style.--magenta]="settings.primaryColor" [style.--cyan]="settings.secondaryColor"
+            [style.--yellow]="settings.accentColor" [style.--dark-bg]="settings.bgColor"
+            [style.--card-bg]="settings.cardBgColor">
+            <div class="preview-header">
+                <i class="fas fa-eye"></i> Vista Previa en Vivo (Miniatura)
+            </div>
+
+            <div class="preview-website" [style.background-color]="settings.bgColor">
+                <!-- Mock Header -->
+                <div class="mock-header">
+                    <img [src]="logoFile ? 'img/placeholder.png' : api.getMediaUrl(settings.logoUrl)" alt="Logo"
+                        class="mock-logo">
+                    <div class="mock-nav">
+                        <span style="color:var(--magenta)">Inicio</span><span>Productos</span><span>Cotizador</span>
+                    </div>
+                </div>
+
+                <!-- Mock Hero -->
+                <div class="mock-hero"
+                    [style.background-image]="'url(' + (heroBgFile ? '' : api.getMediaUrl(settings.heroBgUrl)) + ')'">
+                    <div class="mock-hero-content">
+                        <div class="mock-burbuja" style="border-color:var(--magenta); color:var(--magenta)">
+                            {{settings.heroActionWord}}</div>
+                        <h1 style="color:var(--white); text-shadow: 2px 2px 0 var(--magenta)">
+                            {{settings.heroTitle}}<br><span
+                                style="color:var(--cyan)">{{settings.heroHighlightItem1}}</span></h1>
+                        <p style="color:rgba(255,255,255,0.8)">{{settings.heroSubtitle}}</p>
+                        <button class="mock-btn"
+                            style="background:var(--magenta); border-color:var(--cyan); color:white">{{settings.heroBtnText}}</button>
+                    </div>
+                </div>
+
+                <!-- Mock Mission -->
+                <div class="mock-mission" style="background-color: var(--black); border: 2px solid var(--magenta)">
+                    <div class="mock-burbuja" style="right:10px; border-color:var(--yellow); color:var(--yellow)">
+                        {{settings.missionActionWord}}</div>
+                    <h2 style="color:var(--cyan)">{{settings.missionTitle}}</h2>
+                    <p style="color:#aaa">{{settings.missionSubtitle}}</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ApiService, GallerySlide, Card } from '../../services/api.service';
+import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api.service';
 
 @Component({
   selector: 'app-home',
@@ -14,21 +14,21 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
         <span></span><span></span><span></span>
         <span></span><span></span><span></span>
       </div>
-      <div class="hero-bg"></div>
+      <div class="hero-bg" [style.background-image]="'url(' + api.getMediaUrl(settings.heroBgUrl) + ')'"></div>
       <div class="container">
         <!-- Left: Speech Bubble -->
         <div class="hero-content fade-in">
           <div>
-            <span class="action-word">¡BOOM!</span>
+            <span class="action-word">{{settings.heroActionWord}}</span>
             <span class="new-tag">¡Nuevos Diseños!</span>
           </div>
           <div class="speech-bubble">
-            <h1>¡Desata tu creatividad con corte láser!</h1>
-            <p>Desde cajas crispeteras únicas hasta relojes de madera intrincados — ¡creamos historias en madera MDF para el futuro!</p>
+            <h1>{{settings.heroTitle}} <span class="highlight-text">{{settings.heroHighlightItem1}}</span></h1>
+            <p>{{settings.heroSubtitle}}</p>
           </div>
           <div class="hero-btns">
-            <button class="btn-primary">¡Compra Ya!</button>
-            <button class="btn-secondary">Pedido Personalizado</button>
+            <button class="btn-primary" (click)="scrollToSection('coleccion')">{{settings.heroBtnText}}</button>
+            <button class="btn-secondary" (click)="goContacto()">Pedido Personalizado</button>
           </div>
         </div>
 
@@ -140,12 +140,12 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
         <!-- Mascota + Frase -->
         <div class="mission-banner fade-in">
           <div class="mission-mascot">
-            <img src="img/DragonRojoDiseñador.png" alt="Dragón Rojo Diseñador" width="130" height="auto" loading="lazy" decoding="async" style="transform: scale(1.2) translateY(-10px);" />
+            <img [src]="api.getMediaUrl(settings.missionMascotUrl)" alt="Dragón Rojo Diseñador" width="130" height="auto" loading="lazy" decoding="async" style="transform: scale(1.2) translateY(-10px);" />
           </div>
           <div class="mission-text">
-            <span class="action-word">¡BOOM!</span>
-            <h3>Tu idea, nuestra misión</h3>
-            <p>Siempre encontramos la forma de hacerla posible. 🤯</p>
+            <span class="action-word">{{settings.missionActionWord}}</span>
+            <h3>{{settings.missionTitle}}</h3>
+            <p>{{settings.missionSubtitle}}</p>
           </div>
         </div>
 
@@ -204,8 +204,9 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
     <section class="cta-section" id="contacto">
       <div class="container">
         <div class="cta-inner fade-in">
-          <h2>¿Listo para empezar tu historia?</h2>
-          <p>Ya sea un reloj personalizado o un pedido masivo para tu próximo evento, estamos aquí para hacerlo realidad.</p>
+          <span class="action-word cta-pow">{{settings.contactActionWord}}</span>
+          <h2>{{settings.contactTitle}}</h2>
+          <p>{{settings.contactSubtitle}}</p>
           <div class="cta-buttons-wrapper">
             <span class="star-decoration">✦</span>
             <button class="starburst-btn" (click)="goContacto()"><i class="fas fa-envelope"></i> Contáctanos</button>
@@ -254,16 +255,42 @@ import { ApiService, GallerySlide, Card } from '../../services/api.service';
       <span class="comic-action-float bottom-left">¡BOOM!</span>
       <span class="comic-action-float bottom-right">¡WOW!</span>
     </div>
-  `
+  `,
+  styles: [`
+    .highlight-text { color: var(--cyan); }
+    .hero-bg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background-size: cover; background-position: center; filter: brightness(0.4) contrast(1.2); z-index: -1;
+    }
+    .cta-pow {
+      position: absolute; top: -15px; right: 20px; font-size: 1.2rem; transform: rotate(15deg); color: var(--yellow);
+    }
+  `]
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChildren('galleryVideo') galleryVideos!: QueryList<ElementRef<HTMLVideoElement>>;
   gallery: GallerySlide[] = [];
   cards: Card[] = [];
   currentSlide = 0;
   autoPlayInterval: any;
   cardElements: HTMLElement[] = [];
   private observer: IntersectionObserver | null = null;
+  @ViewChildren('galleryVideo') galleryVideos!: QueryList<ElementRef<HTMLVideoElement>>;
+
+  // Visual CMS Settings defaults
+  settings: SiteSettings = {
+    primaryColor: '#E91E9E', secondaryColor: '#00BFFF', accentColor: '#FFD700',
+    bgColor: '#06101e', cardBgColor: '#f5f0e8',
+    logoUrl: 'img/logoicon.png', heroBgUrl: '/img/KoiFondo.png',
+    heroMascotUrl: 'img/Koi-Icono.png', missionMascotUrl: 'img/DragonRojoDiseñador.png',
+    heroTitle: 'Transformamos tus Ideas en', heroHighlightItem1: 'Arte Láser',
+    heroHighlightItem2: 'Regalos Únicos', heroHighlightItem3: 'Diseño Creativo',
+    heroSubtitle: 'Personalizamos cada detalle para sorprender.',
+    heroBtnText: 'Explorar Catálogo', heroActionWord: '¡BAM!',
+    missionTitle: 'Tu idea, nuestra misión', missionSubtitle: 'Siempre encontramos la forma de hacerla posible. 🤯',
+    missionActionWord: '¡BOOM!', contactTitle: 'Contáctanos',
+    contactSubtitle: '¿Tienes una idea? ¡Hagámosla realidad! Escríbenos y nuestro equipo te responderá más rápido que un rayo láser.',
+    contactActionWord: '¡ZAP!'
+  };
 
   isCardGalleryOpen = false;
   activeCardGallery: string[] = [];
@@ -272,6 +299,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(public api: ApiService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
+    this.api.getSettings().subscribe({
+      next: (res) => { if (res) this.settings = { ...this.settings, ...res }; },
+      error: (err) => console.error('Error fetching settings', err)
+    });
+
     this.api.getGallery().subscribe(data => {
       this.gallery = data;
       setTimeout(() => this.setupFadeObserver(), 100);
@@ -396,6 +428,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (cards[index]) {
       (cards[index] as HTMLElement).style.transform = '';
     }
+  }
+
+  scrollToSection(sectionId: string) {
+    const el = document.getElementById(sectionId);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   goContacto() {

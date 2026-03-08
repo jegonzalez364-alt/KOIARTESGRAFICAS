@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { ApiService, SearchResult } from '../../services/api.service';
     <header class="header" id="header" [class.scrolled]="isScrolled" role="banner">
       <div class="container">
         <a routerLink="/" class="logo">
-          <img src="img/logoicon.png" alt="KOI Design" class="logo-img" width="50" height="50" fetchpriority="high" />
+          <img [src]="logoUrl" alt="KOI Design" class="logo-img" width="50" height="50" fetchpriority="high" />
         </a>
 
         <nav class="nav-links" [class.active]="mobileNavOpen" role="navigation" aria-label="Navegación principal">
@@ -124,15 +124,26 @@ import { ApiService, SearchResult } from '../../services/api.service';
     @media (max-width: 768px) { .search-results { width: calc(100vw - 40px); right: 20px; } }
   `]
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   mobileNavOpen = false;
   isScrolled = false;
   searchQuery = '';
   searchResults: SearchResult | null = null;
   showResults = false;
   searchOpen = false;
+  logoUrl = 'img/logoicon.png';
 
   constructor(public auth: AuthService, public api: ApiService, private router: Router) { }
+
+  ngOnInit() {
+    this.api.getSettings().subscribe({
+      next: (settings) => {
+        if (settings && settings.logoUrl) {
+          this.logoUrl = this.api.getMediaUrl(settings.logoUrl);
+        }
+      }
+    });
+  }
 
   @HostListener('window:scroll')
   onScroll() {

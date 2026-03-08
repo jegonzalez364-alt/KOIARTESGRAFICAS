@@ -21,6 +21,7 @@ const User = require('./models/User');
 const Gallery = require('./models/Gallery');
 const Request = require('./models/Request');
 const CotizadorSettings = require('./models/CotizadorSettings');
+const SiteSettings = require('./models/SiteSettings');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -701,10 +702,81 @@ app.put('/api/settings/cotizador', authMiddleware, adminMiddleware, async (req, 
 });
 
 // ============================================
+//   SITE SETTINGS (VISUAL CMS)
+// ============================================
+
+// GET /api/settings - Public
+app.get('/api/settings', async (req, res) => {
+    try {
+        let settings = await SiteSettings.findOne();
+        if (!settings) {
+            settings = await SiteSettings.create({});
+        }
+        res.json(settings);
+    } catch (err) {
+        res.status(500).json({ error: 'Error al obtener configuración del sitio' });
+    }
+});
+
+// PUT /api/settings - Admin Only
+app.put('/api/settings', authMiddleware, upload.fields([
+    { name: 'logoImage', maxCount: 1 },
+    { name: 'heroBgImage', maxCount: 1 },
+    { name: 'heroMascotImage', maxCount: 1 },
+    { name: 'missionMascotImage', maxCount: 1 }
+]), async (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Acceso denegado' });
+    }
+
+    try {
+        let settings = await SiteSettings.findOne();
+        if (!settings) {
+            settings = new SiteSettings({});
+        }
+
+        const updatableFields = [
+            'primaryColor', 'secondaryColor', 'accentColor', 'bgColor', 'cardBgColor',
+            'logoUrl', 'heroBgUrl', 'heroMascotUrl', 'missionMascotUrl',
+            'heroTitle', 'heroHighlightItem1', 'heroHighlightItem2', 'heroHighlightItem3',
+            'heroSubtitle', 'heroBtnText', 'heroActionWord',
+            'missionTitle', 'missionSubtitle', 'missionActionWord',
+            'contactTitle', 'contactSubtitle', 'contactActionWord'
+        ];
+
+        updatableFields.forEach(field => {
+            if (req.body[field] !== undefined && req.body[field] !== null && req.body[field] !== '') {
+                settings[field] = req.body[field];
+            }
+        });
+
+        if (req.files) {
+            if (req.files['logoImage'] && req.files['logoImage'][0]) {
+                settings.logoUrl = req.files['logoImage'][0].path;
+            }
+            if (req.files['heroBgImage'] && req.files['heroBgImage'][0]) {
+                settings.heroBgUrl = req.files['heroBgImage'][0].path;
+            }
+            if (req.files['heroMascotImage'] && req.files['heroMascotImage'][0]) {
+                settings.heroMascotUrl = req.files['heroMascotImage'][0].path;
+            }
+            if (req.files['missionMascotImage'] && req.files['missionMascotImage'][0]) {
+                settings.missionMascotUrl = req.files['missionMascotImage'][0].path;
+            }
+        }
+
+        await settings.save();
+        res.json(settings);
+    } catch (err) {
+        console.error('Error updating settings:', err);
+        res.status(500).json({ error: 'Error al actualizar configuración' });
+    }
+});
+
+// ============================================
 //   SERVE FRONTEND (PRODUCTION / RENDER)
 // ============================================
 
-// The Angular app will be built into frontend/dist/frontend/browser
 const FRONTEND_DIR = path.join(__dirname, '..', 'frontend', 'dist', 'frontend', 'browser');
 
 console.log('--- DIAGNOSTICO DE RUTAS ---');
@@ -717,21 +789,17 @@ if (fs.existsSync(FRONTEND_DIR)) {
 }
 console.log('----------------------------');
 
-// Serve static files from the Angular build with caching
 app.use(express.static(FRONTEND_DIR, {
     maxAge: '1y',
     immutable: true,
     setHeaders: (res, filePath) => {
-        // HTML files should not be cached aggressively
         if (filePath.endsWith('.html')) {
             res.setHeader('Cache-Control', 'no-cache');
         }
     }
 }));
 
-// Catch-all route to serve Angular's index.html for any non-API route
 app.get('*', (req, res) => {
-    // DO NOT catch routes starting with /api or /uploads
     if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
         return res.status(404).json({ error: 'Endpoint no encontrado' });
     }
@@ -744,7 +812,6 @@ app.get('*', (req, res) => {
     }
 });
 
-// ---------- Start ----------
 app.listen(PORT, () => {
     console.log(`🐟 KOI Design API corriendo en puerto ${PORT}`);
 });

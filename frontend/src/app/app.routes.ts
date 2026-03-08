@@ -18,6 +18,7 @@ export const routes: Routes = [
             { path: 'solicitudes', loadComponent: () => import('./pages/admin/requests-manager/requests-manager.component').then(m => m.RequestsManagerComponent) },
             { path: 'usuarios', loadComponent: () => import('./pages/admin/users-manager/users-manager.component').then(m => m.UsersManagerComponent) },
             { path: 'cotizador-settings', loadComponent: () => import('./pages/admin/cotizador-settings/cotizador-settings.component').then(m => m.CotizadorSettingsComponent) },
+            { path: 'apariencia', loadComponent: () => import('./pages/admin/appearance-manager/appearance-manager.component').then(m => m.AppearanceManagerComponent) },
             { path: 'cuenta', loadComponent: () => import('./pages/admin/account-settings/account-settings.component').then(m => m.AccountSettingsComponent) },
         ]
     },

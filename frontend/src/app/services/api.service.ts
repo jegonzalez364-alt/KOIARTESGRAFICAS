@@ -35,6 +35,32 @@ export interface LoginResponse {
     user: { id: string; username: string; role: string };
 }
 
+export interface SiteSettings {
+    _id?: string;
+    primaryColor: string;
+    secondaryColor: string;
+    accentColor: string;
+    bgColor: string;
+    cardBgColor: string;
+    logoUrl: string;
+    heroBgUrl: string;
+    heroMascotUrl: string;
+    missionMascotUrl: string;
+    heroTitle: string;
+    heroHighlightItem1: string;
+    heroHighlightItem2: string;
+    heroHighlightItem3: string;
+    heroSubtitle: string;
+    heroBtnText: string;
+    heroActionWord: string;
+    missionTitle: string;
+    missionSubtitle: string;
+    missionActionWord: string;
+    contactTitle: string;
+    contactSubtitle: string;
+    contactActionWord: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ApiService {
     // If in development mode (ng serve), point to localhost:3000
@@ -149,6 +175,15 @@ export class ApiService {
 
     updateCotizadorSettings(data: any): Observable<any> {
         return this.http.put<any>(`${this.baseUrl}/settings/cotizador`, data, { headers: this.getAuthHeaders() });
+    }
+
+    // --- SITE SETTINGS (VISUAL CMS) ---
+    getSettings(): Observable<SiteSettings> {
+        return this.http.get<SiteSettings>(`${this.baseUrl}/settings`);
+    }
+
+    updateSettings(formData: FormData): Observable<SiteSettings> {
+        return this.http.put<SiteSettings>(`${this.baseUrl}/settings`, formData, { headers: this.getAuthHeaders() });
     }
 
     // Helper: get full URL for uploaded files
