@@ -43,6 +43,10 @@ export class CotizadorComponent implements OnInit {
 
     const {
       costo3D_m2,
+      costo3D_material,
+      costo3D_impresion,
+      costoLaser_material,
+      costoLaser_impresion,
       costoNormal_m2,
       costoFraccionado_m2,
       precioPendon_m2,
@@ -53,14 +57,16 @@ export class CotizadorComponent implements OnInit {
 
     switch (this.tipoProducto) {
       case '3d':
-        precio = this.precioKoi3D(this.anchoCm, this.altoCm, costo3D_m2);
+        precio = this.precioKoi3D(this.anchoCm, this.altoCm, costo3D_material, costo3D_impresion);
+        break;
+      case 'laser':
+        precio = this.precioKoi3D(this.anchoCm, this.altoCm, costoLaser_material, costoLaser_impresion);
         break;
       case 'normal':
         precio = this.precioKoi(this.anchoCm, this.altoCm, costoNormal_m2);
         break;
       case 'fraccionado':
-        // Fraccionado expects meters in the original formula, so convert
-        precio = this.precioKoiFraccionado(this.anchoCm / 100, this.altoCm / 100, costoFraccionado_m2);
+        precio = this.precioKoiFraccionado(this.anchoCm, this.altoCm, costoFraccionado_m2);
         break;
       case 'pendon':
         precio = this.precioPendon(this.anchoCm, this.altoCm, precioPendon_m2, minimoPendon);
@@ -72,24 +78,45 @@ export class CotizadorComponent implements OnInit {
 
   /* --- Fórmulas Replicadas --- */
 
-  private precioKoi3D(ancho_cm: number, alto_cm: number, costo3D_m2: number): number {
+  private precioKoi3D(ancho_cm: number, alto_cm: number, material: number, impresion: number): number {
     const area = (ancho_cm / 100) * (alto_cm / 100);
-    let multiplicador = 2.45; // Default largest (e.g 100x100 -> 260k)
 
-    if (area <= 0.25) multiplicador = 4.15; // e.g 40x60 -> 110k
-    else if (area <= 0.48) multiplicador = 3.14; // e.g 60x80 -> 160k
-    else if (area <= 0.50) multiplicador = 3.39; // e.g 50x100 -> 180k
+    const costo_m2 = (material * 2) + (impresion * 2);
 
-    let precio = area * costo3D_m2 * multiplicador;
+    let multiplicador = 2.90 - (area * 0.60);
+
+    if (multiplicador > 2.70) multiplicador = 2.70;
+    if (multiplicador < 1.60) multiplicador = 1.60;
+
+    let precio = area * costo_m2 * multiplicador;
+
+    const minimos = [
+        { w: 14, h: 20, p: 35000 },
+        { w: 20, h: 30, p: 45000 },
+        { w: 30, h: 40, p: 65000 },
+        { w: 40, h: 50, p: 90000 },
+        { w: 40, h: 60, p: 110000 }
+    ];
+
+    for (let m of minimos) {
+        if (ancho_cm == m.w && alto_cm == m.h) {
+            if (precio < m.p) precio = m.p;
+        }
+    }
+
     return Math.ceil(precio / 5000) * 5000;
   }
 
-  private precioKoiFraccionado(ancho_m: number, alto_m: number, costo_m2: number): number {
-    const area = ancho_m * alto_m;
-    let multiplicador = 4.28 - (area * 1.05);
-    if (multiplicador > 4.20) multiplicador = 4.20;
-    if (multiplicador < 2.44) multiplicador = 2.44;
+  private precioKoiFraccionado(ancho_cm: number, alto_cm: number, costo_m2: number): number {
+    const area = (ancho_cm / 100) * (alto_cm / 100);
+    
+    let multiplicador = 4.55 - (area * 0.90);
+
+    if (multiplicador > 4.25) multiplicador = 4.25; 
+    if (multiplicador < 2.44) multiplicador = 2.44; 
+
     let precio = area * costo_m2 * multiplicador;
+
     return Math.ceil(precio / 5000) * 5000;
   }
 
@@ -150,6 +177,7 @@ export class CotizadorComponent implements OnInit {
 
     let nombreProducto = '';
     if (this.tipoProducto === '3d') nombreProducto = 'Cuadro 3D';
+    if (this.tipoProducto === 'laser') nombreProducto = 'Cuadro Corte Láser';
     if (this.tipoProducto === 'normal') nombreProducto = 'Cuadro Normal';
     if (this.tipoProducto === 'fraccionado') nombreProducto = 'Cuadro Fraccionado';
     if (this.tipoProducto === 'pendon') nombreProducto = 'Pendón';

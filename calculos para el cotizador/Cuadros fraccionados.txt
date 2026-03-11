@@ -1,19 +1,20 @@
-function precioKoiFraccionado(ancho_m, alto_m) {
+function precioKoiFraccionado(ancho_cm, alto_cm) {
 
-    const costo_m2 = 53180; 
-    const area = ancho_m * alto_m;
+    const area = (ancho_cm / 100) * (alto_cm / 100);
+    const costo_m2 = 53180;
 
-    // fórmula ajustada de precisión fina
-    let multiplicador = 4.28 - (area * 1.05);
+    // Fórmula suave y natural ajustada a tus precios reales
+    // curva: multiplicador cae suavemente sin saltos
+    let multiplicador = 4.55 - (area * 0.90);
 
-    // límites calibrados según tu catálogo real
-    if (multiplicador > 4.20) multiplicador = 4.20; 
-    if (multiplicador < 2.44) multiplicador = 2.44;
+    // LÍMITES para evitar que se pase o se hunda demasiado
+    if (multiplicador > 4.25) multiplicador = 4.25;   // límite superior suave
+    if (multiplicador < 2.44) multiplicador = 2.44;   // límite inferior suave
 
-    // precio base
+    // precio bruto
     let precio = area * costo_m2 * multiplicador;
 
-    // redondeo hacia ARRIBA a 5.000 (estilo KOI)
+    // REDONDEO hacia ARRIBA
     precio = Math.ceil(precio / 5000) * 5000;
 
     return precio;

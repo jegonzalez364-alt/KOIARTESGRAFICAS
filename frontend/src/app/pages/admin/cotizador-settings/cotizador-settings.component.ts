@@ -13,6 +13,10 @@ import { ApiService } from '../../../services/api.service';
 export class CotizadorSettingsComponent implements OnInit {
   settings: any = {
     costo3D_m2: null,
+    costo3D_material: null,
+    costo3D_impresion: null,
+    costoLaser_material: null,
+    costoLaser_impresion: null,
     costoNormal_m2: null,
     costoFraccionado_m2: null,
     precioPendon_m2: null,

@@ -685,9 +685,23 @@ app.put('/api/settings/cotizador', authMiddleware, adminMiddleware, async (req, 
             settings = new CotizadorSettings({});
         }
 
-        const { costo3D_m2, costoNormal_m2, costoFraccionado_m2, precioPendon_m2, minimoPendon } = req.body;
+        const { 
+            costo3D_m2, 
+            costo3D_material,
+            costo3D_impresion,
+            costoLaser_material,
+            costoLaser_impresion,
+            costoNormal_m2, 
+            costoFraccionado_m2, 
+            precioPendon_m2, 
+            minimoPendon 
+        } = req.body;
 
         if (costo3D_m2 !== undefined) settings.costo3D_m2 = Number(costo3D_m2);
+        if (costo3D_material !== undefined) settings.costo3D_material = Number(costo3D_material);
+        if (costo3D_impresion !== undefined) settings.costo3D_impresion = Number(costo3D_impresion);
+        if (costoLaser_material !== undefined) settings.costoLaser_material = Number(costoLaser_material);
+        if (costoLaser_impresion !== undefined) settings.costoLaser_impresion = Number(costoLaser_impresion);
         if (costoNormal_m2 !== undefined) settings.costoNormal_m2 = Number(costoNormal_m2);
         if (costoFraccionado_m2 !== undefined) settings.costoFraccionado_m2 = Number(costoFraccionado_m2);
         if (precioPendon_m2 !== undefined) settings.precioPendon_m2 = Number(precioPendon_m2);

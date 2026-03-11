@@ -26,13 +26,60 @@
             <div class="setting-card">
                 <div class="setting-info">
                     <h3>Cuadros 3D</h3>
-                    <p>Costo base por m²</p>
+                    <p>Fórmula de costo: (Material × 2) + (Impresión × 2)</p>
                 </div>
-                <div class="setting-values">
-                    <div class="current-val">Actual: <strong>${{settings.costo3D_m2 | number}}</strong></div>
-                    <div class="setting-input">
-                        <span class="currency-prefix">$</span>
-                        <input type="number" [(ngModel)]="settings.costo3D_m2" class="form-input">
+                <div class="setting-values" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <p class="section-label">Costo Material (m²)</p>
+                        <div class="current-val">Actual: <strong>${{settings.costo3D_material | number}}</strong></div>
+                        <div class="setting-input">
+                            <span class="currency-prefix">$</span>
+                            <input type="number" [(ngModel)]="settings.costo3D_material" class="form-input">
+                        </div>
+                    </div>
+                    <div>
+                        <p class="section-label">Costo Impresión (m²)</p>
+                        <div class="current-val">Actual: <strong>${{settings.costo3D_impresion | number}}</strong></div>
+                        <div class="setting-input">
+                            <span class="currency-prefix">$</span>
+                            <input type="number" [(ngModel)]="settings.costo3D_impresion" class="form-input">
+                        </div>
+                    </div>
+                    <div style="background: rgba(0, 191, 255, 0.1); padding: 10px; border-radius: 6px; margin-top: 5px; border: 1px solid rgba(0, 191, 255, 0.3);">
+                        <p style="margin: 0; font-size: 0.85rem; color: #a0aec0;">Costo Tota Base m² Combinado:</p>
+                        <h4 style="margin: 5px 0 0 0; color: #00BFFF;">${{ (settings.costo3D_material * 2) + (settings.costo3D_impresion * 2) | number }}</h4>
+                    </div>
+                    <button class="btn btn-primary btn-save-card" (click)="saveSettings()"
+                        [disabled]="saving">Guardar</button>
+                </div>
+            </div>
+
+            <!-- Cuadros Corte Láser -->
+            <div class="setting-card">
+                <div class="setting-info">
+                    <h3>Corte Láser</h3>
+                    <p>Fórmula de costo: (Material × 2) + (Impresión × 2)</p>
+                </div>
+                <div class="setting-values" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <p class="section-label">Costo Material (m²)</p>
+                        <div class="current-val">Actual: <strong>${{settings.costoLaser_material | number}}</strong></div>
+                        <div class="setting-input">
+                            <span class="currency-prefix">$</span>
+                            <input type="number" [(ngModel)]="settings.costoLaser_material" class="form-input">
+                        </div>
+                    </div>
+                    <div>
+                        <p class="section-label">Costo Impresión (m²)</p>
+                        <div class="current-val">Actual: <strong>${{settings.costoLaser_impresion | number}}</strong></div>
+                        <div class="setting-input">
+                            <span class="currency-prefix">$</span>
+                            <input type="number" [(ngModel)]="settings.costoLaser_impresion" class="form-input">
+                        </div>
+                    </div>
+                    <div style="background: rgba(0, 191, 255, 0.1); padding: 10px; border-radius: 6px; margin-top: 5px; border: 1px solid rgba(0, 191, 255, 0.3);">
+                        <p style="margin: 0; font-size: 0.85rem; color: #a0aec0;">Costo Tota Base m² Combinado:</p>
+                        <h4 style="margin: 5px 0 0 0; color: #00BFFF;">${{ (settings.costoLaser_material * 2) + (settings.costoLaser_impresion * 2) | number }}</h4>
                     </div>
                     <button class="btn btn-primary btn-save-card" (click)="saveSettings()"
                         [disabled]="saving">Guardar</button>
