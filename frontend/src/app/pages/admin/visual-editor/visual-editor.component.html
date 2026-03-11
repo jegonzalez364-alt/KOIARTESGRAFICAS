@@ -46,7 +46,7 @@
                     <i class="fas fa-layer-group"></i> Secciones
                 </button>
                 <button class="panel-tab" [class.active]="panelTab === 'widgets'" (click)="panelTab = 'widgets'">
-                    <i class="fas fa-puzzle-piece"></i> Widgets
+                    <i class="fas fa-puzzle-piece"></i> Componentes
                 </button>
                 <button class="panel-tab" [class.active]="panelTab === 'colors'" (click)="panelTab = 'colors'">
                     <i class="fas fa-palette"></i> Colores
@@ -323,95 +323,281 @@
                     </div>
                 </div>
 
-                <!-- ══ TAB: WIDGETS ══ -->
+                <!-- ══ TAB: COMPONENTES ══ -->
                 <div *ngIf="panelTab === 'widgets'">
-                    <p style="font-size:0.78rem;color:#7a8baa;margin-bottom:12px;">Agrega componentes a una sección
-                        personalizada de tu página. Haz clic para añadir y edita cada bloque.</p>
-
-                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
-                        <button class="tb-btn tb-btn-outline" style="font-size:0.75rem" (click)="addBlock('text')">
-                            <i class="fas fa-font"></i> Texto
-                        </button>
-                        <button class="tb-btn tb-btn-outline" style="font-size:0.75rem" (click)="addBlock('button')">
-                            <i class="fas fa-hand-pointer"></i> Botón
-                        </button>
-                        <button class="tb-btn tb-btn-outline" style="font-size:0.75rem" (click)="addBlock('divider')">
-                            <i class="fas fa-minus"></i> Divisor
-                        </button>
-                        <button class="tb-btn tb-btn-outline" style="font-size:0.75rem" (click)="addBlock('spacer')">
-                            <i class="fas fa-arrows-alt-v"></i> Espacio
-                        </button>
-                    </div>
+                    <p style="font-size:0.78rem;color:#7a8baa;margin-bottom:12px;">Modifica el diseño de cada componente
+                        existente de tu página: bordes, colores de fondo, transparencia y redondeado.</p>
 
                     <div class="section-list">
-                        <div class="section-item" *ngFor="let block of blocks; let i = index"
-                            [class.active]="editingBlockId === block.id">
+                        <!-- SPEECH BUBBLE -->
+                        <div class="section-item" [class.active]="editingBlockId === 'speech'">
                             <div class="section-item-header"
-                                (click)="editingBlockId = editingBlockId === block.id ? '' : block.id">
-                                <span class="section-icon" *ngIf="block.type === 'text'">T</span>
-                                <span class="section-icon" *ngIf="block.type === 'button'">🔘</span>
-                                <span class="section-icon" *ngIf="block.type === 'divider'">—</span>
-                                <span class="section-icon" *ngIf="block.type === 'spacer'">↕</span>
-                                <span class="section-name">{{ block.type === 'text' ? 'Texto' : block.type === 'button'
-                                    ? 'Botón' : block.type === 'divider' ? 'Divisor' : 'Espacio' }}</span>
-                                <div style="display:flex;gap:4px;">
-                                    <button class="tb-btn tb-btn-ghost" style="padding:4px"
-                                        (click)="moveBlock(i,-1);$event.stopPropagation()" [disabled]="i===0"
-                                        title="Subir">
-                                        <i class="fas fa-arrow-up" style="font-size:0.7rem"></i>
-                                    </button>
-                                    <button class="tb-btn tb-btn-ghost" style="padding:4px"
-                                        (click)="moveBlock(i,1);$event.stopPropagation()"
-                                        [disabled]="i===blocks.length-1" title="Bajar">
-                                        <i class="fas fa-arrow-down" style="font-size:0.7rem"></i>
-                                    </button>
-                                    <button class="tb-btn tb-btn-ghost" style="padding:4px;color:#ff6b6b"
-                                        (click)="removeBlock(i);$event.stopPropagation()" title="Eliminar">
-                                        <i class="fas fa-trash" style="font-size:0.7rem"></i>
-                                    </button>
-                                </div>
+                                (click)="editingBlockId = editingBlockId === 'speech' ? '' : 'speech'">
+                                <span class="section-icon">💬</span>
+                                <span class="section-name">Burbuja de Texto (Hero)</span>
+                                <i class="fas fa-chevron-down section-expand-icon"></i>
                             </div>
-                            <div class="section-fields" *ngIf="editingBlockId === block.id">
-                                <div class="field-group" *ngIf="block.type === 'text' || block.type === 'button'">
-                                    <label>Contenido</label>
-                                    <input *ngIf="block.type === 'button'" type="text" [(ngModel)]="block.content"
-                                        (ngModelChange)="onBlockChange()">
-                                    <textarea *ngIf="block.type === 'text'" [(ngModel)]="block.content" rows="3"
-                                        (ngModelChange)="onBlockChange()"></textarea>
-                                </div>
-                                <div class="field-group" *ngIf="block.type === 'text' || block.type === 'button'">
-                                    <label>Color del Texto</label>
-                                    <div class="color-row">
-                                        <input type="color" [(ngModel)]="block.styles.color"
-                                            (ngModelChange)="onBlockChange()">
-                                        <input type="text" [(ngModel)]="block.styles.color"
-                                            (ngModelChange)="onBlockChange()">
-                                    </div>
-                                </div>
-                                <div class="field-group" *ngIf="block.type === 'button'">
-                                    <label>Color de Fondo</label>
-                                    <div class="color-row">
-                                        <input type="color" [(ngModel)]="block.styles.bgColor"
-                                            (ngModelChange)="onBlockChange()">
-                                        <input type="text" [(ngModel)]="block.styles.bgColor"
-                                            (ngModelChange)="onBlockChange()">
-                                    </div>
+                            <div class="section-fields" *ngIf="editingBlockId === 'speech'">
+                                <div class="field-group">
+                                    <label>Fondo</label>
+                                    <input type="text" [(ngModel)]="settings.speechBubbleBg"
+                                        (ngModelChange)="onFieldChange()">
                                 </div>
                                 <div class="field-group">
-                                    <label>Tamaño del Texto (px)</label>
-                                    <input type="text" [(ngModel)]="block.styles.fontSize"
-                                        (ngModelChange)="onBlockChange()">
+                                    <label>Borde</label>
+                                    <div class="color-row"><input type="color"
+                                            [(ngModel)]="settings.speechBubbleBorderColor"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.speechBubbleBorderColor"
+                                            (ngModelChange)="onFieldChange()"></div>
+                                </div>
+                                <div class="field-group">
+                                    <label>Redondeado (px)</label>
+                                    <input type="text" [(ngModel)]="settings.speechBubbleBorderRadius"
+                                        (ngModelChange)="onFieldChange()">
                                 </div>
                             </div>
                         </div>
-                        <p *ngIf="blocks.length === 0"
-                            style="color:#5a6987;font-size:0.8rem;text-align:center;padding:20px 0;">No hay widgets aún.
-                            Usa los botones de arriba para agregar.</p>
+
+                        <!-- PRODUCT CARDS -->
+                        <div class="section-item" [class.active]="editingBlockId === 'cards'">
+                            <div class="section-item-header"
+                                (click)="editingBlockId = editingBlockId === 'cards' ? '' : 'cards'">
+                                <span class="section-icon">🃏</span>
+                                <span class="section-name">Tarjetas de Colección</span>
+                                <i class="fas fa-chevron-down section-expand-icon"></i>
+                            </div>
+                            <div class="section-fields" *ngIf="editingBlockId === 'cards'">
+                                <div class="field-group">
+                                    <label>Borde</label>
+                                    <div class="color-row"><input type="color" [(ngModel)]="settings.cardBorderColor"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.cardBorderColor" (ngModelChange)="onFieldChange()">
+                                    </div>
+                                </div>
+                                <div class="field-group">
+                                    <label>Redondeado (px)</label>
+                                    <input type="text" [(ngModel)]="settings.cardBorderRadius"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Opacidad (0-1)</label>
+                                    <input type="text" [(ngModel)]="settings.cardOpacity"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SERVICE CARDS -->
+                        <div class="section-item" [class.active]="editingBlockId === 'service'">
+                            <div class="section-item-header"
+                                (click)="editingBlockId = editingBlockId === 'service' ? '' : 'service'">
+                                <span class="section-icon">🎨</span>
+                                <span class="section-name">Tarjetas de Servicios</span>
+                                <i class="fas fa-chevron-down section-expand-icon"></i>
+                            </div>
+                            <div class="section-fields" *ngIf="editingBlockId === 'service'">
+                                <div class="field-group">
+                                    <label>Fondo</label>
+                                    <input type="text" [(ngModel)]="settings.serviceCardBg"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Borde</label>
+                                    <div class="color-row"><input type="color"
+                                            [(ngModel)]="settings.serviceCardBorderColor"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.serviceCardBorderColor"
+                                            (ngModelChange)="onFieldChange()"></div>
+                                </div>
+                                <div class="field-group">
+                                    <label>Redondeado (px)</label>
+                                    <input type="text" [(ngModel)]="settings.serviceCardBorderRadius"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- INFO BLOCKS -->
+                        <div class="section-item" [class.active]="editingBlockId === 'info'">
+                            <div class="section-item-header"
+                                (click)="editingBlockId = editingBlockId === 'info' ? '' : 'info'">
+                                <span class="section-icon">📦</span>
+                                <span class="section-name">Bloques Info (Pagos/Envíos/Redes)</span>
+                                <i class="fas fa-chevron-down section-expand-icon"></i>
+                            </div>
+                            <div class="section-fields" *ngIf="editingBlockId === 'info'">
+                                <div class="field-group">
+                                    <label>Fondo</label>
+                                    <input type="text" [(ngModel)]="settings.infoBlockBg"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Borde</label>
+                                    <div class="color-row"><input type="color"
+                                            [(ngModel)]="settings.infoBlockBorderColor"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.infoBlockBorderColor"
+                                            (ngModelChange)="onFieldChange()"></div>
+                                </div>
+                                <div class="field-group">
+                                    <label>Redondeado (px)</label>
+                                    <input type="text" [(ngModel)]="settings.infoBlockBorderRadius"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTA BUTTONS -->
+                        <div class="section-item" [class.active]="editingBlockId === 'ctabtn'">
+                            <div class="section-item-header"
+                                (click)="editingBlockId = editingBlockId === 'ctabtn' ? '' : 'ctabtn'">
+                                <span class="section-icon">🔘</span>
+                                <span class="section-name">Botones CTA (Contáctanos)</span>
+                                <i class="fas fa-chevron-down section-expand-icon"></i>
+                            </div>
+                            <div class="section-fields" *ngIf="editingBlockId === 'ctabtn'">
+                                <div class="field-group">
+                                    <label>Fondo del Botón</label>
+                                    <div class="color-row"><input type="color" [(ngModel)]="settings.ctaBtnBg"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.ctaBtnBg" (ngModelChange)="onFieldChange()"></div>
+                                </div>
+                                <div class="field-group">
+                                    <label>Color del Texto</label>
+                                    <div class="color-row"><input type="color" [(ngModel)]="settings.ctaBtnColor"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.ctaBtnColor" (ngModelChange)="onFieldChange()"></div>
+                                </div>
+                                <div class="field-group">
+                                    <label>Redondeado (px)</label>
+                                    <input type="text" [(ngModel)]="settings.ctaBtnBorderRadius"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CHANNEL CARDS -->
+                        <div class="section-item" [class.active]="editingBlockId === 'channel'">
+                            <div class="section-item-header"
+                                (click)="editingBlockId = editingBlockId === 'channel' ? '' : 'channel'">
+                                <span class="section-icon">📱</span>
+                                <span class="section-name">Tarjetas Redes Sociales</span>
+                                <i class="fas fa-chevron-down section-expand-icon"></i>
+                            </div>
+                            <div class="section-fields" *ngIf="editingBlockId === 'channel'">
+                                <div class="field-group">
+                                    <label>Fondo</label>
+                                    <input type="text" [(ngModel)]="settings.channelCardBg"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Borde</label>
+                                    <div class="color-row"><input type="color"
+                                            [(ngModel)]="settings.channelCardBorderColor"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.channelCardBorderColor"
+                                            (ngModelChange)="onFieldChange()"></div>
+                                </div>
+                                <div class="field-group">
+                                    <label>Redondeado (px)</label>
+                                    <input type="text" [(ngModel)]="settings.channelCardBorderRadius"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- GALLERY MODAL -->
+                        <div class="section-item" [class.active]="editingBlockId === 'modal'">
+                            <div class="section-item-header"
+                                (click)="editingBlockId = editingBlockId === 'modal' ? '' : 'modal'">
+                                <span class="section-icon">🖼️</span>
+                                <span class="section-name">Modal de Galería</span>
+                                <i class="fas fa-chevron-down section-expand-icon"></i>
+                            </div>
+                            <div class="section-fields" *ngIf="editingBlockId === 'modal'">
+                                <div class="field-group">
+                                    <label>Fondo Overlay</label>
+                                    <input type="text" [(ngModel)]="settings.modalOverlayBg"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Fondo del Contenido</label>
+                                    <div class="color-row"><input type="color" [(ngModel)]="settings.modalContentBg"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.modalContentBg" (ngModelChange)="onFieldChange()">
+                                    </div>
+                                </div>
+                                <div class="field-group">
+                                    <label>Color del Borde</label>
+                                    <div class="color-row"><input type="color" [(ngModel)]="settings.modalBorderColor"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.modalBorderColor" (ngModelChange)="onFieldChange()">
+                                    </div>
+                                </div>
+                                <div class="field-row">
+                                    <div class="field-group">
+                                        <label>Texto Arriba Izquierda</label>
+                                        <input type="text" [(ngModel)]="settings.modalTextTopLeft" (ngModelChange)="onFieldChange()">
+                                    </div>
+                                    <div class="field-group">
+                                        <label>Texto Arriba Derecha</label>
+                                        <input type="text" [(ngModel)]="settings.modalTextTopRight" (ngModelChange)="onFieldChange()">
+                                    </div>
+                                </div>
+                                <div class="field-row">
+                                    <div class="field-group">
+                                        <label>Texto Abajo Izquierda</label>
+                                        <input type="text" [(ngModel)]="settings.modalTextBottomLeft" (ngModelChange)="onFieldChange()">
+                                    </div>
+                                    <div class="field-group">
+                                        <label>Texto Abajo Derecha</label>
+                                        <input type="text" [(ngModel)]="settings.modalTextBottomRight" (ngModelChange)="onFieldChange()">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MISSION BANNER -->
+                        <div class="section-item" [class.active]="editingBlockId === 'mission-banner'">
+                            <div class="section-item-header"
+                                (click)="editingBlockId = editingBlockId === 'mission-banner' ? '' : 'mission-banner'">
+                                <span class="section-icon">🐉</span>
+                                <span class="section-name">Banner de Misión</span>
+                                <i class="fas fa-chevron-down section-expand-icon"></i>
+                            </div>
+                            <div class="section-fields" *ngIf="editingBlockId === 'mission-banner'">
+                                <div class="field-group">
+                                    <label>Fondo</label>
+                                    <input type="text" [(ngModel)]="settings.missionBannerBg"
+                                        (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Borde</label>
+                                    <div class="color-row"><input type="color"
+                                            [(ngModel)]="settings.missionBannerBorderColor"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.missionBannerBorderColor"
+                                            (ngModelChange)="onFieldChange()"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- ══ TAB: COLORS ══ -->
                 <div *ngIf="panelTab === 'colors'" class="section-list">
+                    <div class="field-group">
+                        <label>Tipografía Principal <i class="fas fa-question-circle help-icon"
+                                title="Fuente usada en todo el sitio"></i></label>
+                        <select [(ngModel)]="settings.primaryFont" (ngModelChange)="onFieldChange()" class="form-select" style="background: #0a0e17; border: 1px solid #1e2946; color: #e0e0e0; padding: 8px 10px; border-radius: 6px;">
+                            <option value="'Inter', 'Segoe UI', sans-serif">Inter (Moderno & Limpio)</option>
+                            <option value="'Bangers', 'Comic Sans MS', cursive">Bangers (Estilo Cómic)</option>
+                            <option value="'Montserrat', sans-serif">Montserrat (Elegante)</option>
+                            <option value="'Poppins', sans-serif">Poppins (Geométrico)</option>
+                            <option value="'Roboto', sans-serif">Roboto (Clásico)</option>
+                        </select>
+                    </div>
                     <div class="field-group">
                         <label>Color Principal (Magenta) <i class="fas fa-question-circle help-icon"
                                 title="Botones primarios, bordes y títulos"></i></label>
@@ -456,52 +642,102 @@
 
                 <!-- ══ TAB: IMAGES ══ -->
                 <div *ngIf="panelTab === 'images'" class="section-list">
+                    <p style="font-size:0.75rem;color:#7a8baa;margin-bottom:8px;"><i class="fas fa-info-circle"></i>
+                        Todas las imágenes usadas en la página, organizadas por sección.</p>
+
+                    <h4 style="color:#00BFFF;font-size:0.8rem;margin:12px 0 6px;">🏠 Hero / General</h4>
                     <div class="field-group">
                         <label><i class="fas fa-image"></i> Logo del Sitio</label>
                         <input type="file" id="edLogoInput" (change)="onFileSelected($event, 'logo')" accept="image/*"
                             style="display:none">
-                        <label for="edLogoInput" class="file-upload-btn"><i class="fas fa-upload"></i> Cambiar
-                            Logo</label>
+                        <label for="edLogoInput" class="file-upload-btn"><i class="fas fa-upload"></i> Cambiar</label>
                         <span class="file-name-tag" *ngIf="logoFile"><i class="fas fa-check"></i>
                             {{logoFile.name}}</span>
-                        <img [src]="api.getMediaUrl(settings.logoUrl)" class="file-preview"
+                        <img [src]="api.getMediaUrl(settings.logoUrl)" class="file-preview" style="object-fit:contain"
                             *ngIf="settings.logoUrl && !logoFile">
                     </div>
-
                     <div class="field-group">
                         <label><i class="fas fa-mountain"></i> Fondo del Hero</label>
                         <input type="file" id="edHeroBgInput" (change)="onFileSelected($event, 'heroBg')"
                             accept="image/*" style="display:none">
-                        <label for="edHeroBgInput" class="file-upload-btn"><i class="fas fa-upload"></i> Cambiar
-                            Fondo</label>
+                        <label for="edHeroBgInput" class="file-upload-btn"><i class="fas fa-upload"></i> Cambiar</label>
                         <span class="file-name-tag" *ngIf="heroBgFile"><i class="fas fa-check"></i>
                             {{heroBgFile.name}}</span>
-                        <img [src]="api.getMediaUrl(settings.heroBgUrl)" class="file-preview"
+                        <img [src]="api.getMediaUrl(settings.heroBgUrl)" class="file-preview" style="object-fit:contain"
                             *ngIf="settings.heroBgUrl && !heroBgFile">
                     </div>
-
                     <div class="field-group">
-                        <label><i class="fas fa-dragon"></i> Mascota del Hero</label>
+                        <label><i class="fas fa-dragon"></i> Mascota del Hero (Icono)</label>
                         <input type="file" id="edHeroMascotInput" (change)="onFileSelected($event, 'heroMascot')"
                             accept="image/*" style="display:none">
-                        <label for="edHeroMascotInput" class="file-upload-btn"><i class="fas fa-upload"></i> Cambiar
-                            Mascota</label>
+                        <label for="edHeroMascotInput" class="file-upload-btn"><i class="fas fa-upload"></i>
+                            Cambiar</label>
                         <span class="file-name-tag" *ngIf="heroMascotFile"><i class="fas fa-check"></i>
                             {{heroMascotFile.name}}</span>
                         <img [src]="api.getMediaUrl(settings.heroMascotUrl)" class="file-preview"
-                            *ngIf="settings.heroMascotUrl && !heroMascotFile">
+                            style="object-fit:contain" *ngIf="settings.heroMascotUrl && !heroMascotFile">
                     </div>
 
+                    <h4 style="color:#00BFFF;font-size:0.8rem;margin:12px 0 6px;">🃏 Colección</h4>
+                    <div class="field-group">
+                        <label><i class="fas fa-dragon"></i> Mascota Izquierda (Naranja)</label>
+                        <input type="file" id="edCollLeftInput" (change)="onFileSelected($event, 'collectionLeft')"
+                            accept="image/*" style="display:none">
+                        <label for="edCollLeftInput" class="file-upload-btn"><i class="fas fa-upload"></i>
+                            Cambiar</label>
+                        <span class="file-name-tag" *ngIf="collectionLeftFile"><i class="fas fa-check"></i>
+                            {{collectionLeftFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.collectionMascotLeftUrl)" class="file-preview"
+                            style="object-fit:contain" *ngIf="settings.collectionMascotLeftUrl && !collectionLeftFile">
+                    </div>
+                    <div class="field-group">
+                        <label><i class="fas fa-dragon"></i> Mascota Derecha (Rojo)</label>
+                        <input type="file" id="edCollRightInput" (change)="onFileSelected($event, 'collectionRight')"
+                            accept="image/*" style="display:none">
+                        <label for="edCollRightInput" class="file-upload-btn"><i class="fas fa-upload"></i>
+                            Cambiar</label>
+                        <span class="file-name-tag" *ngIf="collectionRightFile"><i class="fas fa-check"></i>
+                            {{collectionRightFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.collectionMascotRightUrl)" class="file-preview"
+                            style="object-fit:contain"
+                            *ngIf="settings.collectionMascotRightUrl && !collectionRightFile">
+                    </div>
+
+                    <h4 style="color:#00BFFF;font-size:0.8rem;margin:12px 0 6px;">🐉 Misión</h4>
                     <div class="field-group">
                         <label><i class="fas fa-dragon"></i> Mascota de Misión</label>
                         <input type="file" id="edMissionMascotInput" (change)="onFileSelected($event, 'missionMascot')"
                             accept="image/*" style="display:none">
-                        <label for="edMissionMascotInput" class="file-upload-btn"><i class="fas fa-upload"></i> Cambiar
-                            Mascota</label>
+                        <label for="edMissionMascotInput" class="file-upload-btn"><i class="fas fa-upload"></i>
+                            Cambiar</label>
                         <span class="file-name-tag" *ngIf="missionMascotFile"><i class="fas fa-check"></i>
                             {{missionMascotFile.name}}</span>
                         <img [src]="api.getMediaUrl(settings.missionMascotUrl)" class="file-preview"
-                            *ngIf="settings.missionMascotUrl && !missionMascotFile">
+                            style="object-fit:contain" *ngIf="settings.missionMascotUrl && !missionMascotFile">
+                    </div>
+
+                    <h4 style="color:#00BFFF;font-size:0.8rem;margin:12px 0 6px;">🖼️ Modal de Galería</h4>
+                    <div class="field-group">
+                        <label><i class="fas fa-dragon"></i> Dragón Izquierdo (Tecnológico)</label>
+                        <input type="file" id="edModalLeftInput" (change)="onFileSelected($event, 'modalLeft')"
+                            accept="image/*" style="display:none">
+                        <label for="edModalLeftInput" class="file-upload-btn"><i class="fas fa-upload"></i>
+                            Cambiar</label>
+                        <span class="file-name-tag" *ngIf="modalLeftFile"><i class="fas fa-check"></i>
+                            {{modalLeftFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.modalDragonLeftUrl)" class="file-preview"
+                            style="object-fit:contain" *ngIf="settings.modalDragonLeftUrl && !modalLeftFile">
+                    </div>
+                    <div class="field-group">
+                        <label><i class="fas fa-dragon"></i> Dragón Derecho (Tecnológico)</label>
+                        <input type="file" id="edModalRightInput" (change)="onFileSelected($event, 'modalRight')"
+                            accept="image/*" style="display:none">
+                        <label for="edModalRightInput" class="file-upload-btn"><i class="fas fa-upload"></i>
+                            Cambiar</label>
+                        <span class="file-name-tag" *ngIf="modalRightFile"><i class="fas fa-check"></i>
+                            {{modalRightFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.modalDragonRightUrl)" class="file-preview"
+                            style="object-fit:contain" *ngIf="settings.modalDragonRightUrl && !modalRightFile">
                     </div>
                 </div>
             </div>

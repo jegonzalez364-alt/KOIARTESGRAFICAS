@@ -49,7 +49,20 @@ export class AppearanceManagerComponent implements OnInit, DoCheck {
     ctaBtn1Text: 'Contáctanos',
     ctaBtn2Text: 'WhatsApp',
     footerText: '© 2024 KOI Design. Todos los derechos reservados. Hecho con 💚 y Láseres.',
-    customBlocks: '[]'
+    customBlocks: '[]',
+    collectionMascotLeftUrl: 'img/dragoasomadonaranja.png',
+    collectionMascotRightUrl: 'img/dragoasomadorojo.png',
+    modalDragonLeftUrl: 'img/DragonTecnologico2.png',
+    modalDragonRightUrl: 'img/DragonTecnologico.png',
+    ctaBgUrl: '',
+    cardBorderRadius: '4px', cardBorderColor: '#E91E9E', cardOpacity: '1',
+    serviceCardBg: 'rgba(255,255,255,0.04)', serviceCardBorderRadius: '4px', serviceCardBorderColor: 'rgba(233,30,158,0.3)',
+    infoBlockBg: 'rgba(255,255,255,0.03)', infoBlockBorderColor: 'rgba(255,215,0,0.25)', infoBlockBorderRadius: '4px',
+    speechBubbleBg: 'rgba(6,16,30,0.85)', speechBubbleBorderColor: '#E91E9E', speechBubbleBorderRadius: '20px',
+    ctaBtnBg: '#003333', ctaBtnColor: '#ffffff', ctaBtnBorderRadius: '30px',
+    channelCardBg: 'rgba(255,255,255,0.04)', channelCardBorderColor: 'rgba(0,191,255,0.2)', channelCardBorderRadius: '4px',
+    modalOverlayBg: 'rgba(0,0,0,0.92)', modalContentBg: '#0a1a2f', modalBorderColor: '#E91E9E',
+    missionBannerBg: 'rgba(255,255,255,0.04)', missionBannerBorderColor: 'rgba(0,191,255,0.25)'
   };
 
   activeTab = 'colores';

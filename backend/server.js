@@ -746,7 +746,19 @@ app.put('/api/settings', authMiddleware, upload.fields([
             'socialTitle', 'socialWhatsapp', 'socialFacebook', 'socialInstagram', 'socialTiktok', 'socialCatalogText',
             'ctaTitle', 'ctaSubtitle', 'ctaBtn1Text', 'ctaBtn2Text',
             'contactTitle', 'contactSubtitle', 'contactActionWord',
-            'footerText', 'customBlocks'
+            'footerText', 'customBlocks',
+            // Images
+            'collectionMascotLeftUrl', 'collectionMascotRightUrl',
+            'modalDragonLeftUrl', 'modalDragonRightUrl', 'ctaBgUrl',
+            // Component Styles
+            'cardBorderRadius', 'cardBorderColor', 'cardOpacity',
+            'serviceCardBg', 'serviceCardBorderRadius', 'serviceCardBorderColor',
+            'infoBlockBg', 'infoBlockBorderColor', 'infoBlockBorderRadius',
+            'speechBubbleBg', 'speechBubbleBorderColor', 'speechBubbleBorderRadius',
+            'ctaBtnBg', 'ctaBtnColor', 'ctaBtnBorderRadius',
+            'channelCardBg', 'channelCardBorderColor', 'channelCardBorderRadius',
+            'modalOverlayBg', 'modalContentBg', 'modalBorderColor',
+            'missionBannerBg', 'missionBannerBorderColor'
         ];
 
         updatableFields.forEach(field => {

@@ -49,46 +49,80 @@ export interface SiteSettings {
     heroTitle: string;
     heroHighlightItem1: string;
     heroSubtitle: string;
-    heroBtnText: string;
-    heroActionWord: string;
+    heroBtnText?: string;
+    heroActionWord?: string;
+    missionTitle?: string;
+    missionSubtitle?: string;
+    missionActionWord?: string;
+    contactTitle?: string;
+    contactSubtitle?: string;
+    contactActionWord?: string;
+    servicesTitle?: string;
+    service1Title?: string;
+    service1Desc?: string;
+    service2Title?: string;
+    service2Desc?: string;
+    service3Title?: string;
+    service3Desc?: string;
+    paymentsTitle?: string;
+    shippingTitle?: string;
+    shippingItem1Title?: string;
+    shippingItem1Desc?: string;
+    shippingItem2Title?: string;
+    shippingItem2Desc?: string;
+    socialTitle?: string;
+    socialWhatsapp?: string;
+    socialFacebook?: string;
+    socialInstagram?: string;
+    socialTiktok?: string;
+    socialCatalogText?: string;
+    ctaTitle?: string;
+    ctaSubtitle?: string;
+    ctaBtn1Text?: string;
+    ctaBtn2Text?: string;
+    footerText?: string;
+    customBlocks?: string;
 
-    servicesTitle: string;
-    service1Title: string;
-    service1Desc: string;
-    service2Title: string;
-    service2Desc: string;
-    service3Title: string;
-    service3Desc: string;
+    // Images
+    collectionMascotLeftUrl?: string;
+    collectionMascotRightUrl?: string;
+    modalDragonLeftUrl?: string;
+    modalDragonRightUrl?: string;
+    ctaBgUrl?: string;
 
-    missionTitle: string;
-    missionSubtitle: string;
-    missionActionWord: string;
+    // Gallery Modal Texts
+    modalTextTopLeft?: string;
+    modalTextTopRight?: string;
+    modalTextBottomLeft?: string;
+    modalTextBottomRight?: string;
 
-    paymentsTitle: string;
-    shippingTitle: string;
-    shippingItem1Title: string;
-    shippingItem1Desc: string;
-    shippingItem2Title: string;
-    shippingItem2Desc: string;
+    // Typography
+    primaryFont?: string;
 
-    socialTitle: string;
-    socialWhatsapp: string;
-    socialFacebook: string;
-    socialInstagram: string;
-    socialTiktok: string;
-    socialCatalogText: string;
-
-    ctaTitle: string;
-    ctaSubtitle: string;
-    ctaBtn1Text: string;
-    ctaBtn2Text: string;
-
-    contactTitle: string;
-    contactSubtitle: string;
-    contactActionWord: string;
-
-    footerText: string;
-    customBlocks: string;
+    // Component Styles
+    cardBorderRadius: string;
+    cardBorderColor: string;
+    cardOpacity: string;
+    serviceCardBg: string;
+    serviceCardBorderRadius: string;
+    serviceCardBorderColor: string;
+    infoBlockBg: string;
+    infoBlockBorderColor: string;
+    infoBlockBorderRadius: string;
+    speechBubbleBg: string;
+    speechBubbleBorderColor: string;
+    speechBubbleBorderRadius: string;
+    ctaBtnBg: string;
+    ctaBtnColor: string;
+    ctaBtnBorderRadius: string;
+    channelCardBg: string;
+    channelCardBorderColor: string;
+    channelCardBorderRadius: string;
+    modalOverlayBg: string;
+    modalContentBg: string;
+    modalBorderColor: string;
+    missionBannerBg: string;
+    missionBannerBorderColor: string;
 }
 
 @Injectable({ providedIn: 'root' })

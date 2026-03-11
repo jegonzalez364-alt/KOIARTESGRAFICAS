@@ -70,6 +70,62 @@ const siteSettingsSchema = new mongoose.Schema({
     // --- FOOTER ---
     footerText: { type: String, default: '© 2024 KOI Design. Todos los derechos reservados. Hecho con 💚 y Láseres.' },
 
+    // --- ALL PROJECT IMAGES ---
+    collectionMascotLeftUrl: { type: String, default: 'img/dragoasomadonaranja.png' },
+    collectionMascotRightUrl: { type: String, default: 'img/dragoasomadorojo.png' },
+    modalDragonLeftUrl: { type: String, default: 'img/DragonTecnologico2.png' },
+    modalDragonRightUrl: { type: String, default: 'img/DragonTecnologico.png' },
+    ctaBgUrl: { type: String, default: '' },
+
+    // --- GALLERY MODAL TEXTS ---
+    modalTextTopLeft: { type: String, default: '¡ZAP!' },
+    modalTextTopRight: { type: String, default: '¡POW!' },
+    modalTextBottomLeft: { type: String, default: '¡BOOM!' },
+    modalTextBottomRight: { type: String, default: '¡WOW!' },
+
+    // --- TYPOGRAPHY ---
+    primaryFont: { type: String, default: "'Inter', 'Segoe UI', sans-serif" },
+
+    // --- COMPONENT STYLES ---
+    // Cards (La Colección)
+    cardBorderRadius: { type: String, default: '4px' },
+    cardBorderColor: { type: String, default: '#E91E9E' },
+    cardOpacity: { type: String, default: '1' },
+
+    // Service Cards
+    serviceCardBg: { type: String, default: 'rgba(255,255,255,0.04)' },
+    serviceCardBorderRadius: { type: String, default: '4px' },
+    serviceCardBorderColor: { type: String, default: 'rgba(233,30,158,0.3)' },
+
+    // Info Blocks (Pagos, Envíos, Redes)
+    infoBlockBg: { type: String, default: 'rgba(255,255,255,0.03)' },
+    infoBlockBorderColor: { type: String, default: 'rgba(255,215,0,0.25)' },
+    infoBlockBorderRadius: { type: String, default: '4px' },
+
+    // Speech Bubble
+    speechBubbleBg: { type: String, default: 'rgba(6,16,30,0.85)' },
+    speechBubbleBorderColor: { type: String, default: '#E91E9E' },
+    speechBubbleBorderRadius: { type: String, default: '20px' },
+
+    // CTA Buttons (Starburst)
+    ctaBtnBg: { type: String, default: '#003333' },
+    ctaBtnColor: { type: String, default: '#ffffff' },
+    ctaBtnBorderRadius: { type: String, default: '30px' },
+
+    // Channel Cards (Redes Sociales)
+    channelCardBg: { type: String, default: 'rgba(255,255,255,0.04)' },
+    channelCardBorderColor: { type: String, default: 'rgba(0,191,255,0.2)' },
+    channelCardBorderRadius: { type: String, default: '4px' },
+
+    // Gallery Modal
+    modalOverlayBg: { type: String, default: 'rgba(0,0,0,0.92)' },
+    modalContentBg: { type: String, default: '#0a1a2f' },
+    modalBorderColor: { type: String, default: '#E91E9E' },
+
+    // Mission Banner
+    missionBannerBg: { type: String, default: 'rgba(255,255,255,0.04)' },
+    missionBannerBorderColor: { type: String, default: 'rgba(0,191,255,0.25)' },
+
     // --- CUSTOM BLOCKS (WIDGETS) ---
     customBlocks: { type: String, default: '[]' },
 

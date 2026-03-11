@@ -52,7 +52,25 @@ export class VisualEditorComponent implements OnInit, DoCheck {
         ctaBtn1Text: 'Contáctanos',
         ctaBtn2Text: 'WhatsApp',
         footerText: '© 2024 KOI Design. Todos los derechos reservados. Hecho con 💚 y Láseres.',
-        customBlocks: '[]'
+        customBlocks: '[]',
+        collectionMascotLeftUrl: 'img/dragoasomadonaranja.png',
+        collectionMascotRightUrl: 'img/dragoasomadorojo.png',
+        modalDragonLeftUrl: 'img/DragonTecnologico2.png',
+        modalDragonRightUrl: 'img/DragonTecnologico.png',
+        ctaBgUrl: '',
+        modalTextTopLeft: '¡ZAP!',
+        modalTextTopRight: '¡POW!',
+        modalTextBottomLeft: '¡BOOM!',
+        modalTextBottomRight: '¡WOW!',
+        primaryFont: "'Inter', 'Segoe UI', sans-serif",
+        cardBorderRadius: '4px', cardBorderColor: '#E91E9E', cardOpacity: '1',
+        serviceCardBg: 'rgba(255,255,255,0.04)', serviceCardBorderRadius: '4px', serviceCardBorderColor: 'rgba(233,30,158,0.3)',
+        infoBlockBg: 'rgba(255,255,255,0.03)', infoBlockBorderColor: 'rgba(255,215,0,0.25)', infoBlockBorderRadius: '4px',
+        speechBubbleBg: 'rgba(6,16,30,0.85)', speechBubbleBorderColor: '#E91E9E', speechBubbleBorderRadius: '20px',
+        ctaBtnBg: '#003333', ctaBtnColor: '#ffffff', ctaBtnBorderRadius: '30px',
+        channelCardBg: 'rgba(255,255,255,0.04)', channelCardBorderColor: 'rgba(0,191,255,0.2)', channelCardBorderRadius: '4px',
+        modalOverlayBg: 'rgba(0,0,0,0.92)', modalContentBg: '#0a1a2f', modalBorderColor: '#E91E9E',
+        missionBannerBg: 'rgba(255,255,255,0.04)', missionBannerBorderColor: 'rgba(0,191,255,0.25)'
     };
 
     // UI state
@@ -73,6 +91,10 @@ export class VisualEditorComponent implements OnInit, DoCheck {
     heroBgFile: File | null = null;
     heroMascotFile: File | null = null;
     missionMascotFile: File | null = null;
+    collectionLeftFile: File | null = null;
+    collectionRightFile: File | null = null;
+    modalLeftFile: File | null = null;
+    modalRightFile: File | null = null;
 
     // Preview
     previewUrl: SafeResourceUrl;
@@ -196,13 +218,17 @@ export class VisualEditorComponent implements OnInit, DoCheck {
     }
 
     // ── File selection ──
-    onFileSelected(event: Event, type: 'logo' | 'heroBg' | 'heroMascot' | 'missionMascot') {
+    onFileSelected(event: Event, type: 'logo' | 'heroBg' | 'heroMascot' | 'missionMascot' | 'collectionLeft' | 'collectionRight' | 'modalLeft' | 'modalRight') {
         const file = (event.target as HTMLInputElement).files?.[0];
         if (file) {
             if (type === 'logo') this.logoFile = file;
             if (type === 'heroBg') this.heroBgFile = file;
             if (type === 'heroMascot') this.heroMascotFile = file;
             if (type === 'missionMascot') this.missionMascotFile = file;
+            if (type === 'collectionLeft') this.collectionLeftFile = file;
+            if (type === 'collectionRight') this.collectionRightFile = file;
+            if (type === 'modalLeft') this.modalLeftFile = file;
+            if (type === 'modalRight') this.modalRightFile = file;
             this.hasChanges = true;
         }
     }
@@ -223,6 +249,10 @@ export class VisualEditorComponent implements OnInit, DoCheck {
         if (this.heroBgFile) formData.append('heroBgImage', this.heroBgFile);
         if (this.heroMascotFile) formData.append('heroMascotImage', this.heroMascotFile);
         if (this.missionMascotFile) formData.append('missionMascotImage', this.missionMascotFile);
+        if (this.collectionLeftFile) formData.append('collectionLeftImage', this.collectionLeftFile);
+        if (this.collectionRightFile) formData.append('collectionRightImage', this.collectionRightFile);
+        if (this.modalLeftFile) formData.append('modalLeftImage', this.modalLeftFile);
+        if (this.modalRightFile) formData.append('modalRightImage', this.modalRightFile);
 
         this.api.updateSettings(formData).subscribe({
             next: (res) => {
@@ -231,6 +261,8 @@ export class VisualEditorComponent implements OnInit, DoCheck {
                 this.saving = false;
                 this.logoFile = null; this.heroBgFile = null;
                 this.heroMascotFile = null; this.missionMascotFile = null;
+                this.collectionLeftFile = null; this.collectionRightFile = null;
+                this.modalLeftFile = null; this.modalRightFile = null;
                 this.showToast('¡Cambios guardados exitosamente!', 'success');
             },
             error: (err) => {

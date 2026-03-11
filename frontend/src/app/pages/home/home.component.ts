@@ -22,7 +22,7 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
             <span class="action-word">{{settings.heroActionWord}}</span>
             <span class="new-tag">¡Nuevos Diseños!</span>
           </div>
-          <div class="speech-bubble">
+          <div class="speech-bubble" [style.backgroundColor]="settings.speechBubbleBg" [style.borderColor]="settings.speechBubbleBorderColor" [style.borderRadius]="settings.speechBubbleBorderRadius">
             <h1>{{settings.heroTitle}} <span class="highlight-text">{{settings.heroHighlightItem1}}</span></h1>
             <p>{{settings.heroSubtitle}}</p>
           </div>
@@ -90,6 +90,10 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
             <div *ngFor="let card of cards; let i = index"
                  class="card fade-in" [class.card-halftone]="card.isHalftone"
                  [style.--card-index]="i"
+                 [style.borderColor]="settings.cardBorderColor"
+                 [style.borderRadius]="settings.cardBorderRadius"
+                 [style.opacity]="settings.cardOpacity"
+                 [style.backgroundColor]="settings.cardBgColor"
                  (mousemove)="onCardMouseMove($event, i)"
                  (mouseleave)="onCardMouseLeave(i)">
               <div class="card-header">
@@ -120,17 +124,17 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
           <h2>{{settings.servicesTitle}}</h2>
         </div>
         <div class="services-grid">
-          <div class="service-card fade-in">
+          <div class="service-card fade-in" [style.backgroundColor]="settings.serviceCardBg" [style.borderColor]="settings.serviceCardBorderColor" [style.borderRadius]="settings.serviceCardBorderRadius">
             <div class="service-icon"><i class="fas fa-palette"></i></div>
             <h3>{{settings.service1Title}}</h3>
             <p>{{settings.service1Desc}}</p>
           </div>
-          <div class="service-card fade-in">
+          <div class="service-card fade-in" [style.backgroundColor]="settings.serviceCardBg" [style.borderColor]="settings.serviceCardBorderColor" [style.borderRadius]="settings.serviceCardBorderRadius">
             <div class="service-icon"><i class="fas fa-crosshairs"></i></div>
             <h3>{{settings.service2Title}}</h3>
             <p>{{settings.service2Desc}}</p>
           </div>
-          <div class="service-card fade-in">
+          <div class="service-card fade-in" [style.backgroundColor]="settings.serviceCardBg" [style.borderColor]="settings.serviceCardBorderColor" [style.borderRadius]="settings.serviceCardBorderRadius">
             <div class="service-icon"><i class="fas fa-gift"></i></div>
             <h3>{{settings.service3Title}}</h3>
             <p>{{settings.service3Desc}}</p>
@@ -138,7 +142,7 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
         </div>
 
         <!-- Mascota + Frase -->
-        <div class="mission-banner fade-in">
+        <div class="mission-banner fade-in" [style.backgroundColor]="settings.missionBannerBg" [style.borderColor]="settings.missionBannerBorderColor">
           <div class="mission-mascot">
             <img [src]="api.getMediaUrl(settings.missionMascotUrl)" alt="Dragón Rojo Diseñador" width="130" height="auto" loading="lazy" decoding="async" style="transform: scale(1.2) translateY(-10px);" />
           </div>
@@ -150,7 +154,7 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
         </div>
 
         <!-- Métodos de pago -->
-        <div class="info-block fade-in">
+        <div class="info-block fade-in" [style.backgroundColor]="settings.infoBlockBg" [style.borderColor]="settings.infoBlockBorderColor" [style.borderRadius]="settings.infoBlockBorderRadius">
           <div class="comic-panel-header">
             <span class="panel-number">💸</span>
             <h2>{{settings.paymentsTitle}}</h2>
@@ -172,7 +176,7 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
         </div>
 
         <!-- Envíos -->
-        <div class="info-block fade-in">
+        <div class="info-block fade-in" [style.backgroundColor]="settings.infoBlockBg" [style.borderColor]="settings.infoBlockBorderColor" [style.borderRadius]="settings.infoBlockBorderRadius">
           <div class="comic-panel-header">
             <span class="panel-number">🛵</span>
             <h2>{{settings.shippingTitle}}</h2>
@@ -184,17 +188,17 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
         </div>
 
         <!-- Redes y contacto -->
-        <div class="info-block fade-in">
+        <div class="info-block fade-in" [style.backgroundColor]="settings.infoBlockBg" [style.borderColor]="settings.infoBlockBorderColor" [style.borderRadius]="settings.infoBlockBorderRadius">
           <div class="comic-panel-header">
             <span class="panel-number">📱</span>
             <h2>{{settings.socialTitle}}</h2>
           </div>
           <div class="contact-channels">
-            <a href="https://wa.me/573186909433" class="channel-card" target="_blank"><i class="fab fa-whatsapp"></i><span>{{settings.socialWhatsapp}}</span></a>
-            <a href="https://facebook.com/KoiDesignsSoacha" class="channel-card" target="_blank"><i class="fab fa-facebook-f"></i><span>{{settings.socialFacebook}}</span></a>
-            <a href="https://instagram.com/KoiDesignsSoacha" class="channel-card" target="_blank"><i class="fab fa-instagram"></i><span>{{settings.socialInstagram}}</span></a>
-            <a href="https://tiktok.com/&#64;koiartesgraficas" class="channel-card" target="_blank"><i class="fab fa-tiktok"></i><span>{{settings.socialTiktok}}</span></a>
-            <a href="https://wa.me/c/573186909433" class="channel-card channel-catalog" target="_blank"><i class="fas fa-book-open"></i><span>{{settings.socialCatalogText}}</span></a>
+            <a href="https://wa.me/573186909433" class="channel-card" [style.backgroundColor]="settings.channelCardBg" [style.borderColor]="settings.channelCardBorderColor" [style.borderRadius]="settings.channelCardBorderRadius" target="_blank"><i class="fab fa-whatsapp"></i><span>{{settings.socialWhatsapp}}</span></a>
+            <a href="https://facebook.com/KoiDesignsSoacha" class="channel-card" [style.backgroundColor]="settings.channelCardBg" [style.borderColor]="settings.channelCardBorderColor" [style.borderRadius]="settings.channelCardBorderRadius" target="_blank"><i class="fab fa-facebook-f"></i><span>{{settings.socialFacebook}}</span></a>
+            <a href="https://instagram.com/KoiDesignsSoacha" class="channel-card" [style.backgroundColor]="settings.channelCardBg" [style.borderColor]="settings.channelCardBorderColor" [style.borderRadius]="settings.channelCardBorderRadius" target="_blank"><i class="fab fa-instagram"></i><span>{{settings.socialInstagram}}</span></a>
+            <a href="https://tiktok.com/&#64;koiartesgraficas" class="channel-card" [style.backgroundColor]="settings.channelCardBg" [style.borderColor]="settings.channelCardBorderColor" [style.borderRadius]="settings.channelCardBorderRadius" target="_blank"><i class="fab fa-tiktok"></i><span>{{settings.socialTiktok}}</span></a>
+            <a href="https://wa.me/c/573186909433" class="channel-card channel-catalog" [style.backgroundColor]="settings.channelCardBg" [style.borderColor]="settings.channelCardBorderColor" [style.borderRadius]="settings.channelCardBorderRadius" target="_blank"><i class="fas fa-book-open"></i><span>{{settings.socialCatalogText}}</span></a>
           </div>
         </div>
       </div>
@@ -221,8 +225,8 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
           <p>{{settings.ctaSubtitle}}</p>
           <div class="cta-buttons-wrapper">
             <span class="star-decoration">✦</span>
-            <button class="starburst-btn" (click)="goContacto()"><i class="fas fa-envelope"></i> {{settings.ctaBtn1Text}}</button>
-            <button class="starburst-btn" (click)="goWhatsApp()"><i class="fab fa-whatsapp"></i> {{settings.ctaBtn2Text}}</button>
+            <button class="starburst-btn" [style.backgroundColor]="settings.ctaBtnBg" [style.color]="settings.ctaBtnColor" [style.borderRadius]="settings.ctaBtnBorderRadius" (click)="goContacto()"><i class="fas fa-envelope"></i> {{settings.ctaBtn1Text}}</button>
+            <button class="starburst-btn" [style.backgroundColor]="settings.ctaBtnBg" [style.color]="settings.ctaBtnColor" [style.borderRadius]="settings.ctaBtnBorderRadius" (click)="goWhatsApp()"><i class="fab fa-whatsapp"></i> {{settings.ctaBtn2Text}}</button>
             <span class="star-decoration">✦</span>
           </div>
         </div>
@@ -230,15 +234,15 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
     </section>
 
     <!-- ════════════ MODAL GALERÍA DE CARDS ════════════ -->
-    <div class="card-modal-overlay" *ngIf="isCardGalleryOpen" (click)="closeCardGallery()">
-      <span class="comic-action-float top-left">¡ZAP!</span>
-      <span class="comic-action-float top-right">¡POW!</span>
+    <div class="card-modal-overlay" *ngIf="isCardGalleryOpen" (click)="closeCardGallery()" [style.backgroundColor]="settings.modalOverlayBg">
+      <span class="comic-action-float top-left">{{settings.modalTextTopLeft}}</span>
+      <span class="comic-action-float top-right">{{settings.modalTextTopRight}}</span>
 
-      <div class="card-modal-container" (click)="$event.stopPropagation()">
+      <div class="card-modal-container" (click)="$event.stopPropagation()" [style.backgroundColor]="settings.modalContentBg" [style.borderColor]="settings.modalBorderColor">
         <button class="card-modal-close" (click)="closeCardGallery()"><i class="fas fa-times"></i></button>
         
-        <img src="img/DragonTecnologico2.png" alt="Dragón Izquierdo" class="modal-dragon modal-dragon-left" />
-        <img src="img/DragonTecnologico.png" alt="Dragón Derecho" class="modal-dragon modal-dragon-right" />
+        <img [src]="api.getMediaUrl(settings.modalDragonLeftUrl || '')" alt="Dragón Izquierdo" class="modal-dragon modal-dragon-left" />
+        <img [src]="api.getMediaUrl(settings.modalDragonRightUrl || '')" alt="Dragón Derecho" class="modal-dragon modal-dragon-right" />
         
         <span class="comic-panel-counter" *ngIf="activeCardGallery.length > 1">
           {{currentCardGallerySlide + 1}} / {{activeCardGallery.length}}
@@ -264,8 +268,8 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
         </div>
       </div>
 
-      <span class="comic-action-float bottom-left">¡BOOM!</span>
-      <span class="comic-action-float bottom-right">¡WOW!</span>
+      <span class="comic-action-float bottom-left">{{settings.modalTextBottomLeft}}</span>
+      <span class="comic-action-float bottom-right">{{settings.modalTextBottomRight}}</span>
     </div>
   `,
   styles: [`
@@ -325,7 +329,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     ctaBtn1Text: 'Contáctanos',
     ctaBtn2Text: 'WhatsApp',
     footerText: '© 2024 KOI Design. Todos los derechos reservados. Hecho con 💚 y Láseres.',
-    customBlocks: '[]'
+    customBlocks: '[]',
+    collectionMascotLeftUrl: 'img/dragoasomadonaranja.png',
+    collectionMascotRightUrl: 'img/dragoasomadorojo.png',
+    modalDragonLeftUrl: 'img/DragonTecnologico2.png',
+    modalDragonRightUrl: 'img/DragonTecnologico.png',
+    modalTextTopLeft: '¡ZAP!', modalTextTopRight: '¡POW!', modalTextBottomLeft: '¡BOOM!', modalTextBottomRight: '¡WOW!', primaryFont: "'Inter', 'Segoe UI', sans-serif",
+    cardBorderRadius: '4px', cardBorderColor: '#E91E9E', cardOpacity: '1',
+    serviceCardBg: 'rgba(255,255,255,0.04)', serviceCardBorderRadius: '4px', serviceCardBorderColor: 'rgba(233,30,158,0.3)',
+    infoBlockBg: 'rgba(255,255,255,0.03)', infoBlockBorderColor: 'rgba(255,215,0,0.25)', infoBlockBorderRadius: '4px',
+    speechBubbleBg: 'rgba(6,16,30,0.85)', speechBubbleBorderColor: '#E91E9E', speechBubbleBorderRadius: '20px',
+    ctaBtnBg: '#003333', ctaBtnColor: '#ffffff', ctaBtnBorderRadius: '30px',
+    channelCardBg: 'rgba(255,255,255,0.04)', channelCardBorderColor: 'rgba(0,191,255,0.2)', channelCardBorderRadius: '4px',
+    modalOverlayBg: 'rgba(0,0,0,0.92)', modalContentBg: '#0a1a2f', modalBorderColor: '#E91E9E',
+    missionBannerBg: 'rgba(255,255,255,0.04)', missionBannerBorderColor: 'rgba(0,191,255,0.25)'
   };
 
   isCardGalleryOpen = false;

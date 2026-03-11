@@ -51,5 +51,6 @@ export class AppComponent implements OnInit {
     if (settings.accentColor) root.style.setProperty('--yellow', settings.accentColor);
     if (settings.bgColor) root.style.setProperty('--dark-bg', settings.bgColor);
     if (settings.cardBgColor) root.style.setProperty('--card-bg', settings.cardBgColor);
+    root.style.setProperty('--font-family-primary', settings.primaryFont || "'Inter', 'Segoe UI', sans-serif");
   }
 }
