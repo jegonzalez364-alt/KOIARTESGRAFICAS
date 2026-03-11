@@ -204,10 +204,10 @@ export class ContactComponent implements AfterViewInit, OnInit {
       }
     });
 
-    // Cargar config real
+    // Cargar config real de la base de datos
     this.api.getSettings().subscribe((s: any) => {
-      if (s && !this.siteSettings) {
-          this.siteSettings = s;
+      if (s) {
+          this.siteSettings = { ...this.siteSettings, ...s };
       }
     });
     // Auto-fill if user is logged in
