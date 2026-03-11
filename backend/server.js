@@ -738,8 +738,9 @@ app.put('/api/settings', authMiddleware, upload.fields([
         const updatableFields = [
             'primaryColor', 'secondaryColor', 'accentColor', 'bgColor', 'cardBgColor',
             'logoUrl', 'heroBgUrl', 'heroMascotUrl', 'missionMascotUrl',
-            'heroTitle', 'heroHighlightItem1', 'heroHighlightItem2', 'heroHighlightItem3',
-            'heroSubtitle', 'heroBtnText', 'heroActionWord',
+            'heroTitle', 'heroTitleColor', 'heroTitleFont', 'heroHighlightItem1', 'heroHighlightItem2', 'heroHighlightItem3',
+            'heroSubtitle', 'heroSubtitleColor', 'heroSubtitleFont', 'heroBtnText', 'heroActionWord',
+            'collectionTitle', 'collectionSubtitle',
             'servicesTitle', 'service1Title', 'service1Desc', 'service2Title', 'service2Desc', 'service3Title', 'service3Desc',
             'missionTitle', 'missionSubtitle', 'missionActionWord',
             'paymentsTitle', 'shippingTitle', 'shippingItem1Title', 'shippingItem1Desc', 'shippingItem2Title', 'shippingItem2Desc',

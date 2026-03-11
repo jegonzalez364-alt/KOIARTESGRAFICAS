@@ -400,8 +400,11 @@
                                 </div>
                                 <div class="field-group" style="margin-top: 10px;">
                                     <label>Fondo</label>
-                                    <input type="text" [(ngModel)]="settings.speechBubbleBg"
-                                        (ngModelChange)="onFieldChange()">
+                                    <div class="color-row"><input type="color"
+                                            [(ngModel)]="settings.speechBubbleBg"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.speechBubbleBg"
+                                            (ngModelChange)="onFieldChange()"></div>
                                 </div>
                                 <div class="field-group">
                                     <label>Borde</label>
