@@ -1,5 +1,7 @@
 User-agent: *
-Disallow: /admin/
 Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /assets/
 
 Sitemap: https://koi-artesgraficas.onrender.com/sitemap.xml
