@@ -737,7 +737,11 @@ app.put('/api/settings', authMiddleware, upload.fields([
     { name: 'logoImage', maxCount: 1 },
     { name: 'heroBgImage', maxCount: 1 },
     { name: 'heroMascotImage', maxCount: 1 },
-    { name: 'missionMascotImage', maxCount: 1 }
+    { name: 'missionMascotImage', maxCount: 1 },
+    { name: 'collectionLeftImage', maxCount: 1 },
+    { name: 'collectionRightImage', maxCount: 1 },
+    { name: 'modalLeftImage', maxCount: 1 },
+    { name: 'modalRightImage', maxCount: 1 }
 ]), async (req, res) => {
     if (req.user.role !== 'admin') {
         return res.status(403).json({ error: 'Acceso denegado' });
@@ -797,6 +801,18 @@ app.put('/api/settings', authMiddleware, upload.fields([
             }
             if (req.files['missionMascotImage'] && req.files['missionMascotImage'][0]) {
                 settings.missionMascotUrl = req.files['missionMascotImage'][0].path;
+            }
+            if (req.files['collectionLeftImage'] && req.files['collectionLeftImage'][0]) {
+                settings.collectionMascotLeftUrl = req.files['collectionLeftImage'][0].path;
+            }
+            if (req.files['collectionRightImage'] && req.files['collectionRightImage'][0]) {
+                settings.collectionMascotRightUrl = req.files['collectionRightImage'][0].path;
+            }
+            if (req.files['modalLeftImage'] && req.files['modalLeftImage'][0]) {
+                settings.modalDragonLeftUrl = req.files['modalLeftImage'][0].path;
+            }
+            if (req.files['modalRightImage'] && req.files['modalRightImage'][0]) {
+                settings.modalDragonRightUrl = req.files['modalRightImage'][0].path;
             }
         }
 
