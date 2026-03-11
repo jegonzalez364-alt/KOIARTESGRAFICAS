@@ -23,8 +23,8 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
             <span class="new-tag">¡Nuevos Diseños!</span>
           </div>
           <div class="speech-bubble" [style.backgroundColor]="settings.speechBubbleBg" [style.borderColor]="settings.speechBubbleBorderColor" [style.borderRadius]="settings.speechBubbleBorderRadius">
-            <h1>{{settings.heroTitle}} <span class="highlight-text">{{settings.heroHighlightItem1}}</span></h1>
-            <p>{{settings.heroSubtitle}}</p>
+            <h1 [style.color]="settings.heroTitleColor" [style.fontFamily]="settings.heroTitleFont">{{settings.heroTitle}} <span class="highlight-text">{{settings.heroHighlightItem1}}</span></h1>
+            <p [style.color]="settings.heroSubtitleColor" [style.fontFamily]="settings.heroSubtitleFont">{{settings.heroSubtitle}}</p>
           </div>
           <div class="hero-btns">
             <button class="btn-primary" (click)="scrollToSection('coleccion')">{{settings.heroBtnText}}</button>
@@ -78,8 +78,8 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
     <section class="collection" id="coleccion">
       <div class="container">
         <div class="section-title-box fade-in">
-          <h2>La Colección</h2>
-          <p>Explora nuestros paneles de asombrosos artefactos de madera. ¡Cada uno cuenta una historia!</p>
+          <h2>{{settings.collectionTitle}}</h2>
+          <p>{{settings.collectionSubtitle}}</p>
         </div>
 
         <div class="cards-section-wrapper">
@@ -298,9 +298,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     bgColor: '#06101e', cardBgColor: '#f5f0e8',
     logoUrl: 'img/logoicon.png', heroBgUrl: '/img/KoiFondo.png',
     heroMascotUrl: 'img/Koi-Icono.png', missionMascotUrl: 'img/DragonRojoDiseñador.png',
-    heroTitle: 'Transformamos tus Ideas en', heroHighlightItem1: 'Arte Láser',
-    heroSubtitle: 'Personalizamos cada detalle para sorprender.',
+    heroTitle: 'Transformamos tus Ideas en', heroTitleColor: '#ffffff', heroTitleFont: "'Inter', 'Segoe UI', sans-serif", heroHighlightItem1: 'Arte Láser',
+    heroSubtitle: 'Personalizamos cada detalle para sorprender.', heroSubtitleColor: '#e0e0e0', heroSubtitleFont: "'Inter', 'Segoe UI', sans-serif",
     heroBtnText: 'Explorar Catálogo', heroActionWord: '¡BAM!',
+    collectionTitle: 'La Colección', collectionSubtitle: 'Explora nuestros paneles de asombrosos artefactos de madera. ¡Cada uno cuenta una historia!',
     missionTitle: 'Tu idea, nuestra misión', missionSubtitle: 'Siempre encontramos la forma de hacerla posible. 🤯',
     missionActionWord: '¡BOOM!', contactTitle: 'Contáctanos',
     contactSubtitle: '¿Tienes una idea? ¡Hagámosla realidad! Escríbenos y nuestro equipo te responderá más rápido que un rayo láser.',
@@ -338,7 +339,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     cardBorderRadius: '4px', cardBorderColor: '#E91E9E', cardOpacity: '1',
     serviceCardBg: 'rgba(255,255,255,0.04)', serviceCardBorderRadius: '4px', serviceCardBorderColor: 'rgba(233,30,158,0.3)',
     infoBlockBg: 'rgba(255,255,255,0.03)', infoBlockBorderColor: 'rgba(255,215,0,0.25)', infoBlockBorderRadius: '4px',
-    speechBubbleBg: 'rgba(6,16,30,0.85)', speechBubbleBorderColor: '#E91E9E', speechBubbleBorderRadius: '20px',
+    speechBubbleBg: 'rgba(255,255,255,0.95)', speechBubbleBorderColor: '#E91E9E', speechBubbleBorderRadius: '20px',
     ctaBtnBg: '#003333', ctaBtnColor: '#ffffff', ctaBtnBorderRadius: '30px',
     channelCardBg: 'rgba(255,255,255,0.04)', channelCardBorderColor: 'rgba(0,191,255,0.2)', channelCardBorderRadius: '4px',
     modalOverlayBg: 'rgba(0,0,0,0.92)', modalContentBg: '#0a1a2f', modalBorderColor: '#E91E9E',

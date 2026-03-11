@@ -47,10 +47,16 @@ export interface SiteSettings {
     heroMascotUrl: string;
     missionMascotUrl: string;
     heroTitle: string;
+    heroTitleColor?: string;
+    heroTitleFont?: string;
     heroHighlightItem1: string;
     heroSubtitle: string;
+    heroSubtitleColor?: string;
+    heroSubtitleFont?: string;
     heroBtnText?: string;
     heroActionWord?: string;
+    collectionTitle?: string;
+    collectionSubtitle?: string;
     missionTitle?: string;
     missionSubtitle?: string;
     missionActionWord?: string;

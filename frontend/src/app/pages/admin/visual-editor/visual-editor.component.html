@@ -146,6 +146,28 @@
                         </div>
                     </div>
 
+                    <!-- COLLECTION SECTION -->
+                    <div class="section-item" [class.active]="activeSection === 'collection'">
+                        <div class="section-item-header" (click)="toggleSection('collection')">
+                            <span class="section-icon">🃏</span>
+                            <span class="section-name">Colección</span>
+                            <i class="fas fa-chevron-down section-expand-icon"></i>
+                        </div>
+                        <div class="section-fields" *ngIf="activeSection === 'collection'">
+                            <div class="field-group">
+                                <label>Título de Sección <i class="fas fa-question-circle help-icon"
+                                        title="Ej: La Colección"></i></label>
+                                <input type="text" [(ngModel)]="settings.collectionTitle"
+                                    (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Descripción de Sección</label>
+                                <textarea [(ngModel)]="settings.collectionSubtitle" rows="2"
+                                    (ngModelChange)="onFieldChange()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- MISSION -->
                     <div class="section-item" [class.active]="activeSection === 'mission'">
                         <div class="section-item-header" (click)="toggleSection('mission')">
@@ -339,6 +361,42 @@
                             </div>
                             <div class="section-fields" *ngIf="editingBlockId === 'speech'">
                                 <div class="field-group">
+                                    <label>Color Título</label>
+                                    <div class="color-row"><input type="color"
+                                            [(ngModel)]="settings.heroTitleColor"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.heroTitleColor"
+                                            (ngModelChange)="onFieldChange()"></div>
+                                </div>
+                                <div class="field-group">
+                                    <label>Fuente Título</label>
+                                    <select [(ngModel)]="settings.heroTitleFont" (ngModelChange)="onFieldChange()" class="form-select" style="background: #0a0e17; border: 1px solid #1e2946; color: #e0e0e0; padding: 8px 10px; border-radius: 6px; width: 100%;">
+                                        <option value="'Inter', 'Segoe UI', sans-serif">Inter (Moderno & Limpio)</option>
+                                        <option value="'Bangers', 'Comic Sans MS', cursive">Bangers (Estilo Cómic)</option>
+                                        <option value="'Montserrat', sans-serif">Montserrat (Elegante)</option>
+                                        <option value="'Poppins', sans-serif">Poppins (Geométrico)</option>
+                                        <option value="'Roboto', sans-serif">Roboto (Clásico)</option>
+                                    </select>
+                                </div>
+                                <div class="field-group" style="margin-top: 10px;">
+                                    <label>Color Subtítulo</label>
+                                    <div class="color-row"><input type="color"
+                                            [(ngModel)]="settings.heroSubtitleColor"
+                                            (ngModelChange)="onFieldChange()"><input type="text"
+                                            [(ngModel)]="settings.heroSubtitleColor"
+                                            (ngModelChange)="onFieldChange()"></div>
+                                </div>
+                                <div class="field-group">
+                                    <label>Fuente Subtítulo</label>
+                                    <select [(ngModel)]="settings.heroSubtitleFont" (ngModelChange)="onFieldChange()" class="form-select" style="background: #0a0e17; border: 1px solid #1e2946; color: #e0e0e0; padding: 8px 10px; border-radius: 6px; width: 100%;">
+                                        <option value="'Inter', 'Segoe UI', sans-serif">Inter (Moderno & Limpio)</option>
+                                        <option value="'Bangers', 'Comic Sans MS', cursive">Bangers (Estilo Cómic)</option>
+                                        <option value="'Montserrat', sans-serif">Montserrat (Elegante)</option>
+                                        <option value="'Poppins', sans-serif">Poppins (Geométrico)</option>
+                                        <option value="'Roboto', sans-serif">Roboto (Clásico)</option>
+                                    </select>
+                                </div>
+                                <div class="field-group" style="margin-top: 10px;">
                                     <label>Fondo</label>
                                     <input type="text" [(ngModel)]="settings.speechBubbleBg"
                                         (ngModelChange)="onFieldChange()">

@@ -16,12 +16,20 @@ const siteSettingsSchema = new mongoose.Schema({
 
     // --- TEXTS: HERO ---
     heroTitle: { type: String, default: 'Transformamos tus Ideas en' },
+    heroTitleColor: { type: String, default: '#ffffff' },
+    heroTitleFont: { type: String, default: "'Inter', sans-serif" },
     heroHighlightItem1: { type: String, default: 'Arte Láser' },
     heroHighlightItem2: { type: String, default: 'Regalos Únicos' },
     heroHighlightItem3: { type: String, default: 'Diseño Creativo' },
     heroSubtitle: { type: String, default: 'Personalizamos cada detalle para sorprender.' },
+    heroSubtitleColor: { type: String, default: '#e0e0e0' },
+    heroSubtitleFont: { type: String, default: "'Inter', sans-serif" },
     heroBtnText: { type: String, default: 'Explorar Catálogo' },
     heroActionWord: { type: String, default: '¡BAM!' },
+
+    // Collection texts
+    collectionTitle: { type: String, default: 'La Colección' },
+    collectionSubtitle: { type: String, default: 'Explora nuestros paneles de asombrosos artefactos de madera. ¡Cada uno cuenta una historia!' },
 
     // --- TEXTS: ABOUT (NOSOTROS) SERVICES ---
     servicesTitle: { type: String, default: '¡Personalizamos tus mejores ideas!' },
