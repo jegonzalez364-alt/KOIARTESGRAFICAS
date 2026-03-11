@@ -99,7 +99,7 @@ export class CotizadorComponent implements OnInit {
     ];
 
     for (let m of minimos) {
-        if (ancho_cm == m.w && alto_cm == m.h) {
+        if ((ancho_cm == m.w && alto_cm == m.h) || (ancho_cm == m.h && alto_cm == m.w)) {
             if (precio < m.p) precio = m.p;
         }
     }
@@ -110,7 +110,7 @@ export class CotizadorComponent implements OnInit {
   private precioKoiFraccionado(ancho_cm: number, alto_cm: number, costo_m2: number): number {
     const area = (ancho_cm / 100) * (alto_cm / 100);
     
-    let multiplicador = 4.55 - (area * 0.90);
+    let multiplicador = 4.15 - (area * 1.00);
 
     if (multiplicador > 4.25) multiplicador = 4.25; 
     if (multiplicador < 2.44) multiplicador = 2.44; 
