@@ -78,45 +78,82 @@ export class CotizadorComponent implements OnInit {
 
   /* --- Fórmulas Replicadas --- */
 
+  private getInterpolatedMultiplier(area: number, stops: { a: number, m: number }[]): number {
+    if (area <= stops[0].a) return stops[0].m;
+    if (area >= stops[stops.length - 1].a) return stops[stops.length - 1].m;
+
+    for (let i = 0; i < stops.length - 1; i++) {
+        if (area >= stops[i].a && area <= stops[i + 1].a) {
+            const slope = (stops[i + 1].m - stops[i].m) / (stops[i + 1].a - stops[i].a);
+            return stops[i].m + slope * (area - stops[i].a);
+        }
+    }
+    return stops[stops.length - 1].m;
+  }
+
   private precioKoi3D(ancho_cm: number, alto_cm: number, material: number, impresion: number): number {
     const area = (ancho_cm / 100) * (alto_cm / 100);
-
     const costo_m2 = (material * 2) + (impresion * 2);
 
-    let multiplicador = 2.90 - (area * 0.60);
-
-    if (multiplicador > 2.70) multiplicador = 2.70;
-    if (multiplicador < 1.60) multiplicador = 1.60;
-
-    let precio = area * costo_m2 * multiplicador;
-
-    const minimos = [
-        { w: 14, h: 20, p: 35000 },
-        { w: 20, h: 30, p: 45000 },
-        { w: 30, h: 40, p: 65000 },
-        { w: 40, h: 50, p: 90000 },
-        { w: 40, h: 60, p: 110000 }
+    // Tamaños exactos para obtener redondeos KOI perfectos (calculados sobre base 164.360)
+    const layouts = [
+        { w: 14, h: 20, m: 7.604 },  // ~35.000
+        { w: 20, h: 30, m: 4.563 },  // ~45.000
+        { w: 30, h: 40, m: 3.295 },  // ~65.000
+        { w: 40, h: 50, m: 2.737 },  // ~90.000
+        { w: 40, h: 60, m: 2.788 },  // ~110.000
+        { w: 60, h: 80, m: 2.028 },  // ~160.000
+        { w: 100, h: 100, m: 1.581 } // ~260.000
     ];
 
-    for (let m of minimos) {
-        if ((ancho_cm == m.w && alto_cm == m.h) || (ancho_cm == m.h && alto_cm == m.w)) {
-            if (precio < m.p) precio = m.p;
+    let multiplicador = null;
+    
+    // 1. Detección de diseño exacto (conmutativo)
+    for (const l of layouts) {
+        if ((ancho_cm == l.w && alto_cm == l.h) || (ancho_cm == l.h && alto_cm == l.w)) {
+            multiplicador = l.m;
+            break;
         }
     }
 
+    // 2. Si es una medida personalizada, usar interpolación matemática suave
+    if (multiplicador === null) {
+        const stops = layouts.map(l => ({ a: (l.w / 100) * (l.h / 100), m: l.m })).sort((a, b) => a.a - b.a);
+        multiplicador = this.getInterpolatedMultiplier(area, stops);
+    }
+
+    const precio = area * costo_m2 * multiplicador;
     return Math.ceil(precio / 5000) * 5000;
   }
 
   private precioKoiFraccionado(ancho_cm: number, alto_cm: number, costo_m2: number): number {
     const area = (ancho_cm / 100) * (alto_cm / 100);
     
-    let multiplicador = 4.15 - (area * 1.00);
+    // Puntos de calibración para obtener redondeos exactos (sobre base 53.180)
+    const layouts = [
+        { w: 100, h: 50, m: 4.136 },  // ~110.000
+        { w: 120, h: 60, m: 3.656 },  // ~140.000
+        { w: 150, h: 80, m: 2.977 },  // ~190.000
+        { w: 100, h: 200, m: 2.444 }  // ~260.000
+    ];
 
-    if (multiplicador > 4.25) multiplicador = 4.25; 
-    if (multiplicador < 2.44) multiplicador = 2.44; 
+    let multiplicador = null;
 
-    let precio = area * costo_m2 * multiplicador;
+    // 1. Detección (conmutativo)
+    for (const l of layouts) {
+        if ((ancho_cm == l.w && alto_cm == l.h) || (ancho_cm == l.h && alto_cm == l.w)) {
+            multiplicador = l.m;
+            break;
+        }
+    }
 
+    // 2. Interpolación si es personalizado
+    if (multiplicador === null) {
+        const stops = layouts.map(l => ({ a: (l.w / 100) * (l.h / 100), m: l.m })).sort((a, b) => a.a - b.a);
+        multiplicador = this.getInterpolatedMultiplier(area, stops);
+    }
+
+    const precio = area * costo_m2 * multiplicador;
     return Math.ceil(precio / 5000) * 5000;
   }
 
