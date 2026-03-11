@@ -20,8 +20,8 @@ import { AuthService } from '../../services/auth.service';
       <div class="container" *ngIf="siteSettings">
         <div class="contact-hero-content fade-in">
           <span class="action-word">{{ siteSettings?.contactActionWord || '¡ZAP!' }}</span>
-          <h1 class="contact-title" [style.font-family]="siteSettings?.primaryFont">{{ siteSettings?.contactTitle || 'Contáctanos' }}</h1>
-          <p class="contact-subtitle">{{ siteSettings?.contactSubtitle || '¿Tienes una idea? ¡Hagámosla realidad! Escríbenos y nuestro equipo te responderá más rápido que un rayo láser.' }}</p>
+          <h1 class="contact-title">{{ siteSettings?.contactTitle || 'Contáctanos' }}</h1>
+          <p class="contact-subtitle" style="white-space: pre-line;">{{ siteSettings?.contactSubtitle || '¿Tienes una idea? ¡Hagámosla realidad! Escríbenos y nuestro equipo te responderá más rápido que un rayo láser.' }}</p>
         </div>
       </div>
     </section>
@@ -89,33 +89,33 @@ import { AuthService } from '../../services/auth.service';
           <div class="contact-info-side fade-in" *ngIf="siteSettings">
             <div class="comic-panel-header">
               <span class="panel-number">#02</span>
-              <h2 [style.font-family]="siteSettings?.primaryFont">Info de Contacto</h2>
+              <h2>Info de Contacto</h2>
             </div>
             <div class="info-cards">
-              <div class="info-card" [style.background]="siteSettings?.infoBlockBg" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
+              <div class="info-card" [style.background]="siteSettings?.contactCardBgColor" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
                 <div class="info-card-icon"><i class="fab fa-whatsapp"></i></div>
                 <div class="info-card-content">
                   <h3>WhatsApp</h3>
                   <p>{{ siteSettings?.contactWhatsappNumber || '+57 318 690 9433' }}</p>
-                  <a href="https://wa.me/{{ (siteSettings?.contactWhatsappNumber || '573186909433').replace('+', '').replace(' ', '') }}" class="info-link" [style.color]="siteSettings?.secondaryColor">{{ siteSettings?.contactWhatsappText || 'Chatea con nosotros' }} <i class="fas fa-arrow-right"></i></a>
+                  <a href="https://wa.me/{{ (siteSettings?.contactWhatsappNumber || '573186909433').replace('+', '').replace(' ', '') }}" class="info-link" [style.color]="siteSettings?.contactWhatsappTextColor">{{ siteSettings?.contactWhatsappText || 'Chatea con nosotros' }} <i class="fas fa-arrow-right"></i></a>
                 </div>
               </div>
-              <div class="info-card" [style.background]="siteSettings?.infoBlockBg" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
+              <div class="info-card" [style.background]="siteSettings?.contactCardBgColor" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
                 <div class="info-card-icon"><i class="fas fa-envelope"></i></div>
                 <div class="info-card-content">
                   <h3>Email</h3>
                   <p>{{ siteSettings?.contactEmailAddress || 'contacto@koidesign.com' }}</p>
-                  <a href="mailto:{{ siteSettings?.contactEmailAddress || 'contacto@koidesign.com' }}" class="info-link" [style.color]="siteSettings?.secondaryColor">{{ siteSettings?.contactEmailText || 'Escríbenos' }} <i class="fas fa-arrow-right"></i></a>
+                  <a href="mailto:{{ siteSettings?.contactEmailAddress || 'contacto@koidesign.com' }}" class="info-link" [style.color]="siteSettings?.contactEmailTextColor">{{ siteSettings?.contactEmailText || 'Escríbenos' }} <i class="fas fa-arrow-right"></i></a>
                 </div>
               </div>
-              <div class="info-card" [style.background]="siteSettings?.infoBlockBg" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
+              <div class="info-card" [style.background]="siteSettings?.contactCardBgColor" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
                 <div class="info-card-icon"><i class="fas fa-map-marker-alt"></i></div>
                 <div class="info-card-content">
                   <h3>Ubicación</h3>
                   <p>{{ siteSettings?.contactLocation || 'Bogotá, Colombia' }}</p>
                 </div>
               </div>
-              <div class="info-card" [style.background]="siteSettings?.infoBlockBg" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
+              <div class="info-card" [style.background]="siteSettings?.contactCardBgColor" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
                 <div class="info-card-icon"><i class="fas fa-clock"></i></div>
                 <div class="info-card-content">
                   <h3>Horario</h3>

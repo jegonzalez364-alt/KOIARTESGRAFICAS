@@ -70,6 +70,9 @@ export interface SiteSettings {
     contactLocation?: string;
     contactScheduleWeekdays?: string;
     contactScheduleWeekends?: string;
+    contactCardBgColor?: string;
+    contactWhatsappTextColor?: string;
+    contactEmailTextColor?: string;
     servicesTitle?: string;
     service1Title?: string;
     service1Desc?: string;

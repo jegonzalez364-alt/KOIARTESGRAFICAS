@@ -24,7 +24,7 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
           </div>
           <div class="speech-bubble" [style.backgroundColor]="settings.speechBubbleBg" [style.borderColor]="settings.speechBubbleBorderColor" [style.borderRadius]="settings.speechBubbleBorderRadius">
             <h1 [style.color]="settings.heroTitleColor" [style.fontFamily]="settings.heroTitleFont">{{settings.heroTitle}} <span class="highlight-text">{{settings.heroHighlightItem1}}</span></h1>
-            <p [style.color]="settings.heroSubtitleColor" [style.fontFamily]="settings.heroSubtitleFont">{{settings.heroSubtitle}}</p>
+            <p style="white-space: pre-line;" [style.color]="settings.heroSubtitleColor" [style.fontFamily]="settings.heroSubtitleFont">{{settings.heroSubtitle}}</p>
           </div>
           <div class="hero-btns">
             <button class="btn-primary" (click)="scrollToSection('coleccion')">{{settings.heroBtnText}}</button>
@@ -79,7 +79,7 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
       <div class="container">
         <div class="section-title-box fade-in">
           <h2>{{settings.collectionTitle}}</h2>
-          <p>{{settings.collectionSubtitle}}</p>
+          <p style="white-space: pre-line;">{{settings.collectionSubtitle}}</p>
         </div>
 
         <div class="cards-section-wrapper">
@@ -127,17 +127,17 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
           <div class="service-card fade-in" [style.backgroundColor]="settings.serviceCardBg" [style.borderColor]="settings.serviceCardBorderColor" [style.borderRadius]="settings.serviceCardBorderRadius">
             <div class="service-icon"><i class="fas fa-palette"></i></div>
             <h3>{{settings.service1Title}}</h3>
-            <p>{{settings.service1Desc}}</p>
+            <p style="white-space: pre-line;">{{settings.service1Desc}}</p>
           </div>
           <div class="service-card fade-in" [style.backgroundColor]="settings.serviceCardBg" [style.borderColor]="settings.serviceCardBorderColor" [style.borderRadius]="settings.serviceCardBorderRadius">
             <div class="service-icon"><i class="fas fa-crosshairs"></i></div>
             <h3>{{settings.service2Title}}</h3>
-            <p>{{settings.service2Desc}}</p>
+            <p style="white-space: pre-line;">{{settings.service2Desc}}</p>
           </div>
           <div class="service-card fade-in" [style.backgroundColor]="settings.serviceCardBg" [style.borderColor]="settings.serviceCardBorderColor" [style.borderRadius]="settings.serviceCardBorderRadius">
             <div class="service-icon"><i class="fas fa-gift"></i></div>
             <h3>{{settings.service3Title}}</h3>
-            <p>{{settings.service3Desc}}</p>
+            <p style="white-space: pre-line;">{{settings.service3Desc}}</p>
           </div>
         </div>
 
@@ -149,7 +149,7 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
           <div class="mission-text">
             <span class="action-word">{{settings.missionActionWord}}</span>
             <h3>{{settings.missionTitle}}</h3>
-            <p>{{settings.missionSubtitle}}</p>
+            <p style="white-space: pre-line;">{{settings.missionSubtitle}}</p>
           </div>
         </div>
 
@@ -222,7 +222,7 @@ import { ApiService, GallerySlide, Card, SiteSettings } from '../../services/api
         <div class="cta-inner fade-in">
           <span class="action-word cta-pow">{{settings.contactActionWord}}</span>
           <h2>{{settings.ctaTitle}}</h2>
-          <p>{{settings.ctaSubtitle}}</p>
+          <p style="white-space: pre-line;">{{settings.ctaSubtitle}}</p>
           <div class="cta-buttons-wrapper">
             <span class="star-decoration">✦</span>
             <button class="starburst-btn" [style.backgroundColor]="settings.ctaBtnBg" [style.color]="settings.ctaBtnColor" [style.borderRadius]="settings.ctaBtnBorderRadius" (click)="goContacto()"><i class="fas fa-envelope"></i> {{settings.ctaBtn1Text}}</button>

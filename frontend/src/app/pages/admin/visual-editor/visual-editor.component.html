@@ -347,6 +347,10 @@
 
                             <!-- Tarjetas de Información -->
                             <h4 style="color:#00BFFF; margin-bottom: 10px; font-size: 0.9rem;">Tarjetas de Información</h4>
+                            <div class="field-group">
+                                <label>Fondo de tarjetas (RGBA) <i class="fas fa-question-circle help-icon" title="Ej: rgba(255,255,255,0.03)"></i></label>
+                                <input type="text" [(ngModel)]="settings.contactCardBgColor" (ngModelChange)="onFieldChange()">
+                            </div>
                             <div class="field-row">
                                 <div class="field-group">
                                     <label>WhatsApp (Número)</label>
@@ -355,6 +359,10 @@
                                 <div class="field-group">
                                     <label>WhatsApp (Texto Link)</label>
                                     <input type="text" [(ngModel)]="settings.contactWhatsappText" (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Color Texto</label>
+                                    <input type="color" [(ngModel)]="settings.contactWhatsappTextColor" (ngModelChange)="onFieldChange()">
                                 </div>
                             </div>
                             <div class="field-row">
@@ -365,6 +373,10 @@
                                 <div class="field-group">
                                     <label>Email (Texto Link)</label>
                                     <input type="text" [(ngModel)]="settings.contactEmailText" (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Color Texto</label>
+                                    <input type="color" [(ngModel)]="settings.contactEmailTextColor" (ngModelChange)="onFieldChange()">
                                 </div>
                             </div>
                             <div class="field-group">
