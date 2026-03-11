@@ -71,6 +71,7 @@ export interface SiteSettings {
     contactScheduleWeekdays?: string;
     contactScheduleWeekends?: string;
     contactCardBgColor?: string;
+    contactCardBgOpacity?: string;
     contactWhatsappTextColor?: string;
     contactEmailTextColor?: string;
     servicesTitle?: string;

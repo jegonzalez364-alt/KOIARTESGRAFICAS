@@ -347,10 +347,20 @@
 
                             <!-- Tarjetas de Información -->
                             <h4 style="color:#00BFFF; margin-bottom: 10px; font-size: 0.9rem;">Tarjetas de Información</h4>
-                            <div class="field-group">
-                                <label>Fondo de tarjetas (RGBA) <i class="fas fa-question-circle help-icon" title="Ej: rgba(255,255,255,0.03)"></i></label>
-                                <input type="text" [(ngModel)]="settings.contactCardBgColor" (ngModelChange)="onFieldChange()">
+                            <div class="field-row">
+                                <div class="field-group">
+                                    <label>Color de Fondo de Tarjetas</label>
+                                    <input type="color" [(ngModel)]="settings.contactCardBgColor" (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Opacidad de Fondo</label>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <input type="range" min="0" max="1" step="0.01" style="flex: 1;" [(ngModel)]="settings.contactCardBgOpacity" (ngModelChange)="onFieldChange()">
+                                        <span style="color: #00BFFF; font-size: 0.9rem;">{{ settings.contactCardBgOpacity }}</span>
+                                    </div>
+                                </div>
                             </div>
+                            <hr style="border-top:1px solid rgba(255,255,255,0.1); margin: 15px 0;">
                             <div class="field-row">
                                 <div class="field-group">
                                     <label>WhatsApp (Número)</label>

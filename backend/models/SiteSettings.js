@@ -82,7 +82,8 @@ const siteSettingsSchema = new mongoose.Schema({
     contactLocation: { type: String, default: 'Bogotá, Colombia' },
     contactScheduleWeekdays: { type: String, default: 'Lunes a Viernes: 8am — 6pm' },
     contactScheduleWeekends: { type: String, default: 'Sábados: 9am — 2pm' },
-    contactCardBgColor: { type: String, default: 'rgba(255,255,255,0.03)' },
+    contactCardBgColor: { type: String, default: '#ffffff' },
+    contactCardBgOpacity: { type: String, default: '0.03' },
     contactWhatsappTextColor: { type: String, default: '#00BFFF' },
     contactEmailTextColor: { type: String, default: '#00BFFF' },
 

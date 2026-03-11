@@ -92,7 +92,7 @@ import { AuthService } from '../../services/auth.service';
               <h2>Info de Contacto</h2>
             </div>
             <div class="info-cards">
-              <div class="info-card" [style.background]="siteSettings?.contactCardBgColor" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
+              <div class="info-card" [style.background]="getCardBackground(siteSettings?.contactCardBgColor, siteSettings?.contactCardBgOpacity)" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
                 <div class="info-card-icon"><i class="fab fa-whatsapp"></i></div>
                 <div class="info-card-content">
                   <h3>WhatsApp</h3>
@@ -100,7 +100,7 @@ import { AuthService } from '../../services/auth.service';
                   <a href="https://wa.me/{{ (siteSettings?.contactWhatsappNumber || '573186909433').replace('+', '').replace(' ', '') }}" class="info-link" [style.color]="siteSettings?.contactWhatsappTextColor">{{ siteSettings?.contactWhatsappText || 'Chatea con nosotros' }} <i class="fas fa-arrow-right"></i></a>
                 </div>
               </div>
-              <div class="info-card" [style.background]="siteSettings?.contactCardBgColor" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
+              <div class="info-card" [style.background]="getCardBackground(siteSettings?.contactCardBgColor, siteSettings?.contactCardBgOpacity)" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
                 <div class="info-card-icon"><i class="fas fa-envelope"></i></div>
                 <div class="info-card-content">
                   <h3>Email</h3>
@@ -108,14 +108,14 @@ import { AuthService } from '../../services/auth.service';
                   <a href="mailto:{{ siteSettings?.contactEmailAddress || 'contacto@koidesign.com' }}" class="info-link" [style.color]="siteSettings?.contactEmailTextColor">{{ siteSettings?.contactEmailText || 'Escríbenos' }} <i class="fas fa-arrow-right"></i></a>
                 </div>
               </div>
-              <div class="info-card" [style.background]="siteSettings?.contactCardBgColor" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
+              <div class="info-card" [style.background]="getCardBackground(siteSettings?.contactCardBgColor, siteSettings?.contactCardBgOpacity)" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
                 <div class="info-card-icon"><i class="fas fa-map-marker-alt"></i></div>
                 <div class="info-card-content">
                   <h3>Ubicación</h3>
                   <p>{{ siteSettings?.contactLocation || 'Bogotá, Colombia' }}</p>
                 </div>
               </div>
-              <div class="info-card" [style.background]="siteSettings?.contactCardBgColor" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
+              <div class="info-card" [style.background]="getCardBackground(siteSettings?.contactCardBgColor, siteSettings?.contactCardBgOpacity)" [style.border-color]="siteSettings?.infoBlockBorderColor" [style.border-radius]="siteSettings?.infoBlockBorderRadius">
                 <div class="info-card-icon"><i class="fas fa-clock"></i></div>
                 <div class="info-card-content">
                   <h3>Horario</h3>
@@ -164,9 +164,37 @@ export class ContactComponent implements AfterViewInit, OnInit {
   successMsg = '';
   errorMsg = '';
   autoFilled = false;
-  siteSettings: any = null;
+  siteSettings: any = {
+    contactActionWord: '¡ZAP!',
+    contactTitle: 'Contáctanos',
+    contactSubtitle: '¿Tienes una idea? ¡Hagámosla realidad! Escríbenos y nuestro equipo te responderá más rápido que un rayo láser.',
+    contactWhatsappNumber: '+57 318 690 9433',
+    contactWhatsappText: 'Chatea con nosotros',
+    contactEmailAddress: 'contacto@koidesign.com',
+    contactEmailText: 'Escríbenos',
+    contactLocation: 'Bogotá, Colombia',
+    contactScheduleWeekdays: 'Lunes a Viernes: 8am — 6pm',
+    contactScheduleWeekends: 'Sábados: 9am — 2pm',
+    infoBlockBorderColor: 'rgba(255,215,0,0.25)',
+    infoBlockBorderRadius: '4px',
+    contactCardBgColor: '#ffffff',
+    contactCardBgOpacity: '0.03',
+    contactWhatsappTextColor: '#00BFFF',
+    contactEmailTextColor: '#00BFFF'
+  };
 
   constructor(private api: ApiService, public auth: AuthService) { }
+
+  getCardBackground(hexColor: string, opacity: string): string {
+    if (!hexColor) hexColor = '#ffffff';
+    if (!opacity) opacity = '0.03';
+    let hex = hexColor.replace('#', '');
+    if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    const r = parseInt(hex.substring(0, 2), 16) || 255;
+    const g = parseInt(hex.substring(2, 4), 16) || 255;
+    const b = parseInt(hex.substring(4, 6), 16) || 255;
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+  }
 
   ngOnInit() {
     // Escuchar cambios en vivo del editor

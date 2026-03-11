@@ -763,7 +763,7 @@ app.put('/api/settings', authMiddleware, upload.fields([
             'contactTitle', 'contactSubtitle', 'contactActionWord',
             'contactWhatsappNumber', 'contactWhatsappText', 'contactEmailAddress', 'contactEmailText',
             'contactLocation', 'contactScheduleWeekdays', 'contactScheduleWeekends',
-            'contactCardBgColor', 'contactWhatsappTextColor', 'contactEmailTextColor',
+            'contactCardBgColor', 'contactCardBgOpacity', 'contactWhatsappTextColor', 'contactEmailTextColor',
             'footerText', 'customBlocks',
             // Images
             'collectionMascotLeftUrl', 'collectionMascotRightUrl',
