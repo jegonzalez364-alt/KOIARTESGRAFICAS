@@ -761,6 +761,8 @@ app.put('/api/settings', authMiddleware, upload.fields([
             'socialTitle', 'socialWhatsapp', 'socialFacebook', 'socialInstagram', 'socialTiktok', 'socialCatalogText',
             'ctaTitle', 'ctaSubtitle', 'ctaBtn1Text', 'ctaBtn2Text',
             'contactTitle', 'contactSubtitle', 'contactActionWord',
+            'contactWhatsappNumber', 'contactWhatsappText', 'contactEmailAddress', 'contactEmailText',
+            'contactLocation', 'contactScheduleWeekdays', 'contactScheduleWeekends',
             'footerText', 'customBlocks',
             // Images
             'collectionMascotLeftUrl', 'collectionMascotRightUrl',

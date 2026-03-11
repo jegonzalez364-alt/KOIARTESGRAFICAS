@@ -28,6 +28,13 @@ export class VisualEditorComponent implements OnInit, DoCheck {
         missionActionWord: '¡BOOM!', contactTitle: 'Contáctanos',
         contactSubtitle: '¿Tienes una idea? ¡Hagámosla realidad!',
         contactActionWord: '¡ZAP!',
+        contactWhatsappNumber: '+57 318 690 9433',
+        contactWhatsappText: 'Chatea con nosotros',
+        contactEmailAddress: 'contacto@koidesign.com',
+        contactEmailText: 'Escríbenos',
+        contactLocation: 'Bogotá, Colombia',
+        contactScheduleWeekdays: 'Lunes a Viernes: 8am — 6pm',
+        contactScheduleWeekends: 'Sábados: 9am — 2pm',
         servicesTitle: '¡Personalizamos tus mejores ideas!',
         service1Title: 'Personalización Total',
         service1Desc: 'Cualquier diseño que imagines, lo hacemos realidad...',
@@ -109,7 +116,8 @@ export class VisualEditorComponent implements OnInit, DoCheck {
         payments: 'Pagos',
         shipping: 'Envíos',
         social: 'Redes Sociales',
-        cta: 'Contacto (CTA)',
+        cta: 'Llamado a la Acción (CTA)',
+        contactPage: 'Página de Contacto',
         footer: 'Pie de Página'
     };
 

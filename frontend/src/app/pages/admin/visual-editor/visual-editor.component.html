@@ -293,7 +293,7 @@
                     <div class="section-item" [class.active]="activeSection === 'cta'">
                         <div class="section-item-header" (click)="toggleSection('cta')">
                             <span class="section-icon">📩</span>
-                            <span class="section-name">Contacto (CTA)</span>
+                            <span class="section-name">Llamado a la Acción (CTA)</span>
                             <i class="fas fa-chevron-down section-expand-icon"></i>
                         </div>
                         <div class="section-fields" *ngIf="activeSection === 'cta'">
@@ -306,12 +306,6 @@
                                 <textarea [(ngModel)]="settings.ctaSubtitle" rows="2"
                                     (ngModelChange)="onFieldChange()"></textarea>
                             </div>
-                            <div class="field-group">
-                                <label>Burbuja Cómic <i class="fas fa-question-circle help-icon"
-                                        title="Ej: ¡ZAP!"></i></label>
-                                <input type="text" [(ngModel)]="settings.contactActionWord"
-                                    (ngModelChange)="onFieldChange()">
-                            </div>
                             <div class="field-row">
                                 <div class="field-group">
                                     <label>Botón 1</label>
@@ -323,6 +317,67 @@
                                     <input type="text" [(ngModel)]="settings.ctaBtn2Text"
                                         (ngModelChange)="onFieldChange()">
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PÁGINA DE CONTACTO -->
+                    <div class="section-item" [class.active]="activeSection === 'contactPage'">
+                        <div class="section-item-header" (click)="toggleSection('contactPage')">
+                            <span class="section-icon">📞</span>
+                            <span class="section-name">Página de Contacto</span>
+                            <i class="fas fa-chevron-down section-expand-icon"></i>
+                        </div>
+                        <div class="section-fields" *ngIf="activeSection === 'contactPage'">
+                            <!-- Texts Hero Contacto -->
+                            <div class="field-group">
+                                <label>Burbuja Cómic <i class="fas fa-question-circle help-icon" title="Ej: ¡ZAP!"></i></label>
+                                <input type="text" [(ngModel)]="settings.contactActionWord" (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Título Principal</label>
+                                <input type="text" [(ngModel)]="settings.contactTitle" (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Subtítulo</label>
+                                <textarea [(ngModel)]="settings.contactSubtitle" rows="2" (ngModelChange)="onFieldChange()"></textarea>
+                            </div>
+
+                            <hr style="border-top:1px solid rgba(255,255,255,0.1); margin: 15px 0;">
+
+                            <!-- Tarjetas de Información -->
+                            <h4 style="color:#00BFFF; margin-bottom: 10px; font-size: 0.9rem;">Tarjetas de Información</h4>
+                            <div class="field-row">
+                                <div class="field-group">
+                                    <label>WhatsApp (Número)</label>
+                                    <input type="text" [(ngModel)]="settings.contactWhatsappNumber" (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>WhatsApp (Texto Link)</label>
+                                    <input type="text" [(ngModel)]="settings.contactWhatsappText" (ngModelChange)="onFieldChange()">
+                                </div>
+                            </div>
+                            <div class="field-row">
+                                <div class="field-group">
+                                    <label>Email (Dirección)</label>
+                                    <input type="text" [(ngModel)]="settings.contactEmailAddress" (ngModelChange)="onFieldChange()">
+                                </div>
+                                <div class="field-group">
+                                    <label>Email (Texto Link)</label>
+                                    <input type="text" [(ngModel)]="settings.contactEmailText" (ngModelChange)="onFieldChange()">
+                                </div>
+                            </div>
+                            <div class="field-group">
+                                <label>Ubicación</label>
+                                <input type="text" [(ngModel)]="settings.contactLocation" (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Horario Semanal</label>
+                                <input type="text" [(ngModel)]="settings.contactScheduleWeekdays" (ngModelChange)="onFieldChange()">
+                            </div>
+                            <div class="field-group">
+                                <label>Horario Fin de Semana</label>
+                                <input type="text" [(ngModel)]="settings.contactScheduleWeekends" (ngModelChange)="onFieldChange()">
                             </div>
                         </div>
                     </div>

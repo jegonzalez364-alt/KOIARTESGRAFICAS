@@ -70,10 +70,18 @@ const siteSettingsSchema = new mongoose.Schema({
     ctaBtn1Text: { type: String, default: 'Contáctanos' },
     ctaBtn2Text: { type: String, default: 'WhatsApp' },
 
-    // --- TEXTS: CONTACT PAGE HERO ---
     contactTitle: { type: String, default: 'Contáctanos' },
     contactSubtitle: { type: String, default: '¿Tienes una idea? ¡Hagámosla realidad! Escríbenos y nuestro equipo te responderá más rápido que un rayo láser.' },
     contactActionWord: { type: String, default: '¡ZAP!' },
+    
+    // --- TEXTS: CONTACT INFO WIDGETS ---
+    contactWhatsappNumber: { type: String, default: '+57 318 690 9433' },
+    contactWhatsappText: { type: String, default: 'Chatea con nosotros' },
+    contactEmailAddress: { type: String, default: 'contacto@koidesign.com' },
+    contactEmailText: { type: String, default: 'Escríbenos' },
+    contactLocation: { type: String, default: 'Bogotá, Colombia' },
+    contactScheduleWeekdays: { type: String, default: 'Lunes a Viernes: 8am — 6pm' },
+    contactScheduleWeekends: { type: String, default: 'Sábados: 9am — 2pm' },
 
     // --- FOOTER ---
     footerText: { type: String, default: '© 2024 KOI Design. Todos los derechos reservados. Hecho con 💚 y Láseres.' },

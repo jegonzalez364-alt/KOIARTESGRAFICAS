@@ -63,6 +63,13 @@ export interface SiteSettings {
     contactTitle?: string;
     contactSubtitle?: string;
     contactActionWord?: string;
+    contactWhatsappNumber?: string;
+    contactWhatsappText?: string;
+    contactEmailAddress?: string;
+    contactEmailText?: string;
+    contactLocation?: string;
+    contactScheduleWeekdays?: string;
+    contactScheduleWeekends?: string;
     servicesTitle?: string;
     service1Title?: string;
     service1Desc?: string;
