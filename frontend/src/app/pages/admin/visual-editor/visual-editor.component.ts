@@ -28,6 +28,8 @@ export class VisualEditorComponent implements OnInit, DoCheck {
         missionActionWord: '¡BOOM!', contactTitle: 'Contáctanos',
         contactSubtitle: '¿Tienes una idea? ¡Hagámosla realidad!',
         contactActionWord: '¡ZAP!',
+        quoteImageUrl: 'img/Dragongraffiti.png',
+        quoteText: 'Spoiler: el precio no incluye envío 😅',
         contactWhatsappNumber: '+57 318 690 9433',
         contactWhatsappText: 'Chatea con nosotros',
         contactEmailAddress: 'contacto@koidesign.com',
@@ -57,6 +59,10 @@ export class VisualEditorComponent implements OnInit, DoCheck {
         socialFacebook: 'KoiDesignsSoacha',
         socialInstagram: '@KoiDesignsSoacha',
         socialTiktok: '@koiartesgraficas',
+        socialWhatsappUrl: 'https://wa.me/573186909433',
+        socialFacebookUrl: 'https://facebook.com/KoiDesignsSoacha',
+        socialInstagramUrl: 'https://instagram.com/KoiDesignsSoacha',
+        socialTiktokUrl: 'https://tiktok.com/@koiartesgraficas',
         socialCatalogText: 'Ver Catálogo',
         ctaTitle: 'Contáctanos',
         ctaSubtitle: '¿Tienes una idea? ¡Hagámosla realidad!',
@@ -91,6 +97,7 @@ export class VisualEditorComponent implements OnInit, DoCheck {
     hasChanges = false;
     toastMsg = '';
     toastType: 'success' | 'error' = 'success';
+    panelPosition: 'left' | 'right' = 'left';
 
     // Undo / Redo
     undoStack: string[] = [];
@@ -102,6 +109,7 @@ export class VisualEditorComponent implements OnInit, DoCheck {
     heroBgFile: File | null = null;
     heroMascotFile: File | null = null;
     missionMascotFile: File | null = null;
+    quoteImageFile: File | null = null;
     collectionLeftFile: File | null = null;
     collectionRightFile: File | null = null;
     modalLeftFile: File | null = null;
@@ -230,13 +238,14 @@ export class VisualEditorComponent implements OnInit, DoCheck {
     }
 
     // ── File selection ──
-    onFileSelected(event: Event, type: 'logo' | 'heroBg' | 'heroMascot' | 'missionMascot' | 'collectionLeft' | 'collectionRight' | 'modalLeft' | 'modalRight') {
+    onFileSelected(event: Event, type: 'logo' | 'heroBg' | 'heroMascot' | 'missionMascot' | 'collectionLeft' | 'collectionRight' | 'modalLeft' | 'modalRight' | 'quoteImage') {
         const file = (event.target as HTMLInputElement).files?.[0];
         if (file) {
             if (type === 'logo') this.logoFile = file;
             if (type === 'heroBg') this.heroBgFile = file;
             if (type === 'heroMascot') this.heroMascotFile = file;
             if (type === 'missionMascot') this.missionMascotFile = file;
+            if (type === 'quoteImage') this.quoteImageFile = file;
             if (type === 'collectionLeft') this.collectionLeftFile = file;
             if (type === 'collectionRight') this.collectionRightFile = file;
             if (type === 'modalLeft') this.modalLeftFile = file;
@@ -261,6 +270,7 @@ export class VisualEditorComponent implements OnInit, DoCheck {
         if (this.heroBgFile) formData.append('heroBgImage', this.heroBgFile);
         if (this.heroMascotFile) formData.append('heroMascotImage', this.heroMascotFile);
         if (this.missionMascotFile) formData.append('missionMascotImage', this.missionMascotFile);
+        if (this.quoteImageFile) formData.append('quoteImageFile', this.quoteImageFile);
         if (this.collectionLeftFile) formData.append('collectionLeftImage', this.collectionLeftFile);
         if (this.collectionRightFile) formData.append('collectionRightImage', this.collectionRightFile);
         if (this.modalLeftFile) formData.append('modalLeftImage', this.modalLeftFile);
@@ -272,7 +282,7 @@ export class VisualEditorComponent implements OnInit, DoCheck {
                 this.savedSettingsJson = JSON.stringify(this.settings);
                 this.saving = false;
                 this.logoFile = null; this.heroBgFile = null;
-                this.heroMascotFile = null; this.missionMascotFile = null;
+                this.heroMascotFile = null; this.missionMascotFile = null; this.quoteImageFile = null;
                 this.collectionLeftFile = null; this.collectionRightFile = null;
                 this.modalLeftFile = null; this.modalRightFile = null;
                 this.showToast('¡Cambios guardados exitosamente!', 'success');
@@ -295,6 +305,10 @@ export class VisualEditorComponent implements OnInit, DoCheck {
 
     openPreview() {
         window.open('/', '_blank');
+    }
+
+    togglePanelPosition() {
+        this.panelPosition = this.panelPosition === 'left' ? 'right' : 'left';
     }
 
     // ── Toast ──

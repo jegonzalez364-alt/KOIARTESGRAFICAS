@@ -1,9 +1,9 @@
-<div class="editor-layout">
+<div class="editor-layout" [class.panel-right]="panelPosition === 'right'">
     <!-- ═══════ TOOLBAR ═══════ -->
     <header class="editor-toolbar">
         <div class="toolbar-brand">
             <img src="img/logoicon.png" alt="KOI">
-            <span>KOI Editor Visual</span>
+            <span style="color: #FFD700;">KOI Editor Visual</span>
         </div>
 
         <div class="toolbar-group">
@@ -24,6 +24,9 @@
         </div>
 
         <div class="toolbar-group">
+            <button class="tb-btn tb-btn-outline" (click)="togglePanelPosition()" title="Mover panel Izq/Der">
+                <i class="fas fa-arrows-alt-h"></i> Mover Panel
+            </button>
             <button class="tb-btn tb-btn-outline" (click)="openPreview()" title="Vista previa en pestaña nueva">
                 <i class="fas fa-external-link-alt"></i> Vista Previa
             </button>
@@ -263,23 +266,31 @@
                             </div>
                             <div class="field-group">
                                 <label><i class="fab fa-whatsapp" style="color:#25D366"></i> WhatsApp</label>
-                                <input type="text" [(ngModel)]="settings.socialWhatsapp"
+                                <input type="text" [(ngModel)]="settings.socialWhatsapp" placeholder="Número o texto..."
                                     (ngModelChange)="onFieldChange()">
+                                <input type="text" [(ngModel)]="settings.socialWhatsappUrl" placeholder="URL (ej: https://wa.me/...)"
+                                    (ngModelChange)="onFieldChange()" style="margin-top: 5px;">
                             </div>
                             <div class="field-group">
                                 <label><i class="fab fa-facebook" style="color:#4267B2"></i> Facebook</label>
-                                <input type="text" [(ngModel)]="settings.socialFacebook"
+                                <input type="text" [(ngModel)]="settings.socialFacebook" placeholder="Texto..."
                                     (ngModelChange)="onFieldChange()">
+                                <input type="text" [(ngModel)]="settings.socialFacebookUrl" placeholder="URL (ej: https://facebook.com/...)"
+                                    (ngModelChange)="onFieldChange()" style="margin-top: 5px;">
                             </div>
                             <div class="field-group">
                                 <label><i class="fab fa-instagram" style="color:#E1306C"></i> Instagram</label>
-                                <input type="text" [(ngModel)]="settings.socialInstagram"
+                                <input type="text" [(ngModel)]="settings.socialInstagram" placeholder="Texto..."
                                     (ngModelChange)="onFieldChange()">
+                                <input type="text" [(ngModel)]="settings.socialInstagramUrl" placeholder="URL (ej: https://instagram.com/...)"
+                                    (ngModelChange)="onFieldChange()" style="margin-top: 5px;">
                             </div>
                             <div class="field-group">
                                 <label><i class="fab fa-tiktok"></i> TikTok</label>
-                                <input type="text" [(ngModel)]="settings.socialTiktok"
+                                <input type="text" [(ngModel)]="settings.socialTiktok" placeholder="Texto..."
                                     (ngModelChange)="onFieldChange()">
+                                <input type="text" [(ngModel)]="settings.socialTiktokUrl" placeholder="URL (ej: https://tiktok.com/...)"
+                                    (ngModelChange)="onFieldChange()" style="margin-top: 5px;">
                             </div>
                             <div class="field-group">
                                 <label><i class="fas fa-book-open" style="color:#FFD700"></i> Texto Catálogo</label>
@@ -796,6 +807,22 @@
                             {{logoFile.name}}</span>
                         <img [src]="api.getMediaUrl(settings.logoUrl)" class="file-preview" style="object-fit:contain"
                             *ngIf="settings.logoUrl && !logoFile">
+                    </div>
+                    
+                    <h4 style="color:#00BFFF;font-size:0.8rem;margin:12px 0 6px;">💰 Cotizador</h4>
+                    <div class="field-group">
+                        <label><i class="fas fa-image"></i> Imagen Cotizador</label>
+                        <input type="file" id="edQuoteImageInput" (change)="onFileSelected($event, 'quoteImage')" accept="image/*"
+                            style="display:none">
+                        <label for="edQuoteImageInput" class="file-upload-btn"><i class="fas fa-upload"></i> Cambiar</label>
+                        <span class="file-name-tag" *ngIf="quoteImageFile"><i class="fas fa-check"></i>
+                            {{quoteImageFile.name}}</span>
+                        <img [src]="api.getMediaUrl(settings.quoteImageUrl || '')" class="file-preview" style="object-fit:contain"
+                            *ngIf="settings.quoteImageUrl && !quoteImageFile">
+                    </div>
+                    <div class="field-group">
+                        <label>Texto Cotizador (Spoiler)</label>
+                        <input type="text" [(ngModel)]="settings.quoteText" (ngModelChange)="onFieldChange()">
                     </div>
                     <div class="field-group">
                         <label><i class="fas fa-mountain"></i> Fondo del Hero</label>

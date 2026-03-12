@@ -60,6 +60,8 @@ export interface SiteSettings {
     missionTitle?: string;
     missionSubtitle?: string;
     missionActionWord?: string;
+    quoteImageUrl?: string;
+    quoteText?: string;
     contactTitle?: string;
     contactSubtitle?: string;
     contactActionWord?: string;
@@ -92,6 +94,10 @@ export interface SiteSettings {
     socialFacebook?: string;
     socialInstagram?: string;
     socialTiktok?: string;
+    socialWhatsappUrl?: string;
+    socialFacebookUrl?: string;
+    socialInstagramUrl?: string;
+    socialTiktokUrl?: string;
     socialCatalogText?: string;
     ctaTitle?: string;
     ctaSubtitle?: string;

@@ -18,11 +18,16 @@ export class CotizadorComponent implements OnInit {
   precioCalculado: number | null = null;
 
   settings: any = null;
+  siteSettings: any = null;
   loading: boolean = true;
 
-  constructor(private apiService: ApiService) { }
+  constructor(public apiService: ApiService) { }
 
   ngOnInit(): void {
+    // Load both config settings
+    this.apiService.getSettings().subscribe(siteData => {
+      this.siteSettings = siteData;
+    });
     this.apiService.getCotizadorSettings().subscribe({
       next: (data) => {
         this.settings = data;
@@ -235,4 +240,17 @@ export class CotizadorComponent implements OnInit {
     window.open(url, '_blank');
   }
 
+  getQuoteImage(): string {
+    if (this.siteSettings && this.siteSettings.quoteImageUrl) {
+      return this.apiService.getMediaUrl(this.siteSettings.quoteImageUrl);
+    }
+    return 'img/Dragongraffiti.png';
+  }
+
+  getQuoteText(): string {
+    if (this.siteSettings && this.siteSettings.quoteText) {
+      return this.siteSettings.quoteText;
+    }
+    return '';
+  }
 }

@@ -741,7 +741,8 @@ app.put('/api/settings', authMiddleware, upload.fields([
     { name: 'collectionLeftImage', maxCount: 1 },
     { name: 'collectionRightImage', maxCount: 1 },
     { name: 'modalLeftImage', maxCount: 1 },
-    { name: 'modalRightImage', maxCount: 1 }
+    { name: 'modalRightImage', maxCount: 1 },
+    { name: 'quoteImageFile', maxCount: 1 }
 ]), async (req, res) => {
     if (req.user.role !== 'admin') {
         return res.status(403).json({ error: 'Acceso denegado' });
@@ -763,6 +764,8 @@ app.put('/api/settings', authMiddleware, upload.fields([
             'missionTitle', 'missionSubtitle', 'missionActionWord',
             'paymentsTitle', 'shippingTitle', 'shippingItem1Title', 'shippingItem1Desc', 'shippingItem2Title', 'shippingItem2Desc',
             'socialTitle', 'socialWhatsapp', 'socialFacebook', 'socialInstagram', 'socialTiktok', 'socialCatalogText',
+            'socialWhatsappUrl', 'socialFacebookUrl', 'socialInstagramUrl', 'socialTiktokUrl',
+            'quoteText',
             'ctaTitle', 'ctaSubtitle', 'ctaBtn1Text', 'ctaBtn2Text',
             'contactTitle', 'contactSubtitle', 'contactActionWord',
             'contactWhatsappNumber', 'contactWhatsappText', 'contactEmailAddress', 'contactEmailText',
@@ -798,6 +801,9 @@ app.put('/api/settings', authMiddleware, upload.fields([
             }
             if (req.files['heroMascotImage'] && req.files['heroMascotImage'][0]) {
                 settings.heroMascotUrl = req.files['heroMascotImage'][0].path;
+            }
+            if (req.files['quoteImageFile'] && req.files['quoteImageFile'][0]) {
+                settings.quoteImageUrl = req.files['quoteImageFile'][0].path;
             }
             if (req.files['missionMascotImage'] && req.files['missionMascotImage'][0]) {
                 settings.missionMascotUrl = req.files['missionMascotImage'][0].path;

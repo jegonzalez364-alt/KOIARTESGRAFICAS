@@ -13,6 +13,8 @@ const siteSettingsSchema = new mongoose.Schema({
     heroBgUrl: { type: String, default: '/img/KoiFondo.png' },
     heroMascotUrl: { type: String, default: 'img/Koi-Icono.png' },
     missionMascotUrl: { type: String, default: 'img/DragonRojoDiseñador.png' },
+    quoteImageUrl: { type: String, default: 'img/Dragongraffiti.png' },
+    quoteText: { type: String, default: 'Spoiler: el precio no incluye envío 😅' },
 
     // --- TEXTS: HERO ---
     heroTitle: { type: String, default: 'Transformamos tus Ideas en' },
@@ -62,6 +64,10 @@ const siteSettingsSchema = new mongoose.Schema({
     socialFacebook: { type: String, default: 'KoiDesignsSoacha' },
     socialInstagram: { type: String, default: '@KoiDesignsSoacha' },
     socialTiktok: { type: String, default: '@koiartesgraficas' },
+    socialWhatsappUrl: { type: String, default: 'https://wa.me/573186909433' },
+    socialFacebookUrl: { type: String, default: 'https://facebook.com/KoiDesignsSoacha' },
+    socialInstagramUrl: { type: String, default: 'https://instagram.com/KoiDesignsSoacha' },
+    socialTiktokUrl: { type: String, default: 'https://tiktok.com/@koiartesgraficas' },
     socialCatalogText: { type: String, default: 'Ver Catálogo' },
 
     // --- TEXTS: CONTACT CTA ---

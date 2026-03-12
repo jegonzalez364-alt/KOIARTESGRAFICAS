@@ -60,10 +60,6 @@
 .toolbar-brand span {
     font-weight: 700;
     font-size: 0.95rem;
-    background: linear-gradient(90deg, #E91E9E, #00BFFF);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
     letter-spacing: 1px;
 }
 
@@ -147,6 +143,10 @@
     display: grid;
     grid-template-columns: 320px 1fr;
     overflow: hidden;
+}
+
+.editor-layout.panel-right .editor-body {
+    grid-template-columns: 1fr 320px;
 }
 
 /* ═══════ LEFT PANEL ═══════ */
