@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, Card } from '../../../services/api.service';
+import imageCompression from 'browser-image-compression';
 
 @Component({
   selector: 'app-cards-manager',
@@ -236,14 +237,42 @@ export class CardsManagerComponent implements OnInit {
     this.api.getCards().subscribe(data => this.cards = data);
   }
 
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0] || null;
+  async onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        try {
+          const options = { maxSizeMB: 2, maxWidthOrHeight: 1920, useWebWorker: true };
+          this.selectedFile = await imageCompression(file, options) as File;
+        } catch (error) {
+          console.error('Error al comprimir:', error);
+          this.selectedFile = file;
+        }
+      } else {
+        this.selectedFile = file;
+      }
+    } else {
+      this.selectedFile = null;
+    }
   }
 
-  onGalleryFilesSelected(event: any) {
+  async onGalleryFilesSelected(event: any) {
     if (event.target.files) {
       const files = Array.from(event.target.files) as File[];
-      this.selectedGalleryFiles.push(...files);
+      for (const file of files) {
+        if (file.type.startsWith('image/')) {
+          try {
+            const options = { maxSizeMB: 2, maxWidthOrHeight: 1920, useWebWorker: true };
+            const compressedFile = await imageCompression(file, options) as File;
+            this.selectedGalleryFiles.push(compressedFile);
+          } catch (error) {
+            console.error('Error al comprimir galería:', error);
+            this.selectedGalleryFiles.push(file);
+          }
+        } else {
+          this.selectedGalleryFiles.push(file);
+        }
+      }
     }
   }
 

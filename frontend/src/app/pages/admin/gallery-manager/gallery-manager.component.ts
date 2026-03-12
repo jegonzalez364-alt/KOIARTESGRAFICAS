@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, GallerySlide } from '../../../services/api.service';
+import imageCompression from 'browser-image-compression';
 
 @Component({
   selector: 'app-gallery-manager',
@@ -141,8 +142,23 @@ export class GalleryManagerComponent implements OnInit {
     this.api.getGallery().subscribe(data => this.slides = data);
   }
 
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0] || null;
+  async onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        try {
+          const options = { maxSizeMB: 2, maxWidthOrHeight: 1920, useWebWorker: true };
+          this.selectedFile = await imageCompression(file, options) as File;
+        } catch (error) {
+          console.error('Error al comprimir:', error);
+          this.selectedFile = file;
+        }
+      } else {
+        this.selectedFile = file;
+      }
+    } else {
+      this.selectedFile = null;
+    }
   }
 
   addSlide() {

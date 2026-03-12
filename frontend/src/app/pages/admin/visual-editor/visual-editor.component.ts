@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService, SiteSettings } from '../../../services/api.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import imageCompression from 'browser-image-compression';
 
 @Component({
     selector: 'app-visual-editor',
@@ -240,18 +241,28 @@ export class VisualEditorComponent implements OnInit, DoCheck {
     }
 
     // ── File selection ──
-    onFileSelected(event: Event, type: 'logo' | 'heroBg' | 'heroMascot' | 'missionMascot' | 'collectionLeft' | 'collectionRight' | 'modalLeft' | 'modalRight' | 'quoteImage') {
+    async onFileSelected(event: Event, type: 'logo' | 'heroBg' | 'heroMascot' | 'missionMascot' | 'collectionLeft' | 'collectionRight' | 'modalLeft' | 'modalRight' | 'quoteImage') {
         const file = (event.target as HTMLInputElement).files?.[0];
         if (file) {
-            if (type === 'logo') this.logoFile = file;
-            if (type === 'heroBg') this.heroBgFile = file;
-            if (type === 'heroMascot') this.heroMascotFile = file;
-            if (type === 'missionMascot') this.missionMascotFile = file;
-            if (type === 'quoteImage') this.quoteImageFile = file;
-            if (type === 'collectionLeft') this.collectionLeftFile = file;
-            if (type === 'collectionRight') this.collectionRightFile = file;
-            if (type === 'modalLeft') this.modalLeftFile = file;
-            if (type === 'modalRight') this.modalRightFile = file;
+            let processedFile = file;
+            if (file.type.startsWith('image/')) {
+                try {
+                    const options = { maxSizeMB: 2, maxWidthOrHeight: 1920, useWebWorker: true };
+                    processedFile = await imageCompression(file, options) as File;
+                } catch (err) {
+                    console.error('Error comprimiendo imagen en visual editor:', err);
+                }
+            }
+            
+            if (type === 'logo') this.logoFile = processedFile;
+            if (type === 'heroBg') this.heroBgFile = processedFile;
+            if (type === 'heroMascot') this.heroMascotFile = processedFile;
+            if (type === 'missionMascot') this.missionMascotFile = processedFile;
+            if (type === 'quoteImage') this.quoteImageFile = processedFile;
+            if (type === 'collectionLeft') this.collectionLeftFile = processedFile;
+            if (type === 'collectionRight') this.collectionRightFile = processedFile;
+            if (type === 'modalLeft') this.modalLeftFile = processedFile;
+            if (type === 'modalRight') this.modalRightFile = processedFile;
             this.hasChanges = true;
         }
     }
