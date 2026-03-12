@@ -141,12 +141,20 @@
 /* ═══════ MAIN BODY ═══════ */
 .editor-body {
     display: grid;
-    grid-template-columns: 320px 1fr;
     overflow: hidden;
 }
 
-.editor-layout.panel-right .editor-body {
-    grid-template-columns: 1fr 320px;
+/* Panel Right Reordering */
+.editor-layout.panel-right .left-panel {
+    order: 3;
+    border-right: none;
+    border-left: 1px solid #1e2946;
+}
+.editor-layout.panel-right .panel-resizer {
+    order: 2;
+}
+.editor-layout.panel-right .canvas-area {
+    order: 1;
 }
 
 /* ═══════ LEFT PANEL ═══════ */
@@ -156,6 +164,19 @@
     background: #0f1525;
     border-right: 1px solid #1e2946;
     overflow: hidden;
+}
+
+/* ═══════ RESIZER ═══════ */
+.panel-resizer {
+    width: 6px;
+    background: #151c31;
+    cursor: col-resize;
+    z-index: 10;
+    transition: background 0.2s;
+}
+
+.panel-resizer:hover, .panel-resizer.is-resizing {
+    background: #00BFFF;
 }
 
 .panel-tabs {
@@ -539,6 +560,6 @@
 /* ═══════ RESPONSIVE ═══════ */
 @media (max-width: 900px) {
     .editor-body {
-        grid-template-columns: 260px 1fr;
+        grid-template-columns: 260px 6px 1fr !important;
     }
 }

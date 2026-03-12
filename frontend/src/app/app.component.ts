@@ -1,9 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ApiService, SiteSettings } from './services/api.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ import { ApiService, SiteSettings } from './services/api.service';
     <app-header></app-header>
     <router-outlet></router-outlet>
     <app-footer></app-footer>
-    <a *ngIf="whatsappUrl" [href]="whatsappUrl" target="_blank" class="floating-wa" aria-label="WhatsApp">
+    <a *ngIf="whatsappUrl && !isAdminRoute" [href]="whatsappUrl" target="_blank" class="floating-wa" aria-label="WhatsApp">
       <i class="fab fa-whatsapp"></i>
     </a>
   `,
@@ -34,20 +35,46 @@ import { ApiService, SiteSettings } from './services/api.service';
       font-size: 35px;
       box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
       z-index: 9999;
-      transition: transform 0.3s ease;
       text-decoration: none;
+      animation: pulse-ring 2s infinite;
+    }
+    .floating-wa i {
+      animation: vibrate 2s linear infinite;
     }
     .floating-wa:hover {
       transform: scale(1.1);
+      transition: transform 0.3s ease;
       color: white;
+    }
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+    @keyframes vibrate {
+      0% { transform: rotate(0deg); }
+      5% { transform: rotate(15deg); }
+      10% { transform: rotate(-15deg); }
+      15% { transform: rotate(20deg); }
+      20% { transform: rotate(-15deg); }
+      25% { transform: rotate(15deg); }
+      30% { transform: rotate(0deg); }
+      100% { transform: rotate(0deg); }
     }
   `]
 })
 export class AppComponent implements OnInit {
   title = 'KOI Design';
   whatsappUrl = '';
+  isAdminRoute = false;
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private router: Router) { 
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.isAdminRoute = event.urlAfterRedirects.includes('/admin');
+    });
+  }
 
   @HostListener('window:message', ['$event'])
   onMessage(event: MessageEvent) {

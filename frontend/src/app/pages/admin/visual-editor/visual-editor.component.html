@@ -41,7 +41,7 @@
     </header>
 
     <!-- ═══════ BODY ═══════ -->
-    <div class="editor-body">
+    <div class="editor-body" [style.gridTemplateColumns]="getGridColumns()">
         <!-- ── LEFT PANEL ── -->
         <aside class="left-panel">
             <div class="panel-tabs">
@@ -910,6 +910,9 @@
                 </div>
             </div>
         </aside>
+
+        <!-- ── DRAG RESIZER ── -->
+        <div class="panel-resizer" [class.is-resizing]="isResizing" (mousedown)="initResize($event)"></div>
 
         <!-- ── CANVAS ── -->
         <main class="canvas-area">

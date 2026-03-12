@@ -98,6 +98,8 @@ export class VisualEditorComponent implements OnInit, DoCheck {
     toastMsg = '';
     toastType: 'success' | 'error' = 'success';
     panelPosition: 'left' | 'right' = 'left';
+    leftPanelWidth = 320;
+    isResizing = false;
 
     // Undo / Redo
     undoStack: string[] = [];
@@ -309,6 +311,37 @@ export class VisualEditorComponent implements OnInit, DoCheck {
 
     togglePanelPosition() {
         this.panelPosition = this.panelPosition === 'left' ? 'right' : 'left';
+    }
+
+    // ── Resizer ──
+    @HostListener('window:mousemove', ['$event'])
+    onMouseMove(event: MouseEvent) {
+        if (!this.isResizing) return;
+        if (this.panelPosition === 'left') {
+            this.leftPanelWidth = Math.max(240, Math.min(event.clientX, 800));
+        } else {
+            this.leftPanelWidth = Math.max(240, Math.min(window.innerWidth - event.clientX, 800));
+        }
+    }
+
+    @HostListener('window:mouseup')
+    onMouseUp() {
+        if (this.isResizing) {
+            this.isResizing = false;
+            document.body.style.cursor = 'default';
+        }
+    }
+
+    initResize(event: MouseEvent) {
+        this.isResizing = true;
+        document.body.style.cursor = 'col-resize';
+        event.preventDefault();
+    }
+
+    getGridColumns(): string {
+        return this.panelPosition === 'left' 
+            ? `${this.leftPanelWidth}px 6px 1fr` 
+            : `1fr 6px ${this.leftPanelWidth}px`;
     }
 
     // ── Toast ──
