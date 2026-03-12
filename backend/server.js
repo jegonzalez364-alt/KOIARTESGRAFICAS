@@ -269,14 +269,14 @@ app.get('/api/cards', async (req, res) => {
     }
 });
 
-// Safe wrapper for upload.fields — if no files are sent, multer-storage-cloudinary can error out
+// Safe wrapper for upload.fields
 const cardUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'galleryFiles', maxCount: 10 }]);
 function safeCardUpload(req, res, next) {
     cardUpload(req, res, (err) => {
         if (err) {
-            console.error('Multer upload error (non-fatal):', err.message);
+            console.error('Multer upload error:', err.message);
+            return res.status(400).json({ error: 'Error al procesar la imagen (puede ser muy pesada o formato inválido): ' + err.message });
         }
-        // Always continue — req.files may be undefined if no files sent, that's fine
         next();
     });
 }
