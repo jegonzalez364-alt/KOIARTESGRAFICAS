@@ -78,8 +78,16 @@ export class AppComponent implements OnInit {
 
   @HostListener('window:message', ['$event'])
   onMessage(event: MessageEvent) {
-    if (event.data && event.data.type === 'CMS_PREVIEW') {
-      this.api.previewSettings$.next(event.data.settings);
+    if (event.data && event.data.type === 'VISUAL_PREVIEW_URL') {
+      window.location.hash = event.data.url;
+    }
+  }
+
+  @HostListener('document:contextmenu', ['$event'])
+  onRightClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (target && target.nodeName === 'IMG') {
+      event.preventDefault(); // Bloquea clic derecho en imágenes
     }
   }
 

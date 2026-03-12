@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../services/auth.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -22,8 +24,9 @@ import { AuthService } from '../../services/auth.service';
           <a routerLink="/admin/cards" routerLinkActive="active">
             <i class="fas fa-th-large"></i> Cards / Colección
           </a>
-          <a routerLink="/admin/solicitudes" routerLinkActive="active">
+          <a routerLink="/admin/solicitudes" routerLinkActive="active" style="position: relative;">
             <i class="fas fa-inbox"></i> Solicitudes
+            <span *ngIf="pendingCount > 0" class="badge">{{pendingCount}}</span>
           </a>
           <a routerLink="/admin/usuarios" routerLinkActive="active">
             <i class="fas fa-users"></i> Usuarios
@@ -70,6 +73,12 @@ import { AuthService } from '../../services/auth.service';
     .sidebar-nav a:hover { background: rgba(255,255,255,0.05); color: #fff; }
     .sidebar-nav a.active { background: rgba(233,30,158,0.15); color: #E91E9E; border-left: 3px solid #E91E9E; }
     .sidebar-nav a i { width: 20px; text-align: center; }
+    .badge {
+      background: #E91E9E; color: #fff; font-size: 0.75rem; 
+      padding: 2px 6px; border-radius: 12px; margin-left: auto;
+      box-shadow: 0 0 8px rgba(233,30,158,0.5); font-weight: bold;
+      font-family: sans-serif;
+    }
     .sidebar-back { margin-top: 30px !important; border-top: 1px solid rgba(255,255,255,0.08); }
     .sidebar-logout { color: #ff6b6b !important; }
     .admin-main { flex: 1; margin-left: 260px; padding: 30px; background: #06101e; min-height: calc(100vh - 70px); }
@@ -84,6 +93,43 @@ import { AuthService } from '../../services/auth.service';
     }
   `]
 })
-export class AdminLayoutComponent {
-  constructor(public auth: AuthService) { }
+export class AdminLayoutComponent implements OnInit, OnDestroy {
+  pendingCount = 0;
+  private intervalId: any;
+
+  constructor(
+    public auth: AuthService, 
+    private api: ApiService,
+    private titleService: Title
+  ) { }
+
+  ngOnInit() {
+    this.checkPendingRequests();
+    // Revisa peticiones cada 1 minuto
+    this.intervalId = setInterval(() => {
+      this.checkPendingRequests();
+    }, 60000);
+  }
+
+  ngOnDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+    this.titleService.setTitle('KOI Design'); // reset title on exit
+  }
+
+  checkPendingRequests() {
+    this.api.getRequests().subscribe({
+      next: (reqs) => {
+        const p = reqs.filter(r => r.status === 'pendiente').length;
+        this.pendingCount = p;
+        if (p > 0) {
+          this.titleService.setTitle(`(${p}) KOI Admin`);
+        } else {
+          this.titleService.setTitle('KOI Admin');
+        }
+      },
+      error: () => {}
+    });
+  }
 }
