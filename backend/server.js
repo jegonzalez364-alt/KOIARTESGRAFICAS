@@ -636,7 +636,7 @@ app.put('/api/requests/:id', authMiddleware, adminMiddleware, async (req, res) =
         const { status, adminNotes, respondedVia } = req.body;
         if (status) reqDoc.status = status;
         if (adminNotes !== undefined) reqDoc.adminNotes = adminNotes;
-        if (respondedVia) reqDoc.respondedVia = respondedVia;
+        if (respondedVia !== undefined) reqDoc.respondedVia = respondedVia;
 
         await reqDoc.save();
         res.json(reqDoc.toJSON());

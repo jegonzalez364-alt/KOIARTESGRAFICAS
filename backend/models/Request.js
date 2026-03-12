@@ -8,7 +8,7 @@ const requestSchema = new mongoose.Schema({
     telefono: { type: String, default: '' },
     asunto: { type: String, default: 'General' },
     mensaje: { type: String, required: true },
-    status: { type: String, default: 'pendiente', enum: ['pendiente', 'en_proceso', 'completado', 'cancelado'] },
+    status: { type: String, default: 'pendiente', enum: ['pendiente', 'en_proceso', 'completado', 'cancelado', 'respondido'] },
     adminNotes: { type: String, default: '' },
     respondedVia: { type: String, default: '' }
 }, {
