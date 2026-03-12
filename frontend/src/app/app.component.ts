@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ApiService, SiteSettings } from './services/api.service';
+import { Title } from '@angular/platform-browser';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -64,11 +65,10 @@ import { filter } from 'rxjs/operators';
   `]
 })
 export class AppComponent implements OnInit {
-  title = 'KOI Design';
   whatsappUrl = '';
   isAdminRoute = false;
 
-  constructor(private api: ApiService, private router: Router) { 
+  constructor(private api: ApiService, private router: Router, private titleService: Title) { 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
@@ -92,6 +92,12 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    const customTitle = "Koi Design's Si lo sueñas, lo hacemos posible.";
+    this.titleService.setTitle(customTitle);
+    
+    // Añade el tooltip al body para que aparezca al dejar el cursor en cualquier lado (o en la pestaña en algunos navegadores)
+    document.body.title = customTitle;
+
     this.api.getSettings().subscribe({
       next: (settings: SiteSettings) => {
         if (settings) {
